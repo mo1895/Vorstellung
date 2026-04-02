@@ -29,7 +29,7 @@
       background:var(--bg);
       font-family:'Montserrat',system-ui,sans-serif;
       color:var(--text);
-      overflow:hidden
+      overflow:hidden;
     }
 
     .deck{
@@ -38,7 +38,7 @@
       position:relative;
       background:
         radial-gradient(circle at left center, rgba(90,10,10,.25), transparent 35%),
-        linear-gradient(90deg, #120908 0%, #0d0908 55%, #0a0707 100%)
+        linear-gradient(90deg, #120908 0%, #0d0908 55%, #0a0707 100%);
     }
 
     .slide{
@@ -48,13 +48,13 @@
       transform:scale(.985);
       transition:opacity .55s ease, transform .55s ease;
       pointer-events:none;
-      overflow:hidden
+      overflow:hidden;
     }
 
     .slide.active{
       opacity:1;
       transform:scale(1);
-      pointer-events:auto
+      pointer-events:auto;
     }
 
     .slide::before{
@@ -73,21 +73,21 @@
       z-index:2;
       width:100%;
       height:100%;
-      padding:56px 62px 46px 62px
+      padding:56px 62px 46px 62px;
     }
 
     .cover{
       display:grid;
       grid-template-columns:1.15fr .85fr;
       gap:36px;
-      align-items:stretch
+      align-items:stretch;
     }
 
     .cover-text{
       padding:34px 10px 34px 10px;
       display:flex;
       flex-direction:column;
-      justify-content:center
+      justify-content:center;
     }
 
     .eyebrow{
@@ -95,7 +95,7 @@
       line-height:1.45;
       color:var(--muted);
       margin:0 0 22px 0;
-      font-weight:500
+      font-weight:500;
     }
 
     .cover h1{
@@ -104,7 +104,7 @@
       margin:0 0 28px 0;
       font-weight:900;
       letter-spacing:-2px;
-      color:#f2e7e7
+      color:#f2e7e7;
     }
 
     .cover p{
@@ -112,20 +112,20 @@
       line-height:1.6;
       color:var(--muted);
       margin:0 0 22px 0;
-      max-width:760px
+      max-width:760px;
     }
 
     .cover-image{
       display:flex;
       align-items:stretch;
-      justify-content:flex-end
+      justify-content:flex-end;
     }
 
     .cover-image img{
       width:100%;
       height:100%;
       object-fit:cover;
-      border-radius:0
+      border-radius:0;
     }
 
     .stadium-layout{
@@ -134,7 +134,7 @@
       grid-template-rows:auto 1fr;
       column-gap:54px;
       row-gap:18px;
-      height:100%
+      height:100%;
     }
 
     .photo-wrap{
@@ -143,7 +143,7 @@
       display:flex;
       align-items:flex-start;
       justify-content:flex-start;
-      padding-top:8px
+      padding-top:8px;
     }
 
     .photo-wrap img{
@@ -152,15 +152,7 @@
       height:470px;
       object-fit:cover;
       border-radius:4px;
-      box-shadow:0 8px 24px rgba(0,0,0,.22)
-    }
-
-    .side-copy{
-      grid-column:2;
-      grid-row:1;
-      align-self:start;
-      padding-top:18px;
-      padding-right:24px
+      box-shadow:0 8px 24px rgba(0,0,0,.22);
     }
 
     .title{
@@ -169,7 +161,7 @@
       margin:0 0 10px 0;
       font-weight:900;
       letter-spacing:-1.2px;
-      color:#efe4e5
+      color:#efe4e5;
     }
 
     .capacity{
@@ -177,36 +169,12 @@
       line-height:1.3;
       margin:0 0 10px 0;
       color:#f2e8e6;
-      font-weight:700
+      font-weight:700;
     }
 
     .capacity span{
       font-weight:500;
-      color:#efe7e3
-    }
-
-    .desc{
-      font-size:17px;
-      line-height:1.5;
-      margin:0;
-      color:var(--muted);
-      max-width:520px
-    }
-
-    .bottom-copy{
-      grid-column:1 / span 2;
-      grid-row:2;
-      align-self:start;
-      padding-top:2px
-    }
-
-    .bottom-copy .title{
-      font-size:38px;
-      margin-bottom:14px
-    }
-
-    .bottom-copy .desc{
-      max-width:1220px
+      color:#efe7e3;
     }
 
     .visit{
@@ -214,12 +182,36 @@
       line-height:1.3;
       margin:0 0 10px 0;
       color:#f2e8e6;
-      font-weight:700
+      font-weight:700;
     }
 
     .visit span{
       font-weight:500;
-      color:#efe7e3
+      color:#efe7e3;
+    }
+
+    .desc{
+      font-size:17px;
+      line-height:1.5;
+      margin:0;
+      color:var(--muted);
+      max-width:520px;
+    }
+
+    .bottom-copy{
+      grid-column:1 / span 2;
+      grid-row:2;
+      align-self:start;
+      padding-top:2px;
+    }
+
+    .bottom-copy .title{
+      font-size:38px;
+      margin-bottom:14px;
+    }
+
+    .bottom-copy .desc{
+      max-width:1220px;
     }
 
     .overview-slide .content{
@@ -355,7 +347,7 @@
       border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(8px);
       padding:10px 18px;
-      border-radius:999px
+      border-radius:999px;
     }
 
     .nav-btn{
@@ -366,12 +358,12 @@
       background:rgba(255,255,255,.08);
       color:#fff;
       font-size:22px;
-      cursor:pointer
+      cursor:pointer;
     }
 
     .slide-dots{
       display:flex;
-      gap:8px
+      gap:8px;
     }
 
     .dot{
@@ -379,245 +371,258 @@
       height:10px;
       border-radius:50%;
       background:rgba(255,255,255,.18);
-      cursor:pointer
+      cursor:pointer;
     }
 
     .dot.active{
-      background:#fff
+      background:#fff;
     }
 
     .slide-counter{
       font-size:14px;
-      color:#ddd
+      color:#ddd;
     }
 
     .reveal{
       opacity:0;
-      transform:translateY(18px)
+      transform:translateY(18px);
     }
   </style>
 </head>
 <body>
-<div class="deck">
-  <section class="slide active" data-slide="1">
-    <div class="content cover">
-      <div class="cover-text">
-        <p class="eyebrow reveal">Finn Moritz</p>
-        <p class="eyebrow reveal">Erstes Ausbildungsjahr als Fachinformatiker für Systemintegration</p>
-        <p class="eyebrow reveal">Aus der Nähe von Düsseldorf | Fortuna Düsseldorf Fan</p>
-        <h1 class="reveal">Mein Hobby: Stadionreisen</h1>
-        <p class="reveal">Ich liebe es zu reisen und versuche, jedes Stadion zu besuchen – ob durch Führungen, Spiele oder kurze Besuche. Mein Ziel ist es, sagen zu können: Ich war schon drinnen und durfte mir das Stadion anschauen!</p>
-        <p class="reveal">Diese Präsentation zeigt eine Auswahl der Stadien, die ich bereits besucht habe.</p>
+  <div class="deck">
+    <section class="slide active" data-slide="1">
+      <div class="content cover">
+        <div class="cover-text">
+          <p class="eyebrow reveal">Finn Moritz</p>
+          <p class="eyebrow reveal">Erstes Ausbildungsjahr als Fachinformatiker für Systemintegration</p>
+          <p class="eyebrow reveal">Aus der Nähe von Düsseldorf | Fortuna Düsseldorf Fan</p>
+          <h1 class="reveal">Mein Hobby: Stadionreisen</h1>
+          <p class="reveal">Ich liebe es zu reisen und versuche, jedes Stadion zu besuchen – ob durch Führungen, Spiele oder kurze Besuche. Mein Ziel ist es, sagen zu können: Ich war schon drinnen und durfte mir das Stadion anschauen!</p>
+          <p class="reveal">Diese Präsentation zeigt eine Auswahl der Stadien, die ich bereits besucht habe.</p>
+        </div>
+        <div class="cover-image reveal">
+          <img src="./titel.jpeg" alt="Covermotiv Stadionreisen">
+        </div>
       </div>
-      <div class="cover-image reveal"><img src="./titel.jpeg" alt="Covermotiv Stadionreisen"></div>
-    </div>
-  </section>
+    </section>
 
-  <section class="slide" data-slide="2">
-    <div class="content stadium-layout">
-      <div class="photo-wrap reveal">
-        <img src="./berlin.jpeg" alt="Olympiastadion Berlin" style="max-width:430px;width:430px;height:610px">
+    <section class="slide" data-slide="2">
+      <div class="content stadium-layout">
+        <div class="photo-wrap reveal">
+          <img src="./berlin2.jpeg" alt="Olympiastadion Berlin" style="max-width:430px;width:430px;height:610px">
+        </div>
+        <div></div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Olympiastadion Berlin</h2>
+          <p class="visit">Besucht: <span>03 Oktober 2023</span></p>
+          <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
+          <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
+        </div>
       </div>
-      <div></div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Olympiastadion Berlin</h2>
-        <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
-        <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
+    </section>
+
+    <section class="slide" data-slide="3">
+      <div class="content">
+        <div class="photo-wrap reveal" style="padding-top:20px">
+          <img src="./berlin2.jpeg" alt="Olympiastadion Berlin" style="max-width:1280px;width:1280px;height:540px">
+        </div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Olympiastadion Berlin</h2>
+          <p class="visit">Besucht: <span>14 Februar 2024</span></p>
+          <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
+          <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="slide" data-slide="3">
-    <div class="content">
-      <div class="photo-wrap reveal" style="padding-top:20px">
-        <img src="./berlin2.jpeg" alt="Olympiastadion Berlin" style="max-width:1280px;width:1280px;height:540px">
+    <section class="slide" data-slide="4">
+      <div class="content">
+        <div class="photo-wrap reveal" style="padding-top:18px">
+          <img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" style="max-width:1280px;width:1280px;height:520px">
+        </div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Volksparkstadion Hamburg</h2>
+          <p class="visit">Besucht: <span>19 Mai 2024</span></p>
+          <p class="capacity">Kapazität: <span>57.000 Zuschauer</span></p>
+          <p class="desc">Das Volksparkstadion ist die Heimat des Hamburger SV (HSV) und eines der traditionsreichsten Stadien Deutschlands. Es wurde 1953 eröffnet und ist bekannt für seine leidenschaftlichen Fans.</p>
+        </div>
       </div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Olympiastadion Berlin</h2>
-        <p class="visit">Besucht: <span>11. Februar 2024</span></p>
-        <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
-        <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
+    </section>
+
+    <section class="slide" data-slide="5">
+      <div class="content stadium-layout">
+        <div class="photo-wrap reveal">
+          <img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg" style="max-width:420px;width:420px;height:610px">
+        </div>
+        <div></div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Millerntor-Stadion Hamburg</h2>
+          <p class="visit">Besucht: <span>20 Mai 2024</span></p>
+          <p class="capacity">Kapazität: <span>29.546 Zuschauer</span></p>
+          <p class="desc">Das Millerntor-Stadion ist die Heimat des FC St. Pauli und bekannt für seine einzigartige Atmosphäre und die leidenschaftlichen Fans. Es ist eines der kleineren, aber charaktervollsten Stadien Deutschlands.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="slide" data-slide="4">
-    <div class="content">
-      <div class="photo-wrap reveal" style="padding-top:18px">
-        <img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" style="max-width:1280px;width:1280px;height:520px">
+    <section class="slide" data-slide="6">
+      <div class="content">
+        <div class="photo-wrap reveal" style="padding-top:20px">
+          <img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach" style="max-width:1060px;width:1060px;height:500px">
+        </div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Borussia-Park Mönchengladbach</h2>
+          <p class="visit">Besucht: <span>14 September 2024</span></p>
+          <p class="capacity">Kapazität: <span>54.067 Zuschauer</span></p>
+          <p class="desc">Das Borussia-Park ist die Heimat von Borussia Mönchengladbach und eines der modernsten Stadien in Deutschland. Es wurde 2004 eröffnet und ist bekannt für seine hervorragende Infrastruktur und Atmosphäre.</p>
+        </div>
       </div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Volksparkstadion Hamburg</h2>
-        <p class="capacity">Kapazität: <span>57.000 Zuschauer</span></p>
-        <p class="desc">Das Volksparkstadion ist die Heimat des Hamburger SV (HSV) und eines der traditionsreichsten Stadien Deutschlands. Es wurde 1953 eröffnet und ist bekannt für seine leidenschaftlichen Fans.</p>
+    </section>
+
+    <section class="slide" data-slide="7">
+      <div class="content">
+        <div class="photo-wrap reveal" style="padding-top:22px">
+          <img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen" style="max-width:1160px;width:1160px;height:520px">
+        </div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Veltins-Arena Gelsenkirchen</h2>
+          <p class="visit">Besucht: <span>14 Dezember 2024</span></p>
+          <p class="capacity">Kapazität: <span>62.271 Zuschauer</span></p>
+          <p class="desc">Die Veltins-Arena ist die Heimat des FC Schalke 04 und eines der modernsten Stadien Deutschlands. Sie wurde 2001 eröffnet und ist bekannt für ihre beeindruckende Architektur und Technologie.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="slide" data-slide="5">
-    <div class="content stadium-layout">
-      <div class="photo-wrap reveal"><img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg" style="max-width:420px;width:420px;height:610px"></div>
-      <div></div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Millerntor-Stadion Hamburg</h2>
-        <p class="capacity">Kapazität: <span>29.546 Zuschauer</span></p>
-        <p class="desc">Das Millerntor-Stadion ist die Heimat des FC St. Pauli und bekannt für seine einzigartige Atmosphäre und die leidenschaftlichen Fans. Es ist eines der kleineren, aber charaktervollsten Stadien Deutschlands.</p>
+    <section class="slide" data-slide="8">
+      <div class="content">
+        <div class="photo-wrap reveal" style="padding-top:22px">
+          <img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden" style="max-width:1060px;width:1060px;height:520px">
+        </div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Rudolf-Harbig-Stadion Dresden</h2>
+          <p class="visit">Besucht: <span>23 August 2023</span></p>
+          <p class="capacity">Kapazität: <span>32.065 Zuschauer</span></p>
+          <p class="desc">Das Rudolf-Harbig-Stadion ist die Heimat von Dynamo Dresden und eines der traditionsreichsten Stadien in Ostdeutschland. Es wurde 1923 eröffnet und ist bekannt für seine Geschichte und leidenschaftlichen Fans.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="slide" data-slide="6">
-    <div class="content">
-      <div class="photo-wrap reveal" style="padding-top:20px">
-        <img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach" style="max-width:1060px;width:1060px;height:500px">
+    <section class="slide" data-slide="9">
+      <div class="content stadium-layout">
+        <div class="photo-wrap reveal">
+          <img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf" style="max-width:430px;width:430px;height:610px">
+        </div>
+        <div></div>
+        <div class="bottom-copy reveal">
+          <h2 class="title">Merkur Spiel-Arena Düsseldorf</h2>
+          <p class="visit">Besucht: <span>05 Dezember 2025</span></p>
+          <p class="capacity">Kapazität: <span>54.600 Zuschauer</span></p>
+          <p class="desc">Die Merkur Spiel-Arena ist die Heimat von Fortuna Düsseldorf und eines der modernsten Stadien in Deutschland. Das Stadion wurde 2005 eröffnet und ist bekannt für seine beeindruckende Architektur und hervorragende Infrastruktur.</p>
+        </div>
       </div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Borussia-Park Mönchengladbach</h2>
-        <p class="capacity">Kapazität: <span>54.067 Zuschauer</span></p>
-        <p class="desc">Das Borussia-Park ist die Heimat von Borussia Mönchengladbach und eines der modernsten Stadien in Deutschland. Es wurde 2004 eröffnet und ist bekannt für seine hervorragende Infrastruktur und Atmosphäre.</p>
+    </section>
+
+    <section class="slide overview-slide" data-slide="10">
+      <div class="content">
+        <div class="overview-head reveal">
+          <h2>Alle besuchten Stadien</h2>
+          <p>Eine Übersicht meiner Stadionreisen auf einen Blick.</p>
+        </div>
+        <div class="stadium-grid reveal">
+          <div class="stadium-card"><img src="./berlin2.jpeg" alt="Olympiastadion Berlin"><div class="label">Olympiastadion Berlin</div></div>
+          <div class="stadium-card"><img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg"><div class="label">Volksparkstadion Hamburg</div></div>
+          <div class="stadium-card"><img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg"><div class="label">Millerntor-Stadion</div></div>
+          <div class="stadium-card"><img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach"><div class="label">Borussia-Park</div></div>
+          <div class="stadium-card"><img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen"><div class="label">Veltins-Arena</div></div>
+          <div class="stadium-card"><img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden"><div class="label">Rudolf-Harbig-Stadion</div></div>
+          <div class="stadium-card"><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf"><div class="label">Merkur Spiel-Arena</div></div>
+          <div class="stadium-card"><img src="./titel.jpeg" alt="Titelbild Stadionreisen"><div class="label">Stadionreisen</div></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="slide" data-slide="7">
-    <div class="content">
-      <div class="photo-wrap reveal" style="padding-top:22px">
-        <img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen" style="max-width:1160px;width:1160px;height:520px">
+    <section class="slide thanks-slide" data-slide="11">
+      <video class="thanks-video" autoplay muted loop playsinline>
+        <source src="./hintergrund.mp4" type="video/mp4">
+      </video>
+      <div class="thanks-overlay"></div>
+      <div class="thanks-content">
+        <h2 class="reveal">Vielen Dank<br>für eure Aufmerksamkeit</h2>
+        <p class="reveal">Danke fürs Zuhören.</p>
       </div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Veltins-Arena Gelsenkirchen</h2>
-        <p class="capacity">Kapazität: <span>62.271 Zuschauer</span></p>
-        <p class="desc">Die Veltins-Arena ist die Heimat des FC Schalke 04 und eines der modernsten Stadien Deutschlands. Sie wurde 2001 eröffnet und ist bekannt für ihre beeindruckende Architektur und Technologie.</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <section class="slide" data-slide="8">
-    <div class="content">
-      <div class="photo-wrap reveal" style="padding-top:22px">
-        <img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden" style="max-width:1060px;width:1060px;height:520px">
-      </div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Rudolf-Harbig-Stadion Dresden</h2>
-        <p class="capacity">Kapazität: <span>32.065 Zuschauer</span></p>
-        <p class="desc">Das Rudolf-Harbig-Stadion ist die Heimat von Dynamo Dresden und eines der traditionsreichsten Stadien in Ostdeutschland. Es wurde 1923 eröffnet und ist bekannt für seine Geschichte und leidenschaftlichen Fans.</p>
-      </div>
-    </div>
-  </section>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+    <div class="slide-dots" id="dots"></div>
+    <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span class="slide-counter" id="counter">1 / 11</span>
+  </div>
 
-  <section class="slide" data-slide="9">
-    <div class="content stadium-layout">
-      <div class="photo-wrap reveal"><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf" style="max-width:430px;width:430px;height:610px"></div>
-      <div></div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Merkur Spiel-Arena Düsseldorf</h2>
-        <p class="capacity">Kapazität: <span>54.600 Zuschauer</span></p>
-        <p class="desc">Die Merkur Spiel-Arena ist die Heimat von Fortuna Düsseldorf und eines der modernsten Stadien in Deutschland. Das Stadion wurde 2005 eröffnet und ist bekannt für seine beeindruckende Architektur und hervorragende Infrastruktur.</p>
-      </div>
-    </div>
-  </section>
+  <script>
+    let current = 1;
+    const slides = [...document.querySelectorAll('.slide')];
+    const total = slides.length;
+    const dots = document.getElementById('dots');
+    const counter = document.getElementById('counter');
 
-  <section class="slide overview-slide" data-slide="10">
-    <div class="content">
-      <div class="overview-head reveal">
-        <h2>Alle besuchten Stadien</h2>
-        <p>Eine Übersicht meiner Stadionreisen auf einen Blick.</p>
-      </div>
-      <div class="stadium-grid reveal">
-        <div class="stadium-card"><img src="./berlin2.jpeg" alt="Olympiastadion Berlin"><div class="label">Olympiastadion Berlin</div></div>
-        <div class="stadium-card"><img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg"><div class="label">Volksparkstadion Hamburg</div></div>
-        <div class="stadium-card"><img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg"><div class="label">Millerntor-Stadion</div></div>
-        <div class="stadium-card"><img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach"><div class="label">Borussia-Park</div></div>
-        <div class="stadium-card"><img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen"><div class="label">Veltins-Arena</div></div>
-        <div class="stadium-card"><img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden"><div class="label">Rudolf-Harbig-Stadion</div></div>
-        <div class="stadium-card"><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf"><div class="label">Merkur Spiel-Arena</div></div>
-        <div class="stadium-card"><img src="./titel.jpeg" alt="Titelbild Stadionreisen"><div class="label">Stadionreisen</div></div>
-      </div>
-    </div>
-  </section>
+    for(let i = 1; i <= total; i++){
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 1 ? ' active' : '');
+      d.onclick = () => goToSlide(i);
+      dots.appendChild(d);
+    }
 
-  <section class="slide thanks-slide" data-slide="11">
-    <video class="thanks-video" autoplay muted loop playsinline>
-      <source src="./hintergrund.mp4" type="video/mp4">
-    </video>
-    <div class="thanks-overlay"></div>
-    <div class="thanks-content">
-      <h2 class="reveal">Vielen Dank<br>für eure Aufmerksamkeit</h2>
-      <p class="reveal">Danke fürs Zuhören.</p>
-    </div>
-  </section>
-</div>
+    function animateSlide(slide){
+      slide.querySelectorAll('.reveal').forEach((el, i) => {
+        el.style.transition = 'none';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(18px)';
+        el.offsetHeight;
+        el.style.transition = `opacity .42s ease ${i * 0.08}s, transform .42s ease ${i * 0.08}s`;
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    }
 
-<div class="nav-controls">
-  <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
-  <div class="slide-dots" id="dots"></div>
-  <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
-  <span class="slide-counter" id="counter">1 / 11</span>
-</div>
+    function updateNav(){
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current));
+      counter.textContent = `${current} / ${total}`;
+    }
 
-<script>
-let current=1;
-const slides=[...document.querySelectorAll('.slide')];
-const total=slides.length;
-const dots=document.getElementById('dots');
-const counter=document.getElementById('counter');
+    function goToSlide(n){
+      document.querySelector('.slide.active')?.classList.remove('active');
+      const next = document.querySelector(`.slide[data-slide="${n}"]`);
+      if(next){
+        next.classList.add('active');
+        animateSlide(next);
+        current = n;
+        updateNav();
+      }
+    }
 
-for(let i=1;i<=total;i++){
-  const d=document.createElement('div');
-  d.className='dot'+(i===1?' active':'');
-  d.onclick=()=>goToSlide(i);
-  dots.appendChild(d);
-}
+    function changeSlide(dir){
+      let n = current + dir;
+      if(n < 1) n = total;
+      if(n > total) n = 1;
+      goToSlide(n);
+    }
 
-function animateSlide(slide){
-  slide.querySelectorAll('.reveal').forEach((el,i)=>{
-    el.style.transition='none';
-    el.style.opacity='0';
-    el.style.transform='translateY(18px)';
-    el.offsetHeight;
-    el.style.transition=`opacity .42s ease ${i*0.08}s, transform .42s ease ${i*0.08}s`;
-    el.style.opacity='1';
-    el.style.transform='translateY(0)';
-  });
-}
+    document.addEventListener('keydown', e => {
+      if(e.key === 'ArrowRight' || e.key === ' '){
+        e.preventDefault();
+        changeSlide(1);
+      }
+      if(e.key === 'ArrowLeft'){
+        e.preventDefault();
+        changeSlide(-1);
+      }
+    });
 
-function updateNav(){
-  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i+1===current));
-  counter.textContent=`${current} / ${total}`;
-}
-
-function goToSlide(n){
-  document.querySelector('.slide.active')?.classList.remove('active');
-  const next=document.querySelector(`.slide[data-slide="${n}"]`);
-  if(next){
-    next.classList.add('active');
-    animateSlide(next);
-    current=n;
-    updateNav();
-  }
-}
-
-function changeSlide(dir){
-  let n=current+dir;
-  if(n<1)n=total;
-  if(n>total)n=1;
-  goToSlide(n);
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key===' '){
-    e.preventDefault();
-    changeSlide(1);
-  }
-  if(e.key==='ArrowLeft'){
-    e.preventDefault();
-    changeSlide(-1);
-  }
-});
-
-try{
-  animateSlide(document.querySelector('.slide.active'));
-}catch(e){}
-</script>
+    try{
+      animateSlide(document.querySelector('.slide.active'));
+    }catch(e){}
+  </script>
 </body>
 </html>
