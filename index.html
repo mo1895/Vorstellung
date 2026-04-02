@@ -31,7 +31,7 @@
     .cover-image{display:flex;align-items:stretch;justify-content:flex-end;overflow:hidden}
     .cover-image img{width:100%;height:100%;object-fit:cover}
 
-    /* STANDARD STADIUM SLIDES (landscape) */
+    /* STANDARD STADIUM SLIDES */
     .stadium-slide .content{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -62,7 +62,7 @@
       gap:14px;
     }
 
-    /* PORTRAIT SLIDES (Folie 2 & 9) — schmales Handy-Hochformat */
+    /* PORTRAIT SLIDES (Folie 2 & 9) */
     .stadium-slide.portrait .content{
       grid-template-columns:320px 1fr;
       gap:56px;
@@ -112,14 +112,30 @@
     #mNext{right:14px}
     .modal-count{position:absolute;top:16px;left:20px;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);z-index:2}
 
-    /* DANKE */
-    .thanks-slide{position:absolute;inset:0;overflow:hidden}
+    /* DANKE — Video kleiner, zentriert mit Abstand */
+    .thanks-slide{position:absolute;inset:0;overflow:hidden;background:#0d0908}
     .thanks-slide::before{display:none}
-    .thanks-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-    .thanks-overlay{position:absolute;inset:0;background:rgba(0,0,0,.3);z-index:1}
+    .thanks-video-wrap{
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      width:70%;
+      height:70%;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.7);
+      z-index:0;
+    }
+    .thanks-video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .thanks-overlay{position:absolute;inset:0;background:rgba(0,0,0,.15);z-index:1;border-radius:16px}
     .thanks-content{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
-    .thanks-content h2{font-size:72px;line-height:.95;margin:0 0 20px;font-weight:900;letter-spacing:-2px;color:#fff;text-shadow:0 6px 28px rgba(0,0,0,.4)}
-    .thanks-content p{margin:0;font-size:24px;color:#f0e8e8;font-weight:500}
+    .thanks-content h2{font-size:72px;line-height:.95;margin:0 0 20px;font-weight:900;letter-spacing:-2px;color:#fff;text-shadow:0 6px 28px rgba(0,0,0,.6)}
+    .thanks-content p{margin:0;font-size:24px;color:#f0e8e8;font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.5)}
 
     #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:5;display:none}
 
@@ -322,10 +338,12 @@
 
   <!-- SLIDE 11 -->
   <section class="slide thanks-slide" data-slide="11">
-    <video class="thanks-video" autoplay muted loop playsinline>
-      <source src="hintergrund.mp4" type="video/mp4">
-    </video>
-    <div class="thanks-overlay"></div>
+    <div class="thanks-video-wrap">
+      <video class="thanks-video" autoplay muted loop playsinline>
+        <source src="hintergrund.mp4" type="video/mp4">
+      </video>
+      <div class="thanks-overlay"></div>
+    </div>
     <div class="thanks-content">
       <h2 class="reveal">Vielen Dank<br>f&uuml;r eure Aufmerksamkeit</h2>
       <p class="reveal">Danke f&uuml;rs Zuh&ouml;ren.</p>
