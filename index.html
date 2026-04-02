@@ -1,772 +1,563 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="slides-format" content="viewport" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Finn Moritz – Stadionreisen</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --bg:#0d0908;
-      --bg2:#140908;
       --text:#f4eaea;
       --muted:#d7cecb;
-      --soft:#bfb5b1;
-      --accent:#e6dfe0;
-      --glow:110,20,20;
+      --red:#c0392b;
+      --red2:#e74c3c;
     }
+    @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:var(--bg);font-family:'Montserrat',sans-serif;color:var(--text);overflow:hidden;cursor:none}
 
-    *{box-sizing:border-box}
+    /* ─── CUSTOM CURSOR ─── */
+    #cursor{position:fixed;width:14px;height:14px;border-radius:50%;background:rgba(231,76,60,.85);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .15s;mix-blend-mode:difference}
+    #cursor-ring{position:fixed;width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(231,76,60,.5);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s;mix-blend-mode:difference}
 
-    html,body{
-      margin:0;
-      height:100%;
-      background:var(--bg);
-      font-family:'Montserrat',system-ui,sans-serif;
-      color:var(--text);
-      overflow:hidden;
-    }
+    /* ─── INTRO SCREEN ─── */
+    #intro{position:fixed;inset:0;z-index:8000;background:#0d0908;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .8s ease,transform 1s cubic-bezier(.16,1,.3,1)}
+    #intro.gone{opacity:0;transform:scale(1.06);pointer-events:none}
+    .intro-logo{font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35);font-weight:600}
+    .intro-bar-wrap{width:220px;height:2px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
+    .intro-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--red),var(--red2));border-radius:999px;transition:width .05s linear}
+    .intro-title{font-size:32px;font-weight:900;letter-spacing:-1px;color:#f2e7e7;opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+    .intro-title.show{opacity:1;transform:none}
 
-    .deck{
-      width:100vw;
-      height:100vh;
-      position:relative;
-      background:
-        radial-gradient(circle at left center, rgba(90,10,10,.25), transparent 35%),
-        linear-gradient(90deg, #120908 0%, #0d0908 55%, #0a0707 100%);
-    }
+    /* ─── PARTICLE CANVAS ─── */
+    #particles{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.45}
 
-    .slide{
-      position:absolute;
-      inset:0;
-      opacity:0;
-      transform:scale(.985);
-      transition:opacity .55s ease, transform .55s ease;
-      pointer-events:none;
-      overflow:hidden;
-    }
+    /* ─── SPOTLIGHT ─── */
+    #spotlight{position:fixed;inset:0;pointer-events:none;z-index:2;background:radial-gradient(circle 320px at 50% 50%,rgba(192,57,43,.07),transparent 70%);transition:background .08s linear}
 
-    .slide.active{
-      opacity:1;
-      transform:scale(1);
-      pointer-events:auto;
-    }
+    /* ─── PROGRESS BAR ─── */
+    #progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:300;background:linear-gradient(90deg,#c0392b,#e74c3c,#ff6b6b,#ff9999);transition:width .5s cubic-bezier(.16,1,.3,1);box-shadow:0 0 14px rgba(231,76,60,.8),0 0 4px rgba(231,76,60,1)}
 
-    .slide::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 0% 50%, rgba(129,13,13,.18), transparent 28%),
-        radial-gradient(circle at 25% 0%, rgba(65,15,15,.12), transparent 25%);
-      pointer-events:none;
-      z-index:0;
-    }
+    /* ─── KEYBOARD HINT ─── */
+    #kb-hint{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);padding:10px 22px;border-radius:999px;font-size:12px;color:rgba(255,255,255,.6);z-index:150;opacity:1;transition:opacity .7s ease;pointer-events:none;white-space:nowrap;font-weight:600;letter-spacing:.04em}
+    #kb-hint.gone{opacity:0}
 
-    .content{
-      position:relative;
-      z-index:2;
-      width:100%;
-      height:100%;
-      padding:56px 62px 46px 62px;
-    }
+    /* ─── DECK & SLIDES ─── */
+    .deck{width:100vw;height:100vh;position:relative;background:radial-gradient(circle at left center,rgba(90,10,10,.28),transparent 38%),linear-gradient(120deg,#120908 0%,#0d0908 60%,#0a0707 100%)}
+    .slide{position:absolute;inset:0;opacity:0;transform:translateX(55px) scale(.982);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);pointer-events:none;overflow:hidden;will-change:opacity,transform}
+    .slide.active{opacity:1;transform:translateX(0) scale(1);pointer-events:auto}
+    .slide.exit-left{opacity:0;transform:translateX(-55px) scale(.982)}
+    .slide::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 50%,rgba(129,13,13,.15),transparent 30%),radial-gradient(circle at 80% 100%,rgba(80,8,8,.1),transparent 30%);pointer-events:none;z-index:0}
+    .content{position:relative;z-index:3;width:100%;height:100%;padding:56px 62px 46px 62px}
 
-    .cover{
-      display:grid;
-      grid-template-columns:1.15fr .85fr;
-      gap:36px;
-      align-items:stretch;
-    }
+    /* ─── COVER ─── */
+    .cover{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:stretch;height:100%}
+    .cover-text{padding:34px 10px;display:flex;flex-direction:column;justify-content:center}
+    .eyebrow{font-size:17px;line-height:1.45;color:var(--muted);margin:0 0 20px;font-weight:500}
 
-    .cover-text{
-      padding:34px 10px 34px 10px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
+    /* ─── GLITCH TITLE ─── */
+    .glitch-title{font-size:66px;line-height:.95;margin:0 0 28px;font-weight:900;letter-spacing:-2px;color:#f2e7e7;position:relative;display:inline-block}
+    .glitch-title::before,.glitch-title::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:transparent;clip:rect(0,0,0,0)}
+    .glitch-title::before{left:2px;text-shadow:-2px 0 var(--red2);animation:glitch1 4s infinite linear;clip-path:polygon(0 15%,100% 15%,100% 40%,0 40%)}
+    .glitch-title::after{left:-2px;text-shadow:2px 0 #00e5ff;animation:glitch2 4s infinite linear 1.5s;clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%)}
+    @keyframes glitch1{0%,94%,100%{clip-path:polygon(0 0,0 0,0 0,0 0);opacity:0}95%{clip-path:polygon(0 15%,100% 15%,100% 40%,0 40%);opacity:1}96%{clip-path:polygon(0 5%,100% 5%,100% 20%,0 20%);opacity:1}97%{clip-path:polygon(0 0,0 0,0 0,0 0);opacity:0}}
+    @keyframes glitch2{0%,90%,100%{clip-path:polygon(0 0,0 0,0 0,0 0);opacity:0}91%{clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%);opacity:1}93%{clip-path:polygon(0 50%,100% 50%,100% 70%,0 70%);opacity:1}94%{clip-path:polygon(0 0,0 0,0 0,0 0);opacity:0}}
 
-    .eyebrow{
-      font-size:17px;
-      line-height:1.45;
-      color:var(--muted);
-      margin:0 0 22px 0;
-      font-weight:500;
-    }
+    .cover p{font-size:21px;line-height:1.65;color:var(--muted);margin:0 0 20px;max-width:760px}
+    .cover-image{display:flex;align-items:stretch;justify-content:flex-end;position:relative;overflow:hidden}
+    .cover-image img{width:100%;height:100%;object-fit:cover}
+    .cover-image::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(13,9,8,.55),transparent 50%);pointer-events:none}
 
-    .cover h1{
-      font-size:66px;
-      line-height:.95;
-      margin:0 0 28px 0;
-      font-weight:900;
-      letter-spacing:-2px;
-      color:#f2e7e7;
-    }
+    /* ─── SCROLL ARROW ─── */
+    .scroll-arrow{position:absolute;bottom:82px;right:62px;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.55;animation:arrowBounce 1.9s ease-in-out infinite;z-index:3}
+    .scroll-arrow span{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+    .scroll-arrow svg{width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:2.2;stroke-linecap:round}
+    @keyframes arrowBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
-    .cover p{
-      font-size:22px;
-      line-height:1.6;
-      color:var(--muted);
-      margin:0 0 22px 0;
-      max-width:760px;
-    }
+    /* ─── STADIUM LAYOUT ─── */
+    .stadium-layout{display:grid;grid-template-columns:760px 1fr;grid-template-rows:auto 1fr;column-gap:54px;row-gap:18px;height:100%}
+    .photo-wrap{grid-column:1;grid-row:1;display:flex;align-items:flex-start;padding-top:8px}
+    .photo-wrap img{width:100%;max-width:760px;height:470px;object-fit:cover;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .5s cubic-bezier(.16,1,.3,1),filter .4s ease;cursor:crosshair}
+    .photo-wrap img:hover{transform:scale(1.025) translateY(-3px);filter:brightness(.93);box-shadow:0 20px 50px rgba(0,0,0,.4)}
 
-    .cover-image{
-      display:flex;
-      align-items:stretch;
-      justify-content:flex-end;
-    }
+    .title{font-size:36px;line-height:1.02;margin:0 0 10px;font-weight:900;letter-spacing:-1.2px;color:#efe4e5}
+    .capacity,.visit{font-size:18px;line-height:1.3;margin:0 0 10px;color:#f2e8e6;font-weight:700}
+    .capacity span,.visit span{font-weight:500;color:#efe7e3}
+    .count-val{display:inline-block;transition:all .1s}
+    .desc{font-size:17px;line-height:1.55;margin:0;color:var(--muted);max-width:520px}
+    .bottom-copy{grid-column:1/span 2;grid-row:2;align-self:start;padding-top:2px}
+    .bottom-copy .title{font-size:38px;margin-bottom:14px}
+    .bottom-copy .desc{max-width:1220px}
 
-    .cover-image img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      border-radius:0;
-    }
+    /* ─── OVERVIEW ─── */
+    .overview-slide .content{display:flex;flex-direction:column;gap:16px}
+    .overview-head h2{font-size:42px;margin:0 0 6px;font-weight:900;letter-spacing:-1.3px;color:#efe4e5}
+    .overview-head p{color:var(--muted);font-size:17px}
+    .overview-stats{display:flex;gap:16px;margin-top:8px}
+    .stat-chip{background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.35);padding:5px 16px;border-radius:999px;font-size:13px;font-weight:700;color:#f4a8a0;letter-spacing:.04em;cursor:default;transition:background .2s,transform .2s}
+    .stat-chip:hover{background:rgba(192,57,43,.32);transform:scale(1.05)}
 
-    .stadium-layout{
-      display:grid;
-      grid-template-columns:760px 1fr;
-      grid-template-rows:auto 1fr;
-      column-gap:54px;
-      row-gap:18px;
-      height:100%;
-    }
+    /* ─── 3D TILT CARDS ─── */
+    .stadium-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;flex:1;min-height:0}
+    .stadium-card{position:relative;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);box-shadow:0 8px 24px rgba(0,0,0,.2);cursor:pointer;transition:box-shadow .3s ease;transform-style:preserve-3d;will-change:transform}
+    .stadium-card img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.78);transition:filter .35s ease,transform .35s ease}
+    .stadium-card:hover img{filter:brightness(.95);transform:scale(1.06)}
+    .stadium-card .label{position:absolute;left:0;right:0;bottom:0;padding:14px 14px 12px;font-size:13px;font-weight:800;background:linear-gradient(to top,rgba(0,0,0,.92),rgba(0,0,0,.1));color:#fff;letter-spacing:.2px;transition:padding .3s ease}
+    .stadium-card:hover .label{padding-bottom:16px}
+    .card-shine{position:absolute;inset:0;pointer-events:none;border-radius:10px;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.08),transparent 65%);opacity:0;transition:opacity .3s ease;z-index:2}
+    .stadium-card:hover .card-shine{opacity:1}
 
-    .photo-wrap{
-      grid-column:1;
-      grid-row:1;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
-      padding-top:8px;
-    }
+    /* ─── LIGHTBOX ─── */
+    .image-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:999}
+    .image-modal.active{opacity:1;pointer-events:auto}
+    .image-modal-content{position:relative;width:min(92vw,1240px);height:min(87vh,780px);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);background:#111;transform:scale(.92) translateY(20px);transition:transform .38s cubic-bezier(.16,1,.3,1),opacity .38s ease;opacity:0}
+    .image-modal.active .image-modal-content{transform:scale(1) translateY(0);opacity:1}
+    .image-modal-content img{width:100%;height:100%;object-fit:cover;display:block}
+    .image-modal-caption{position:absolute;left:0;right:0;bottom:0;padding:22px 24px;font-size:22px;font-weight:800;color:#fff;background:linear-gradient(to top,rgba(0,0,0,.94),transparent)}
+    .image-modal-close{position:absolute;top:18px;right:18px;width:46px;height:46px;border:none;border-radius:50%;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);color:#fff;font-size:26px;cursor:none;z-index:2;transition:background .2s,transform .2s}
+    .image-modal-close:hover{background:rgba(192,57,43,.75);transform:scale(1.12) rotate(90deg)}
+    .modal-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border:none;border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);color:#fff;font-size:30px;cursor:none;z-index:2;transition:background .2s,transform .2s}
+    .modal-nav:hover{background:rgba(192,57,43,.65);transform:translateY(-50%) scale(1.12)}
+    #modalPrev{left:16px}
+    #modalNext{right:16px}
+    .modal-counter{position:absolute;top:18px;left:24px;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.06em;z-index:2}
 
-    .photo-wrap img{
-      width:100%;
-      max-width:760px;
-      height:470px;
-      object-fit:cover;
-      border-radius:4px;
-      box-shadow:0 8px 24px rgba(0,0,0,.22);
-    }
+    /* ─── THANKS ─── */
+    .thanks-slide{position:absolute;inset:0;overflow:hidden}
+    .thanks-slide::before{display:none}
+    .thanks-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+    .thanks-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.22) 0%,rgba(0,0,0,.45) 100%),radial-gradient(circle at center,rgba(90,10,10,.2),rgba(0,0,0,.3));z-index:1}
+    .thanks-content{position:relative;z-index:3;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
+    .thanks-content h2{font-size:74px;line-height:.95;margin:0 0 22px;font-weight:900;letter-spacing:-2px;color:#fff;text-shadow:0 6px 32px rgba(0,0,0,.4)}
+    .thanks-content p{margin:0;font-size:24px;color:#f0e8e8;font-weight:500;text-shadow:0 4px 18px rgba(0,0,0,.4)}
 
-    .title{
-      font-size:36px;
-      line-height:1.02;
-      margin:0 0 10px 0;
-      font-weight:900;
-      letter-spacing:-1.2px;
-      color:#efe4e5;
-    }
+    /* ─── CONFETTI ─── */
+    #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .5s}
+    #confetti-canvas.show{opacity:1}
 
-    .capacity{
-      font-size:18px;
-      line-height:1.3;
-      margin:0 0 10px 0;
-      color:#f2e8e6;
-      font-weight:700;
-    }
-
-    .capacity span{
-      font-weight:500;
-      color:#efe7e3;
-    }
-
-    .visit{
-      font-size:18px;
-      line-height:1.3;
-      margin:0 0 10px 0;
-      color:#f2e8e6;
-      font-weight:700;
-    }
-
-    .visit span{
-      font-weight:500;
-      color:#efe7e3;
-    }
-
-    .desc{
-      font-size:17px;
-      line-height:1.5;
-      margin:0;
-      color:var(--muted);
-      max-width:520px;
-    }
-
-    .bottom-copy{
-      grid-column:1 / span 2;
-      grid-row:2;
-      align-self:start;
-      padding-top:2px;
-    }
-
-    .bottom-copy .title{
-      font-size:38px;
-      margin-bottom:14px;
-    }
-
-    .bottom-copy .desc{
-      max-width:1220px;
-    }
-
-    .overview-slide .content{
-      display:flex;
-      flex-direction:column;
-      gap:24px;
-    }
-
-    .overview-head h2{
-      font-size:42px;
-      margin:0 0 8px 0;
-      font-weight:900;
-      letter-spacing:-1.3px;
-      color:#efe4e5;
-    }
-
-    .overview-head p{
-      margin:0;
-      color:var(--muted);
-      font-size:18px;
-      line-height:1.5;
-    }
-
-    .stadium-grid{
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
-      gap:16px;
-      flex:1;
-      min-height:0;
-    }
-
-    .stadium-card{
-      position:relative;
-      border-radius:8px;
-      overflow:hidden;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
-      cursor:pointer;
-      transition:transform .25s ease, box-shadow .25s ease;
-    }
-
-    .stadium-card:hover{
-      transform:translateY(-4px);
-      box-shadow:0 16px 36px rgba(0,0,0,.28);
-    }
-
-    .stadium-card img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      filter:brightness(.82);
-    }
-
-    .stadium-card .label{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      padding:12px 14px;
-      font-size:14px;
-      font-weight:800;
-      background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.15));
-      color:#fff;
-      letter-spacing:.2px;
-    }
-
-    .image-modal{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,.82);
-      backdrop-filter:blur(6px);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .25s ease;
-      z-index:999;
-    }
-
-    .image-modal.active{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .image-modal-content{
-      position:relative;
-      width:min(92vw, 1200px);
-      height:min(86vh, 760px);
-      border-radius:10px;
-      overflow:hidden;
-      box-shadow:0 18px 50px rgba(0,0,0,.45);
-      background:#111;
-    }
-
-    .image-modal-content img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    .image-modal-caption{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      padding:18px 22px;
-      font-size:22px;
-      font-weight:800;
-      color:#fff;
-      background:linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.18));
-    }
-
-    .image-modal-close{
-      position:absolute;
-      top:16px;
-      right:16px;
-      width:44px;
-      height:44px;
-      border:none;
-      border-radius:50%;
-      background:rgba(0,0,0,.55);
-      color:#fff;
-      font-size:26px;
-      cursor:pointer;
-      z-index:2;
-    }
-
-    .thanks-slide{
-      position:absolute;
-      inset:0;
-      overflow:hidden;
-    }
-
-    .thanks-slide::before{
-      display:none;
-    }
-
-    .thanks-video{
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      object-position:center center;
-      z-index:0;
-    }
-
-    .thanks-overlay{
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,.38) 100%),
-        radial-gradient(circle at center, rgba(90,10,10,.16), rgba(0,0,0,.28));
-      z-index:1;
-    }
-
-    .thanks-content{
-      position:relative;
-      z-index:2;
-      width:100%;
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:40px;
-    }
-
-    .thanks-content h2{
-      font-size:72px;
-      line-height:.95;
-      margin:0 0 20px 0;
-      font-weight:900;
-      letter-spacing:-2px;
-      color:#fff;
-      text-shadow:0 6px 28px rgba(0,0,0,.35);
-    }
-
-    .thanks-content p{
-      margin:0;
-      font-size:24px;
-      color:#f0e8e8;
-      font-weight:500;
-      text-shadow:0 4px 18px rgba(0,0,0,.35);
-    }
-
-    .nav-controls{
-      position:fixed;
-      bottom:22px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      align-items:center;
-      gap:14px;
-      z-index:100;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      backdrop-filter:blur(8px);
-      padding:10px 18px;
-      border-radius:999px;
-    }
-
-    .nav-btn{
-      width:38px;
-      height:38px;
-      border:none;
-      border-radius:50%;
-      background:rgba(255,255,255,.08);
-      color:#fff;
-      font-size:22px;
-      cursor:pointer;
-    }
-
-    .slide-dots{
-      display:flex;
-      gap:8px;
-    }
-
-    .dot{
-      width:10px;
-      height:10px;
-      border-radius:50%;
-      background:rgba(255,255,255,.18);
-      cursor:pointer;
-    }
-
-    .dot.active{
-      background:#fff;
-    }
-
-    .slide-counter{
-      font-size:14px;
-      color:#ddd;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(18px);
-    }
+    /* ─── NAV ─── */
+    .nav-controls{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:100;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(14px);padding:10px 20px;border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+    .nav-btn{width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:none;transition:background .2s,transform .15s}
+    .nav-btn:hover{background:rgba(192,57,43,.55);transform:scale(1.12)}
+    .slide-dots{display:flex;gap:7px}
+    .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);cursor:none;transition:background .25s,transform .25s,width .25s}
+    .dot.active{background:#fff;width:22px;border-radius:4px}
+    .slide-label{font-size:13px;color:rgba(255,255,255,.75);font-weight:700;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .slide-counter{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.04em}
+    .reveal{opacity:0;transform:translateY(20px)}
   </style>
 </head>
 <body>
+
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="particles"></canvas>
+  <div id="spotlight"></div>
+  <div id="progress-bar"></div>
+  <canvas id="confetti-canvas"></canvas>
+  <div id="kb-hint">⬅ ➡ Pfeiltasten · Klick = Bild groß · ESC schließt</div>
+
+  <div id="intro">
+    <div class="intro-logo">Finn Moritz · Präsentation</div>
+    <div class="intro-bar-wrap"><div class="intro-bar" id="introBar"></div></div>
+    <div class="intro-title" id="introTitle">Stadionreisen 🏟️</div>
+  </div>
+
   <div class="deck">
-    <section class="slide active" data-slide="1">
+
+    <section class="slide active" data-slide="1" data-label="Intro">
       <div class="content cover">
         <div class="cover-text">
           <p class="eyebrow reveal">Finn Moritz</p>
-          <p class="eyebrow reveal">Erstes Ausbildungsjahr als Fachinformatiker für Systemintegration</p>
-          <p class="eyebrow reveal">Aus der Nähe von Düsseldorf | Fortuna Düsseldorf Fan</p>
-          <h1 class="reveal">Mein Hobby: Stadionreisen</h1>
-          <p class="reveal">Ich liebe es zu reisen und versuche, jedes Stadion zu besuchen – ob durch Führungen, Spiele oder kurze Besuche. Mein Ziel ist es, sagen zu können: Ich war schon drinnen und durfte mir das Stadion anschauen!</p>
+          <p class="eyebrow reveal">Erstes Ausbildungsjahr · Fachinformatiker Systemintegration</p>
+          <p class="eyebrow reveal">Neuss · Fortuna Düsseldorf Fan</p>
+          <h1 class="glitch-title reveal" data-text="Mein Hobby: Stadionreisen">Mein Hobby:<br>Stadionreisen</h1>
+          <p class="reveal">Ich liebe es zu reisen und versuche, jedes Stadion zu besuchen – ob durch Führungen, Spiele oder kurze Besuche. Mein Ziel: Ich war schon drinnen!</p>
           <p class="reveal">Diese Präsentation zeigt eine Auswahl der Stadien, die ich bereits besucht habe.</p>
         </div>
         <div class="cover-image reveal">
-          <img src="./titel.jpeg" alt="Covermotiv Stadionreisen">
+          <img src="./titel.jpeg" alt="Covermotiv">
         </div>
+      </div>
+      <div class="scroll-arrow reveal">
+        <span>Weiter</span>
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
     </section>
 
-    <section class="slide" data-slide="2">
+    <section class="slide" data-slide="2" data-label="Olympiastadion Berlin">
       <div class="content stadium-layout">
-        <div class="photo-wrap reveal">
-          <img src="./berlin2.jpeg" alt="Olympiastadion Berlin" style="max-width:430px;width:430px;height:610px">
-        </div>
+        <div class="photo-wrap reveal"><img src="./berlin2.jpeg" alt="Olympiastadion Berlin" loading="lazy" style="max-width:430px;width:430px;height:610px"></div>
         <div></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Olympiastadion Berlin</h2>
           <p class="visit">Besucht: <span>03 Oktober 2023</span></p>
-          <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
-          <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="74475">0</span> Zuschauer</span></p>
+          <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Heimat von Hertha BSC.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-slide="3">
+    <section class="slide" data-slide="3" data-label="Olympiastadion Berlin">
       <div class="content">
-        <div class="photo-wrap reveal" style="padding-top:20px">
-          <img src="./berlin2.jpeg" alt="Olympiastadion Berlin" style="max-width:1280px;width:1280px;height:540px">
-        </div>
+        <div class="photo-wrap reveal" style="padding-top:20px"><img src="./berlin2.jpeg" alt="Olympiastadion Berlin" loading="lazy" style="max-width:1280px;width:1280px;height:540px"></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Olympiastadion Berlin</h2>
           <p class="visit">Besucht: <span>14 Februar 2024</span></p>
-          <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="74475">0</span> Zuschauer</span></p>
           <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-slide="4">
+    <section class="slide" data-slide="4" data-label="Volksparkstadion Hamburg">
       <div class="content">
-        <div class="photo-wrap reveal" style="padding-top:18px">
-          <img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" style="max-width:1280px;width:1280px;height:520px">
-        </div>
+        <div class="photo-wrap reveal" style="padding-top:18px"><img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" loading="lazy" style="max-width:1280px;width:1280px;height:520px"></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Volksparkstadion Hamburg</h2>
           <p class="visit">Besucht: <span>19 Mai 2024</span></p>
-          <p class="capacity">Kapazität: <span>57.000 Zuschauer</span></p>
-          <p class="desc">Das Volksparkstadion ist die Heimat des Hamburger SV (HSV) und eines der traditionsreichsten Stadien Deutschlands. Es wurde 1953 eröffnet und ist bekannt für seine leidenschaftlichen Fans.</p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="57000">0</span> Zuschauer</span></p>
+          <p class="desc">Das Volksparkstadion ist die Heimat des Hamburger SV und eines der traditionsreichsten Stadien Deutschlands. Eröffnet 1953.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-slide="5">
+    <section class="slide" data-slide="5" data-label="Millerntor-Stadion">
       <div class="content stadium-layout">
-        <div class="photo-wrap reveal">
-          <img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg" style="max-width:420px;width:420px;height:610px">
-        </div>
+        <div class="photo-wrap reveal"><img src="./millerntor1.jpeg" alt="Millerntor-Stadion" loading="lazy" style="max-width:420px;width:420px;height:610px"></div>
         <div></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Millerntor-Stadion Hamburg</h2>
           <p class="visit">Besucht: <span>20 Mai 2024</span></p>
-          <p class="capacity">Kapazität: <span>29.546 Zuschauer</span></p>
-          <p class="desc">Das Millerntor-Stadion ist die Heimat des FC St. Pauli und bekannt für seine einzigartige Atmosphäre und die leidenschaftlichen Fans. Es ist eines der kleineren, aber charaktervollsten Stadien Deutschlands.</p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="29546">0</span> Zuschauer</span></p>
+          <p class="desc">Heimat des FC St. Pauli – klein, aber mit der stärksten Atmosphäre. Eines der charaktervollsten Stadien Deutschlands.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-slide="6">
+    <section class="slide" data-slide="6" data-label="Borussia-Park">
       <div class="content">
-        <div class="photo-wrap reveal" style="padding-top:20px">
-          <img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach" style="max-width:1060px;width:1060px;height:500px">
-        </div>
+        <div class="photo-wrap reveal" style="padding-top:20px"><img src="./gladbach.jpeg" alt="Borussia-Park" loading="lazy" style="max-width:1060px;width:1060px;height:500px"></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Borussia-Park Mönchengladbach</h2>
           <p class="visit">Besucht: <span>14 September 2024</span></p>
-          <p class="capacity">Kapazität: <span>54.067 Zuschauer</span></p>
-          <p class="desc">Das Borussia-Park ist die Heimat von Borussia Mönchengladbach und eines der modernsten Stadien in Deutschland. Es wurde 2004 eröffnet und ist bekannt für seine hervorragende Infrastruktur und Atmosphäre.</p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="54067">0</span> Zuschauer</span></p>
+          <p class="desc">Heimat von Borussia Mönchengladbach. Eines der modernsten Stadien in Deutschland – eröffnet 2004.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-slide="7">
+    <section class="slide" data-slide="7" data-label="Veltins-Arena">
       <div class="content">
-        <div class="photo-wrap reveal" style="padding-top:22px">
-          <img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen" style="max-width:1160px;width:1160px;height:520px">
-        </div>
+        <div class="photo-wrap reveal" style="padding-top:22px"><img src="./gelsenkirchen.jpeg" alt="Veltins-Arena" loading="lazy" style="max-width:1160px;width:1160px;height:520px"></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Veltins-Arena Gelsenkirchen</h2>
           <p class="visit">Besucht: <span>14 Dezember 2024</span></p>
-          <p class="capacity">Kapazität: <span>62.271 Zuschauer</span></p>
-          <p class="desc">Die Veltins-Arena ist die Heimat des FC Schalke 04 und eines der modernsten Stadien Deutschlands. Sie wurde 2001 eröffnet und ist bekannt für ihre beeindruckende Architektur und Technologie.</p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="62271">0</span> Zuschauer</span></p>
+          <p class="desc">Heimat des FC Schalke 04. Eröffnet 2001 – bekannt für beeindruckende Architektur und modernste Technologie.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-slide="8">
+    <section class="slide" data-slide="8" data-label="Rudolf-Harbig-Stadion">
       <div class="content">
-        <div class="photo-wrap reveal" style="padding-top:22px">
-          <img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden" style="max-width:1060px;width:1060px;height:520px">
-        </div>
+        <div class="photo-wrap reveal" style="padding-top:22px"><img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion" loading="lazy" style="max-width:1060px;width:1060px;height:520px"></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Rudolf-Harbig-Stadion Dresden</h2>
           <p class="visit">Besucht: <span>23 August 2023</span></p>
-          <p class="capacity">Kapazität: <span>32.065 Zuschauer</span></p>
-          <p class="desc">Das Rudolf-Harbig-Stadion ist die Heimat von Dynamo Dresden und eines der traditionsreichsten Stadien in Ostdeutschland. Es wurde 1923 eröffnet und ist bekannt für seine Geschichte und leidenschaftlichen Fans.</p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="32065">0</span> Zuschauer</span></p>
+          <p class="desc">Heimat von Dynamo Dresden. Eröffnet 1923 – eines der traditionsreichsten Stadien in Ostdeutschland.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-slide="9">
+    <section class="slide" data-slide="9" data-label="Merkur Spiel-Arena">
       <div class="content stadium-layout">
-        <div class="photo-wrap reveal">
-          <img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf" style="max-width:430px;width:430px;height:610px">
-        </div>
+        <div class="photo-wrap reveal"><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena" loading="lazy" style="max-width:430px;width:430px;height:610px"></div>
         <div></div>
         <div class="bottom-copy reveal">
           <h2 class="title">Merkur Spiel-Arena Düsseldorf</h2>
           <p class="visit">Besucht: <span>05 Dezember 2025</span></p>
-          <p class="capacity">Kapazität: <span>54.600 Zuschauer</span></p>
-          <p class="desc">Die Merkur Spiel-Arena ist die Heimat von Fortuna Düsseldorf und eines der modernsten Stadien in Deutschland. Das Stadion wurde 2005 eröffnet und ist bekannt für seine beeindruckende Architektur und hervorragende Infrastruktur.</p>
+          <p class="capacity">Kapazität: <span><span class="count-val" data-target="54600">0</span> Zuschauer</span></p>
+          <p class="desc">Heimat von Fortuna Düsseldorf. Eröffnet 2005 – bekannt für beeindruckende Architektur und hervorragende Infrastruktur.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide overview-slide" data-slide="10">
+    <section class="slide overview-slide" data-slide="10" data-label="Alle Stadien">
       <div class="content">
         <div class="overview-head reveal">
           <h2>Alle besuchten Stadien</h2>
-          <p>Klicke auf ein Bild, um es groß anzuzeigen.</p>
+          <div class="overview-stats">
+            <span class="stat-chip">🏟️ 8 Stadien</span>
+            <span class="stat-chip">📍 6 Städte</span>
+            <span class="stat-chip">📅 2023 – 2025</span>
+            <span class="stat-chip">👥 ~438.000 Plätze gesamt</span>
+          </div>
+          <p style="margin-top:8px">Klicke auf ein Bild, um es groß anzuzeigen.</p>
         </div>
-
         <div class="stadium-grid reveal">
-          <div class="stadium-card" data-full="./berlin2.jpeg" data-title="Olympiastadion Berlin">
-            <img src="./berlin2.jpeg" alt="Olympiastadion Berlin">
-            <div class="label">Olympiastadion Berlin</div>
-          </div>
-
-          <div class="stadium-card" data-full="./volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg">
-            <img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg">
-            <div class="label">Volksparkstadion Hamburg</div>
-          </div>
-
-          <div class="stadium-card" data-full="./millerntor1.jpeg" data-title="Millerntor-Stadion">
-            <img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg">
-            <div class="label">Millerntor-Stadion</div>
-          </div>
-
-          <div class="stadium-card" data-full="./gladbach.jpeg" data-title="Borussia-Park">
-            <img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach">
-            <div class="label">Borussia-Park</div>
-          </div>
-
-          <div class="stadium-card" data-full="./gelsenkirchen.jpeg" data-title="Veltins-Arena">
-            <img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen">
-            <div class="label">Veltins-Arena</div>
-          </div>
-
-          <div class="stadium-card" data-full="./dresden.jpeg" data-title="Rudolf-Harbig-Stadion">
-            <img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden">
-            <div class="label">Rudolf-Harbig-Stadion</div>
-          </div>
-
-          <div class="stadium-card" data-full="./duesseldorf.jpeg" data-title="Merkur Spiel-Arena">
-            <img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf">
-            <div class="label">Merkur Spiel-Arena</div>
-          </div>
-
-          <div class="stadium-card" data-full="./pyro.jpeg" data-title="Pyro">
-            <img src="./pyro.jpeg" alt="Pyro im Stadion">
-            <div class="label">Pyro</div>
-          </div>
+          <div class="stadium-card" data-full="./berlin2.jpeg" data-title="Olympiastadion Berlin"><div class="card-shine"></div><img src="./berlin2.jpeg" alt="Olympiastadion Berlin" loading="lazy"><div class="label">Olympiastadion Berlin</div></div>
+          <div class="stadium-card" data-full="./volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg"><div class="card-shine"></div><img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" loading="lazy"><div class="label">Volksparkstadion Hamburg</div></div>
+          <div class="stadium-card" data-full="./millerntor1.jpeg" data-title="Millerntor-Stadion"><div class="card-shine"></div><img src="./millerntor1.jpeg" alt="Millerntor-Stadion" loading="lazy"><div class="label">Millerntor-Stadion</div></div>
+          <div class="stadium-card" data-full="./gladbach.jpeg" data-title="Borussia-Park"><div class="card-shine"></div><img src="./gladbach.jpeg" alt="Borussia-Park" loading="lazy"><div class="label">Borussia-Park</div></div>
+          <div class="stadium-card" data-full="./gelsenkirchen.jpeg" data-title="Veltins-Arena"><div class="card-shine"></div><img src="./gelsenkirchen.jpeg" alt="Veltins-Arena" loading="lazy"><div class="label">Veltins-Arena</div></div>
+          <div class="stadium-card" data-full="./dresden.jpeg" data-title="Rudolf-Harbig-Stadion"><div class="card-shine"></div><img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion" loading="lazy"><div class="label">Rudolf-Harbig-Stadion</div></div>
+          <div class="stadium-card" data-full="./duesseldorf.jpeg" data-title="Merkur Spiel-Arena"><div class="card-shine"></div><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena" loading="lazy"><div class="label">Merkur Spiel-Arena</div></div>
+          <div class="stadium-card" data-full="./pyro.jpeg" data-title="Pyro"><div class="card-shine"></div><img src="./pyro.jpeg" alt="Pyro" loading="lazy"><div class="label">Pyro 🔥</div></div>
         </div>
       </div>
     </section>
 
-    <section class="slide thanks-slide" data-slide="11">
-      <video class="thanks-video" autoplay muted loop playsinline>
-        <source src="./hintergrund.mp4" type="video/mp4">
-      </video>
+    <section class="slide thanks-slide" data-slide="11" data-label="Danke">
+      <video class="thanks-video" autoplay muted loop playsinline><source src="./hintergrund.mp4" type="video/mp4"></video>
       <div class="thanks-overlay"></div>
       <div class="thanks-content">
         <h2 class="reveal">Vielen Dank<br>für eure Aufmerksamkeit</h2>
-        <p class="reveal">Danke fürs Zuhören.</p>
+        <p class="reveal">Danke fürs Zuhören. 🏟️</p>
       </div>
     </section>
+
   </div>
 
   <div class="nav-controls">
     <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
     <div class="slide-dots" id="dots"></div>
     <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span class="slide-label" id="slideLabel"></span>
     <span class="slide-counter" id="counter">1 / 11</span>
   </div>
 
   <div class="image-modal" id="imageModal">
     <div class="image-modal-content">
+      <div class="modal-counter" id="modalCounter"></div>
       <button class="image-modal-close" id="imageModalClose">&times;</button>
+      <button class="modal-nav" id="modalPrev">&#8249;</button>
+      <button class="modal-nav" id="modalNext">&#8250;</button>
       <img id="imageModalImg" src="" alt="">
       <div class="image-modal-caption" id="imageModalCaption"></div>
     </div>
   </div>
 
   <script>
-    let current = 1;
-    const slides = [...document.querySelectorAll('.slide')];
-    const total = slides.length;
-    const dots = document.getElementById('dots');
-    const counter = document.getElementById('counter');
+    // ── CUSTOM CURSOR ──
+    const cur=document.getElementById('cursor');
+    const ring=document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{
+      mx=e.clientX;my=e.clientY;
+      cur.style.left=mx+'px';cur.style.top=my+'px';
+    });
+    (function animRing(){
+      rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+      ring.style.left=rx+'px';ring.style.top=ry+'px';
+      requestAnimationFrame(animRing);
+    })();
 
-    for(let i = 1; i <= total; i++){
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === 1 ? ' active' : '');
-      d.onclick = () => goToSlide(i);
-      dots.appendChild(d);
+    // ── PARTICLES ──
+    const cvs=document.getElementById('particles');
+    const ctx=cvs.getContext('2d');
+    cvs.width=window.innerWidth;cvs.height=window.innerHeight;
+    window.addEventListener('resize',()=>{cvs.width=window.innerWidth;cvs.height=window.innerHeight});
+    const pts=Array.from({length:55},()=>({
+      x:Math.random()*cvs.width,y:Math.random()*cvs.height,
+      r:Math.random()*1.6+.4,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,
+      a:Math.random()*.5+.1
+    }));
+    (function drawPts(){
+      ctx.clearRect(0,0,cvs.width,cvs.height);
+      pts.forEach(p=>{
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0)p.x=cvs.width;if(p.x>cvs.width)p.x=0;
+        if(p.y<0)p.y=cvs.height;if(p.y>cvs.height)p.y=0;
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(192,57,43,${p.a})`;ctx.fill();
+      });
+      requestAnimationFrame(drawPts);
+    })();
+
+    // ── SPOTLIGHT ──
+    document.addEventListener('mousemove',e=>{
+      document.getElementById('spotlight').style.background=
+        `radial-gradient(circle 320px at ${e.clientX}px ${e.clientY}px,rgba(192,57,43,.07),transparent 70%)`;
+    });
+
+    // ── INTRO ──
+    const introBar=document.getElementById('introBar');
+    const introTitle=document.getElementById('introTitle');
+    const intro=document.getElementById('intro');
+    let pct=0;
+    const iv=setInterval(()=>{
+      pct+=1.4;
+      introBar.style.width=Math.min(pct,100)+'%';
+      if(pct>60)introTitle.classList.add('show');
+      if(pct>=100){clearInterval(iv);setTimeout(()=>intro.classList.add('gone'),300);}
+    },18);
+
+    // ── KB HINT ──
+    setTimeout(()=>document.getElementById('kb-hint').classList.add('gone'),4000);
+
+    // ── SLIDES ──
+    let current=1;
+    const slides=[...document.querySelectorAll('.slide')];
+    const total=slides.length;
+    const dotsWrap=document.getElementById('dots');
+    const counter=document.getElementById('counter');
+    const slideLabel=document.getElementById('slideLabel');
+    const progressBar=document.getElementById('progress-bar');
+
+    for(let i=1;i<=total;i++){
+      const d=document.createElement('div');
+      d.className='dot'+(i===1?' active':'');
+      d.onclick=()=>goToSlide(i);
+      dotsWrap.appendChild(d);
     }
 
     function animateSlide(slide){
-      slide.querySelectorAll('.reveal').forEach((el, i) => {
-        el.style.transition = 'none';
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(18px)';
+      slide.querySelectorAll('.reveal').forEach((el,i)=>{
+        el.style.transition='none';el.style.opacity='0';el.style.transform='translateY(20px)';
         el.offsetHeight;
-        el.style.transition = `opacity .42s ease ${i * 0.08}s, transform .42s ease ${i * 0.08}s`;
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
+        el.style.transition=`opacity .45s cubic-bezier(.16,1,.3,1) ${i*.07}s,transform .45s cubic-bezier(.16,1,.3,1) ${i*.07}s`;
+        el.style.opacity='1';el.style.transform='translateY(0)';
+      });
+      slide.querySelectorAll('.count-val').forEach(el=>{
+        const target=parseInt(el.dataset.target);
+        let val=0;const step=Math.ceil(target/55);
+        const t=setInterval(()=>{
+          val=Math.min(val+step,target);
+          el.textContent=val.toLocaleString('de-DE');
+          if(val>=target)clearInterval(t);
+        },22);
       });
     }
 
     function updateNav(){
-      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current));
-      counter.textContent = `${current} / ${total}`;
+      [...dotsWrap.children].forEach((d,i)=>d.classList.toggle('active',i+1===current));
+      progressBar.style.width=((current-1)/(total-1)*100)+'%';
+      slideLabel.textContent=document.querySelector(`.slide[data-slide="${current}"]`)?.dataset.label||'';
+      counter.textContent=`${current} / ${total}`;
     }
 
     function goToSlide(n){
-      document.querySelector('.slide.active')?.classList.remove('active');
-      const next = document.querySelector(`.slide[data-slide="${n}"]`);
+      if(n===current)return;
+      const dir=n>current?1:-1;
+      const old=document.querySelector('.slide.active');
+      if(old){old.classList.remove('active');old.classList.add('exit-left');setTimeout(()=>old.classList.remove('exit-left'),620);}
+      const next=document.querySelector(`.slide[data-slide="${n}"]`);
       if(next){
+        next.style.transform=`translateX(${dir>0?55:-55}px) scale(.982)`;next.style.opacity='0';
+        next.offsetHeight;next.style.transition='';
         next.classList.add('active');
         animateSlide(next);
-        current = n;
-        updateNav();
+        current=n;updateNav();
+        if(n===11)startConfetti();
       }
     }
 
     function changeSlide(dir){
-      let n = current + dir;
-      if(n < 1) n = total;
-      if(n > total) n = 1;
+      let n=current+dir;
+      if(n<1)n=total;if(n>total)n=1;
       goToSlide(n);
     }
 
-    document.addEventListener('keydown', e => {
-      if(e.key === 'ArrowRight' || e.key === ' '){
-        e.preventDefault();
-        changeSlide(1);
+    document.addEventListener('keydown',e=>{
+      const modalOpen=document.getElementById('imageModal').classList.contains('active');
+      if(modalOpen){
+        if(e.key==='ArrowRight')modalNext();
+        else if(e.key==='ArrowLeft')modalPrev();
+        else if(e.key==='Escape')closeImageModal();
+        return;
       }
-      if(e.key === 'ArrowLeft'){
-        e.preventDefault();
-        changeSlide(-1);
-      }
-      if(e.key === 'Escape'){
-        closeImageModal();
-      }
+      if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();changeSlide(1);}
+      else if(e.key==='ArrowLeft'){e.preventDefault();changeSlide(-1);}
     });
 
-    try{
-      animateSlide(document.querySelector('.slide.active'));
-    }catch(e){}
+    let tx=0;
+    document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+    document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50)changeSlide(d>0?1:-1);},{passive:true});
 
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('imageModalImg');
-    const modalCaption = document.getElementById('imageModalCaption');
-    const modalClose = document.getElementById('imageModalClose');
-    const galleryCards = document.querySelectorAll('.stadium-card');
+    animateSlide(document.querySelector('.slide.active'));
+    updateNav();
 
-    function openImageModal(src, title){
-      modalImg.src = src;
-      modalImg.alt = title;
-      modalCaption.textContent = title;
+    // ── 3D TILT ──
+    document.querySelectorAll('.stadium-card').forEach(card=>{
+      card.addEventListener('mousemove',e=>{
+        const r=card.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5;
+        const y=(e.clientY-r.top)/r.height-.5;
+        card.style.transform=`perspective(700px) rotateY(${x*16}deg) rotateX(${-y*14}deg) scale(1.04)`;
+        card.style.boxShadow=`${-x*18}px ${-y*18}px 40px rgba(0,0,0,.35)`;
+        const shine=card.querySelector('.card-shine');
+        if(shine)shine.style.background=`radial-gradient(circle at ${(x+.5)*100}% ${(y+.5)*100}%,rgba(255,255,255,.12),transparent 60%)`;
+      });
+      card.addEventListener('mouseleave',()=>{card.style.transform='';card.style.boxShadow='';});
+    });
+
+    // ── LIGHTBOX ──
+    const modal=document.getElementById('imageModal');
+    const modalImg=document.getElementById('imageModalImg');
+    const modalCaption=document.getElementById('imageModalCaption');
+    const modalCtr=document.getElementById('modalCounter');
+    const galleryCards=[...document.querySelectorAll('.stadium-card')];
+    let modalIdx=0;
+
+    function openModal(i){
+      modalIdx=i;
+      const c=galleryCards[i];
+      modalImg.src=c.dataset.full;modalImg.alt=c.dataset.title;
+      modalCaption.textContent=c.dataset.title;
+      modalCtr.textContent=`${i+1} / ${galleryCards.length}`;
       modal.classList.add('active');
     }
+    function closeImageModal(){modal.classList.remove('active');}
+    function modalNext(){modalIdx=(modalIdx+1)%galleryCards.length;openModal(modalIdx);}
+    function modalPrev(){modalIdx=(modalIdx-1+galleryCards.length)%galleryCards.length;openModal(modalIdx);}
 
-    function closeImageModal(){
-      modal.classList.remove('active');
+    galleryCards.forEach((c,i)=>c.addEventListener('click',()=>openModal(i)));
+    document.getElementById('imageModalClose').addEventListener('click',closeImageModal);
+    document.getElementById('modalNext').addEventListener('click',modalNext);
+    document.getElementById('modalPrev').addEventListener('click',modalPrev);
+    modal.addEventListener('click',e=>{if(e.target===modal)closeImageModal();});
+
+    // ── CONFETTI ──
+    const ccvs=document.getElementById('confetti-canvas');
+    const cctx=ccvs.getContext('2d');
+    ccvs.width=window.innerWidth;ccvs.height=window.innerHeight;
+    let confettiPieces=[],confettiActive=false;
+    const colors=['#c0392b','#e74c3c','#f39c12','#2ecc71','#3498db','#9b59b6','#e67e22','#fff'];
+
+    function startConfetti(){
+      if(confettiActive)return;confettiActive=true;
+      ccvs.classList.add('show');
+      ccvs.width=window.innerWidth;ccvs.height=window.innerHeight;
+      confettiPieces=Array.from({length:160},()=>({
+        x:Math.random()*ccvs.width,y:-20-Math.random()*100,
+        w:7+Math.random()*8,h:10+Math.random()*10,
+        color:colors[Math.floor(Math.random()*colors.length)],
+        vx:(Math.random()-.5)*2.5,vy:2.5+Math.random()*3.5,
+        rot:Math.random()*360,rotV:(Math.random()-.5)*6,a:1
+      }));
+      let frames=0;
+      (function draw(){
+        if(!confettiActive)return;
+        cctx.clearRect(0,0,ccvs.width,ccvs.height);
+        frames++;
+        confettiPieces.forEach(p=>{
+          p.x+=p.vx;p.y+=p.vy;p.rot+=p.rotV;
+          if(frames>140)p.a=Math.max(0,p.a-.008);
+          cctx.save();cctx.translate(p.x,p.y);cctx.rotate(p.rot*Math.PI/180);
+          cctx.globalAlpha=p.a;cctx.fillStyle=p.color;
+          cctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+          cctx.restore();
+        });
+        confettiPieces=confettiPieces.filter(p=>p.a>0);
+        if(confettiPieces.length===0){ccvs.classList.remove('show');confettiActive=false;return;}
+        requestAnimationFrame(draw);
+      })();
     }
-
-    galleryCards.forEach(card => {
-      card.addEventListener('click', () => {
-        openImageModal(card.dataset.full, card.dataset.title);
-      });
-    });
-
-    modalClose.addEventListener('click', closeImageModal);
-
-    modal.addEventListener('click', (e) => {
-      if(e.target === modal){
-        closeImageModal();
-      }
-    });
   </script>
 </body>
 </html>
