@@ -14,7 +14,6 @@
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;background:var(--bg);font-family:'Montserrat',sans-serif;color:var(--text);overflow:hidden}
 
-    /* PROGRESS */
     #progress{
       position:fixed;top:0;left:0;height:3px;width:0%;z-index:600;
       background:linear-gradient(90deg,#7b0000,var(--red),var(--red2),#ffb347);
@@ -22,17 +21,14 @@
       transition:width .5s cubic-bezier(.4,0,.2,1);
     }
 
-    /* GRAIN */
     body::after{
       content:'';position:fixed;inset:0;z-index:400;pointer-events:none;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       opacity:.5;mix-blend-mode:overlay;
     }
 
-    /* DECK */
     .deck{width:100vw;height:100vh;position:relative}
 
-    /* SLIDES */
     .slide{
       position:absolute;inset:0;opacity:0;pointer-events:none;overflow:hidden;
       transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);
@@ -40,7 +36,6 @@
     }
     .slide.active{opacity:1!important;transform:none!important;pointer-events:auto}
 
-    /* BG */
     .slide-bg{
       position:absolute;inset:0;z-index:0;
       background:
@@ -49,17 +44,15 @@
         linear-gradient(155deg,#0f0706 0%,#060404 55%,#0c0605 100%);
     }
 
-    /* ACCENT LINE */
     .accent-line{
       position:absolute;left:58px;top:0;bottom:0;width:2px;z-index:1;
       background:linear-gradient(to bottom,transparent 4%,var(--red) 25%,var(--red2) 75%,transparent 96%);
       box-shadow:0 0 22px 3px rgba(230,51,41,.55);
     }
 
-    /* CONTENT */
     .content{position:relative;z-index:2;width:100%;height:100%;padding:50px 66px 50px 88px}
 
-    /* ══ COVER ══ */
+    /* COVER */
     .cover-grid{display:grid;grid-template-columns:1fr 400px;height:100%;align-items:stretch}
     .cover-left{display:flex;flex-direction:column;justify-content:center;padding-right:54px}
     .eyebrow-row{
@@ -68,10 +61,7 @@
       color:var(--red2);margin-bottom:24px;
     }
     .eyebrow-row span{display:block;width:28px;height:2px;background:var(--red2);border-radius:2px}
-    .cover-h1{
-      font-size:82px;line-height:.86;font-weight:900;letter-spacing:-5px;
-      color:#fff;margin-bottom:30px;
-    }
+    .cover-h1{font-size:82px;line-height:.86;font-weight:900;letter-spacing:-5px;color:#fff;margin-bottom:30px}
     .cover-h1 em{
       font-style:italic;
       background:linear-gradient(100deg,var(--red) 0%,var(--red2) 50%,#ffb36b 100%);
@@ -82,8 +72,7 @@
     .tag{
       padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;
       letter-spacing:1.5px;text-transform:uppercase;
-      border:1px solid rgba(230,51,41,.35);color:var(--red2);
-      background:rgba(230,51,41,.07);
+      border:1px solid rgba(230,51,41,.35);color:var(--red2);background:rgba(230,51,41,.07);
       transition:background .2s,border-color .2s;
     }
     .tag:hover{background:rgba(230,51,41,.15);border-color:rgba(230,51,41,.6)}
@@ -92,15 +81,9 @@
     .cover-right::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(6,4,4,.7) 0%,transparent 45%)}
     .cover-right::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(6,4,4,.55) 0%,transparent 50%)}
 
-    /* ══ STADIUM SLIDES ══ */
-    .stad-grid{
-      display:grid;grid-template-columns:1fr 1fr;
-      gap:52px;height:100%;align-items:center;
-    }
-    .stad-img-wrap{
-      position:relative;height:calc(100vh - 110px);
-      overflow:hidden;border-radius:6px;
-    }
+    /* STADIUM */
+    .stad-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;height:100%;align-items:center}
+    .stad-img-wrap{position:relative;height:calc(100vh - 110px);overflow:hidden;border-radius:6px}
     .stad-img-wrap img{
       width:100%;height:100%;object-fit:cover;
       filter:brightness(.85) saturate(1.08);
@@ -110,164 +93,73 @@
     .slide.active .stad-img-wrap img{transform:scale(1)}
     .stad-img-wrap::after{
       content:'';position:absolute;inset:0;
-      background:
-        linear-gradient(to right,rgba(6,4,4,.6) 0%,transparent 50%),
-        linear-gradient(to top,rgba(6,4,4,.65) 0%,transparent 55%);
+      background:linear-gradient(to right,rgba(6,4,4,.6) 0%,transparent 50%),linear-gradient(to top,rgba(6,4,4,.65) 0%,transparent 55%);
     }
-    .stad-img-wrap::before{
-      content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-      box-shadow:inset 0 0 70px 0 rgba(180,15,15,.15);
-    }
-    /* red bottom bar */
+    .stad-img-wrap::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 70px 0 rgba(180,15,15,.15)}
     .stad-img-wrap .img-bar{
-      position:absolute;bottom:0;left:0;right:0;z-index:2;
-      height:3px;
+      position:absolute;bottom:0;left:0;right:0;z-index:2;height:3px;
       background:linear-gradient(90deg,var(--red),var(--red2),transparent);
       box-shadow:0 0 14px 2px rgba(230,51,41,.5);
     }
 
-    /* portrait = same layout as landscape, just narrower img col */
-    .portrait .stad-grid{grid-template-columns:1fr 1fr}
-
     .stad-text{display:flex;flex-direction:column;justify-content:center;gap:18px}
     .stad-num{
       font-size:130px;line-height:1;font-weight:900;letter-spacing:-8px;
-      color:transparent;
-      -webkit-text-stroke:1px rgba(230,51,41,.15);
+      color:transparent;-webkit-text-stroke:1px rgba(230,51,41,.15);
       user-select:none;margin-bottom:-28px;
-      transition:opacity .4s;
     }
-    .stad-eyebrow{
-      display:flex;align-items:center;gap:10px;
-      font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2);
-    }
+    .stad-eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2)}
     .stad-eyebrow span{display:block;width:22px;height:2px;background:var(--red2);border-radius:2px}
-    .stad-title{
-      font-size:48px;line-height:.93;font-weight:900;
-      letter-spacing:-2.5px;color:#fff;
-    }
+    .stad-title{font-size:48px;line-height:.93;font-weight:900;letter-spacing:-2.5px;color:#fff}
     .stad-divider{width:48px;height:2px;background:linear-gradient(90deg,var(--red),transparent);border-radius:2px}
     .stad-meta{display:flex;flex-direction:column;gap:9px}
-    .stad-row{
-      display:flex;align-items:center;gap:12px;
-      font-size:14px;font-weight:600;color:var(--muted);
-    }
+    .stad-row{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:var(--muted)}
     .stad-row strong{color:#fff;font-weight:800}
-    .stad-icon{
-      width:28px;height:28px;border-radius:50%;flex-shrink:0;
-      background:rgba(230,51,41,.12);border:1px solid rgba(230,51,41,.25);
-      display:flex;align-items:center;justify-content:center;font-size:12px;
-    }
-    .stad-desc{
-      font-size:15px;line-height:1.7;color:var(--muted);
-      max-width:470px;padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
+    .stad-icon{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:rgba(230,51,41,.12);border:1px solid rgba(230,51,41,.25);display:flex;align-items:center;justify-content:center;font-size:12px}
+    .stad-desc{font-size:15px;line-height:1.7;color:var(--muted);max-width:470px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
     .stad-badge{
       display:inline-flex;align-items:center;gap:8px;width:fit-content;
       padding:7px 18px;border-radius:999px;
       background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.28);
-      font-size:12px;font-weight:700;color:var(--red2);
-      transition:background .2s;
+      font-size:12px;font-weight:700;color:var(--red2);transition:background .2s;
     }
     .stad-badge:hover{background:rgba(230,51,41,.2)}
 
-    /* ══ OVERVIEW ══ */
+    /* OVERVIEW */
     .ov-wrap{display:flex;flex-direction:column;gap:20px;height:100%}
     .ov-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
     .ov-title{font-size:50px;font-weight:900;letter-spacing:-2.5px;color:#fff}
     .ov-chips{display:flex;gap:9px}
-    .ov-chip{
-      padding:6px 15px;border-radius:999px;
-      font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-      border:1px solid rgba(230,51,41,.35);color:var(--red2);background:rgba(230,51,41,.07);
-    }
+    .ov-chip{padding:6px 15px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(230,51,41,.35);color:var(--red2);background:rgba(230,51,41,.07)}
     .ov-sub{font-size:14px;color:var(--muted);margin-top:4px}
-    .ov-grid{
-      display:grid;grid-template-columns:repeat(4,1fr);
-      grid-template-rows:repeat(2,1fr);
-      gap:11px;flex:1;min-height:0;
-    }
-    .ov-card{
-      position:relative;border-radius:10px;overflow:hidden;cursor:pointer;
-      background:#0e0909;
-      box-shadow:0 4px 20px rgba(0,0,0,.4);
-      transition:transform .3s ease,box-shadow .3s ease;
-    }
+    .ov-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:11px;flex:1;min-height:0}
+    .ov-card{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;background:#0e0909;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:transform .3s ease,box-shadow .3s ease}
     .ov-card:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,.6),0 0 0 1px rgba(230,51,41,.3)}
-    .ov-card img{
-      width:100%;height:100%;object-fit:cover;display:block;
-      filter:brightness(.7) saturate(.85);
-      transition:filter .4s ease,transform .5s ease;
-      transform:scale(1.05);
-    }
+    .ov-card img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.7) saturate(.85);transition:filter .4s ease,transform .5s ease;transform:scale(1.05)}
     .ov-card:hover img{filter:brightness(1) saturate(1.1);transform:scale(1)}
-    .ov-card::after{
-      content:'';position:absolute;inset:0;
-      background:linear-gradient(to top,rgba(0,0,0,.88) 0%,transparent 55%);
-    }
-    .ov-card-label{
-      position:absolute;left:0;right:0;bottom:0;z-index:2;
-      padding:14px 15px 12px;
-      font-size:13px;font-weight:800;color:#fff;line-height:1.3;
-    }
+    .ov-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 0%,transparent 55%)}
+    .ov-card-label{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:14px 15px 12px;font-size:13px;font-weight:800;color:#fff;line-height:1.3}
     .ov-card-label small{display:block;font-size:10px;font-weight:500;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:.5px}
-    .ov-zoom{
-      position:absolute;top:10px;right:10px;z-index:2;
-      width:30px;height:30px;border-radius:50%;
-      background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12);
-      display:flex;align-items:center;justify-content:center;
-      font-size:12px;opacity:0;transition:opacity .3s,background .2s;
-    }
+    .ov-zoom{position:absolute;top:10px;right:10px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0;transition:opacity .3s}
     .ov-card:hover .ov-zoom{opacity:1}
-    .ov-card .ov-num{
-      position:absolute;top:10px;left:12px;z-index:2;
-      font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px;
-    }
+    .ov-num{position:absolute;top:10px;left:12px;z-index:2;font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px}
 
-    /* ══ LIGHTBOX ══ */
-    .lbox{
-      position:fixed;inset:0;z-index:800;
-      display:flex;align-items:center;justify-content:center;
-      background:rgba(0,0,0,.93);backdrop-filter:blur(14px);
-      opacity:0;pointer-events:none;transition:opacity .3s;
-    }
+    /* LIGHTBOX */
+    .lbox{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.93);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .3s}
     .lbox.open{opacity:1;pointer-events:auto}
-    .lbox-inner{
-      position:relative;
-      width:min(90vw,1340px);height:min(84vh,820px);
-      border-radius:14px;overflow:hidden;
-      background:#080505;
-      box-shadow:0 50px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05);
-    }
+    .lbox-inner{position:relative;width:min(90vw,1340px);height:min(84vh,820px);border-radius:14px;overflow:hidden;background:#080505;box-shadow:0 50px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05)}
     .lbox-inner img{width:100%;height:100%;object-fit:cover;display:block}
-    .lbox-caption{
-      position:absolute;left:0;right:0;bottom:0;
-      padding:28px 30px;
-      background:linear-gradient(to top,rgba(0,0,0,.96),transparent);
-    }
+    .lbox-caption{position:absolute;left:0;right:0;bottom:0;padding:28px 30px;background:linear-gradient(to top,rgba(0,0,0,.96),transparent)}
     .lbox-caption strong{display:block;font-size:22px;font-weight:800;color:#fff}
     .lbox-caption small{font-size:13px;font-weight:500;color:rgba(255,255,255,.45)}
     .lbox-count{position:absolute;top:18px;left:22px;font-size:12px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px}
-    .lbox-close{
-      position:absolute;top:14px;right:14px;
-      width:40px;height:40px;border:none;border-radius:50%;
-      background:rgba(0,0,0,.65);color:#fff;font-size:22px;
-      cursor:pointer;z-index:2;transition:background .2s;
-    }
+    .lbox-close{position:absolute;top:14px;right:14px;width:40px;height:40px;border:none;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:22px;cursor:pointer;z-index:2;transition:background .2s}
     .lbox-close:hover{background:rgba(230,51,41,.75)}
-    .lbox-arr{
-      position:absolute;top:50%;transform:translateY(-50%);
-      width:50px;height:50px;border:none;border-radius:50%;
-      background:rgba(0,0,0,.6);color:#fff;font-size:28px;
-      cursor:pointer;z-index:2;
-      transition:background .2s,transform .2s;
-      display:flex;align-items:center;justify-content:center;
-    }
+    .lbox-arr{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border:none;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:28px;cursor:pointer;z-index:2;transition:background .2s,transform .2s;display:flex;align-items:center;justify-content:center}
     .lbox-arr:hover{background:rgba(230,51,41,.75);transform:translateY(-50%) scale(1.1)}
     #lPrev{left:14px}#lNext{right:14px}
 
-    /* ══ DANKE ══ */
+    /* DANKE */
     .thanks-slide{position:absolute;inset:0;overflow:hidden;background:#030202}
     .thanks-slide .slide-bg{display:none}
     .thanks-slide .accent-line{display:none}
@@ -276,10 +168,13 @@
     .b2{width:450px;height:450px;background:rgba(190,25,10,.14);bottom:-100px;right:-100px;animation-delay:2s}
     .b3{width:340px;height:340px;background:rgba(90,4,4,.18);top:35%;left:55%;animation-delay:4s}
     @keyframes pulse{from{opacity:.6;transform:scale(1)}to{opacity:1;transform:scale(1.1)}}
+
+    /* ── VIDEO FRAME — größer ── */
     .thanks-vid-frame{
       position:absolute;top:50%;left:50%;
       transform:translate(-50%,-50%);
-      width:66%;height:66%;
+      width:82%;
+      height:78%;
       border-radius:22px;overflow:hidden;
       box-shadow:
         0 0 0 1px rgba(230,51,41,.2),
@@ -290,56 +185,25 @@
     }
     .thanks-vid-frame video{width:100%;height:100%;object-fit:cover;display:block}
     .thanks-vid-frame::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.2);border-radius:22px}
-    .thanks-content{
-      position:relative;z-index:2;width:100%;height:100%;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      text-align:center;padding:40px;
-    }
-    .thanks-eyebrow{
-      font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;
-      color:var(--red2);margin-bottom:16px;
-      display:flex;align-items:center;gap:10px;
-    }
+
+    .thanks-content{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
+    .thanks-eyebrow{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--red2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
     .thanks-eyebrow span{display:block;width:24px;height:2px;background:var(--red2);border-radius:2px}
-    .thanks-h2{
-      font-size:88px;line-height:.85;font-weight:900;letter-spacing:-6px;
-      color:#fff;text-shadow:0 10px 50px rgba(0,0,0,.7);margin-bottom:18px;
-    }
-    .thanks-h2 em{
-      font-style:italic;
-      background:linear-gradient(100deg,var(--red),var(--red2),#ffb36b);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-    }
+    .thanks-h2{font-size:88px;line-height:.85;font-weight:900;letter-spacing:-6px;color:#fff;text-shadow:0 10px 50px rgba(0,0,0,.7);margin-bottom:18px}
+    .thanks-h2 em{font-style:italic;background:linear-gradient(100deg,var(--red),var(--red2),#ffb36b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .thanks-sub{font-size:17px;color:var(--muted);font-weight:500}
 
-    /* CONFETTI */
     #confetti{position:fixed;inset:0;pointer-events:none;z-index:10;display:none}
 
     /* NAV */
-    .nav{
-      position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
-      z-index:500;display:flex;align-items:center;gap:12px;
-      background:rgba(12,8,8,.85);border:1px solid rgba(255,255,255,.07);
-      backdrop-filter:blur(18px);padding:10px 20px;border-radius:999px;
-      box-shadow:0 10px 40px rgba(0,0,0,.6),0 0 0 1px rgba(230,51,41,.08);
-    }
-    .nav-btn{
-      width:34px;height:34px;border:none;border-radius:50%;
-      background:rgba(255,255,255,.07);color:#fff;font-size:20px;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;
-      transition:background .2s,transform .15s;
-    }
+    .nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:500;display:flex;align-items:center;gap:12px;background:rgba(12,8,8,.85);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px);padding:10px 20px;border-radius:999px;box-shadow:0 10px 40px rgba(0,0,0,.6),0 0 0 1px rgba(230,51,41,.08)}
+    .nav-btn{width:34px;height:34px;border:none;border-radius:50%;background:rgba(255,255,255,.07);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s}
     .nav-btn:hover{background:rgba(230,51,41,.65);transform:scale(1.12)}
     .dots{display:flex;gap:7px;align-items:center}
-    .dot{
-      width:7px;height:7px;border-radius:50%;
-      background:rgba(255,255,255,.18);cursor:pointer;
-      transition:background .25s,width .25s,border-radius .25s;
-    }
+    .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:background .25s,width .25s,border-radius .25s}
     .dot.on{background:#fff;width:20px;border-radius:4px}
     .nav-count{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);min-width:32px;text-align:center;letter-spacing:1px}
 
-    /* REVEAL */
     .r{opacity:0;transform:translateY(24px)}
   </style>
 </head>
@@ -369,8 +233,8 @@
     </div>
   </section>
 
-  <!-- SLIDE 2 — Berlin Portrait -->
-  <section class="slide portrait" data-slide="2">
+  <!-- SLIDE 2 -->
+  <section class="slide" data-slide="2">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
       <div class="stad-grid">
@@ -391,7 +255,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 3 — Berlin 2 -->
+  <!-- SLIDE 3 -->
   <section class="slide" data-slide="3">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -413,7 +277,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 4 — Volkspark -->
+  <!-- SLIDE 4 -->
   <section class="slide" data-slide="4">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -435,7 +299,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 5 — Millerntor -->
+  <!-- SLIDE 5 -->
   <section class="slide" data-slide="5">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -457,7 +321,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 6 — Gladbach -->
+  <!-- SLIDE 6 -->
   <section class="slide" data-slide="6">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -479,7 +343,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 7 — Gelsenkirchen -->
+  <!-- SLIDE 7 -->
   <section class="slide" data-slide="7">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -501,7 +365,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 8 — Dresden -->
+  <!-- SLIDE 8 -->
   <section class="slide" data-slide="8">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -523,12 +387,12 @@
     </div>
   </section>
 
-  <!-- SLIDE 9 — Düsseldorf (gleiche Layout wie Slide 8) -->
+  <!-- SLIDE 9 -->
   <section class="slide" data-slide="9">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
       <div class="stad-grid">
-        <div class="stad-img-wrap r"><img src="fortuna.JPEG" alt="Merkur Spiel-Arena" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-img-wrap r"><img src="fortuna.JPEG" alt="Düsseldorf" loading="lazy"><div class="img-bar"></div></div>
         <div class="stad-text">
           <div class="stad-num r">08</div>
           <div class="stad-eyebrow r"><span></span>Düsseldorf</div>
@@ -545,7 +409,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 10 — OVERVIEW -->
+  <!-- SLIDE 10 -->
   <section class="slide" data-slide="10">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -562,52 +426,20 @@
           </div>
         </div>
         <div class="ov-grid r">
-          <div class="ov-card" data-full="berlin2.jpeg" data-title="Olympiastadion Berlin" data-sub="Berlin · 2023 & 2024">
-            <img src="berlin2.jpeg" alt="Berlin" loading="lazy">
-            <div class="ov-num">01</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Olympiastadion Berlin<small>Berlin · 2023 & 2024</small></div>
-          </div>
-          <div class="ov-card" data-full="volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg" data-sub="Hamburg · Mai 2024">
-            <img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy">
-            <div class="ov-num">02</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Volksparkstadion<small>Hamburg · Mai 2024</small></div>
-          </div>
-          <div class="ov-card" data-full="millerntor1.jpeg" data-title="Millerntor-Stadion" data-sub="Hamburg · Mai 2024">
-            <img src="millerntor1.jpeg" alt="Millerntor" loading="lazy">
-            <div class="ov-num">03</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Millerntor-Stadion<small>Hamburg · Mai 2024</small></div>
-          </div>
-          <div class="ov-card" data-full="gladbach.jpeg" data-title="Borussia-Park" data-sub="Mönchengladbach · Sep 2024">
-            <img src="gladbach.jpeg" alt="Gladbach" loading="lazy">
-            <div class="ov-num">04</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Borussia-Park<small>Mönchengladbach · Sep 2024</small></div>
-          </div>
-          <div class="ov-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena" data-sub="Gelsenkirchen · Dez 2024">
-            <img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy">
-            <div class="ov-num">05</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Veltins-Arena<small>Gelsenkirchen · Dez 2024</small></div>
-          </div>
-          <div class="ov-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion" data-sub="Dresden · Aug 2023">
-            <img src="dresden.jpeg" alt="Dresden" loading="lazy">
-            <div class="ov-num">06</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Rudolf-Harbig-Stadion<small>Dresden · Aug 2023</small></div>
-          </div>
-          <div class="ov-card" data-full="fortuna.JPEG" data-title="Merkur Spiel-Arena" data-sub="Düsseldorf · Dez 2025">
-            <img src="fortuna.JPEG" alt="Düsseldorf" loading="lazy">
-            <div class="ov-num">07</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Merkur Spiel-Arena<small>Düsseldorf · Dez 2025</small></div>
-          </div>
-          <div class="ov-card" data-full="pyro.jpeg" data-title="Pyro" data-sub="Atmosphäre pur">
-            <img src="pyro.jpeg" alt="Pyro" loading="lazy">
-            <div class="ov-num">08</div><div class="ov-zoom">🔍</div>
-            <div class="ov-card-label">Pyro<small>Atmosphäre pur</small></div>
-          </div>
+          <div class="ov-card" data-full="berlin2.jpeg" data-title="Olympiastadion Berlin" data-sub="Berlin · 2023 & 2024"><img src="berlin2.jpeg" alt="Berlin" loading="lazy"><div class="ov-num">01</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Olympiastadion Berlin<small>Berlin · 2023 & 2024</small></div></div>
+          <div class="ov-card" data-full="volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg" data-sub="Hamburg · Mai 2024"><img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy"><div class="ov-num">02</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Volksparkstadion<small>Hamburg · Mai 2024</small></div></div>
+          <div class="ov-card" data-full="millerntor1.jpeg" data-title="Millerntor-Stadion" data-sub="Hamburg · Mai 2024"><img src="millerntor1.jpeg" alt="Millerntor" loading="lazy"><div class="ov-num">03</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Millerntor-Stadion<small>Hamburg · Mai 2024</small></div></div>
+          <div class="ov-card" data-full="gladbach.jpeg" data-title="Borussia-Park" data-sub="Mönchengladbach · Sep 2024"><img src="gladbach.jpeg" alt="Gladbach" loading="lazy"><div class="ov-num">04</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Borussia-Park<small>Mönchengladbach · Sep 2024</small></div></div>
+          <div class="ov-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena" data-sub="Gelsenkirchen · Dez 2024"><img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="ov-num">05</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Veltins-Arena<small>Gelsenkirchen · Dez 2024</small></div></div>
+          <div class="ov-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion" data-sub="Dresden · Aug 2023"><img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="ov-num">06</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Rudolf-Harbig-Stadion<small>Dresden · Aug 2023</small></div></div>
+          <div class="ov-card" data-full="fortuna.JPEG" data-title="Merkur Spiel-Arena" data-sub="Düsseldorf · Dez 2025"><img src="fortuna.JPEG" alt="Düsseldorf" loading="lazy"><div class="ov-num">07</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Merkur Spiel-Arena<small>Düsseldorf · Dez 2025</small></div></div>
+          <div class="ov-card" data-full="pyro.jpeg" data-title="Pyro" data-sub="Atmosphäre pur"><img src="pyro.jpeg" alt="Pyro" loading="lazy"><div class="ov-num">08</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Pyro<small>Atmosphäre pur</small></div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 11 — DANKE -->
+  <!-- SLIDE 11 -->
   <section class="slide thanks-slide" data-slide="11">
     <div class="bokeh b1"></div><div class="bokeh b2"></div><div class="bokeh b3"></div>
     <div class="thanks-vid-frame">
@@ -622,7 +454,6 @@
 
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <button class="nav-btn" id="btnPrev">&#8249;</button>
   <div class="dots" id="dots"></div>
@@ -630,7 +461,6 @@
   <span class="nav-count" id="counter">01/11</span>
 </div>
 
-<!-- LIGHTBOX -->
 <div class="lbox" id="lbox">
   <div class="lbox-inner">
     <span class="lbox-count" id="lCount"></span>
@@ -658,7 +488,7 @@
     })(i);
   }
 
-  function pad(n){return n<10?'0'+n:n}
+  function pad(n){return n<10?'0'+n:String(n)}
 
   function reveal(slide){
     slide.querySelectorAll('.r').forEach(function(el,i){
@@ -727,7 +557,6 @@
   reveal(document.querySelector('.slide.active'));
   updateUI();
 
-  // LIGHTBOX
   var lbox=document.getElementById('lbox');
   var lImg=document.getElementById('lImg');
   var lTitle=document.getElementById('lTitle');
@@ -736,14 +565,7 @@
   var cards=document.querySelectorAll('.ov-card');
   var li=0;
 
-  function lOpen(i){
-    li=i;
-    lImg.src=cards[i].dataset.full;
-    lTitle.textContent=cards[i].dataset.title;
-    lSub.textContent=cards[i].dataset.sub||'';
-    lCount.textContent=pad(i+1)+' / '+pad(cards.length);
-    lbox.classList.add('open');
-  }
+  function lOpen(i){li=i;lImg.src=cards[i].dataset.full;lTitle.textContent=cards[i].dataset.title;lSub.textContent=cards[i].dataset.sub||'';lCount.textContent=pad(i+1)+' / '+pad(cards.length);lbox.classList.add('open');}
   function lClose(){lbox.classList.remove('open');}
   function lStep(d){li=(li+d+cards.length)%cards.length;lOpen(li);}
 
@@ -753,7 +575,6 @@
   document.getElementById('lPrev').onclick=function(){lStep(-1);};
   lbox.onclick=function(e){if(e.target===lbox)lClose();};
 
-  // CONFETTI
   var cv=document.getElementById('confetti');
   var ctx=cv.getContext('2d');
   var running=false;
@@ -764,14 +585,7 @@
     cv.width=innerWidth;cv.height=innerHeight;cv.style.display='block';
     var ps=[];
     for(var i=0;i<220;i++){
-      ps.push({
-        x:Math.random()*cv.width,y:-30-Math.random()*140,
-        w:5+Math.random()*10,h:8+Math.random()*14,
-        c:pal[~~(Math.random()*pal.length)],
-        vx:(Math.random()-.5)*3.5,vy:3+Math.random()*4.5,
-        rot:Math.random()*360,rv:(Math.random()-.5)*8,a:1,
-        shape:Math.random()>.5?'rect':'circle'
-      });
+      ps.push({x:Math.random()*cv.width,y:-30-Math.random()*140,w:5+Math.random()*10,h:8+Math.random()*14,c:pal[~~(Math.random()*pal.length)],vx:(Math.random()-.5)*3.5,vy:3+Math.random()*4.5,rot:Math.random()*360,rv:(Math.random()-.5)*8,a:1,shape:Math.random()>.5?'rect':'circle'});
     }
     var f=0;
     (function draw(){
