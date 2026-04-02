@@ -235,16 +235,10 @@
       line-height:1.5;
     }
 
-    .stadium-grid{
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
-      gap:16px;
+    .carousel-wrap{
+      position:relative;
       flex:1;
       min-height:0;
-    }
-
-    .stadium-card{
-      position:relative;
       border-radius:8px;
       overflow:hidden;
       background:rgba(255,255,255,.04);
@@ -252,7 +246,20 @@
       box-shadow:0 8px 24px rgba(0,0,0,.18);
     }
 
-    .stadium-card img{
+    .carousel-slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity .7s ease;
+      pointer-events:none;
+    }
+
+    .carousel-slide.active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .carousel-slide img{
       width:100%;
       height:100%;
       object-fit:cover;
@@ -260,17 +267,39 @@
       filter:brightness(.82);
     }
 
-    .stadium-card .label{
+    .carousel-label{
       position:absolute;
       left:0;
       right:0;
       bottom:0;
-      padding:12px 14px;
-      font-size:14px;
+      padding:18px 20px;
+      font-size:20px;
       font-weight:800;
       background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.15));
       color:#fff;
       letter-spacing:.2px;
+    }
+
+    .carousel-dots{
+      position:absolute;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      display:flex;
+      gap:8px;
+      z-index:4;
+    }
+
+    .carousel-dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:rgba(255,255,255,.28);
+      cursor:pointer;
+    }
+
+    .carousel-dot.active{
+      background:#fff;
     }
 
     .thanks-slide{
@@ -526,17 +555,51 @@
       <div class="content">
         <div class="overview-head reveal">
           <h2>Alle besuchten Stadien</h2>
-          <p>Eine Übersicht meiner Stadionreisen auf einen Blick.</p>
+          <p>Eine Übersicht meiner Stadionreisen als Karussell.</p>
         </div>
-        <div class="stadium-grid reveal">
-          <div class="stadium-card"><img src="./berlin2.jpeg" alt="Olympiastadion Berlin"><div class="label">Olympiastadion Berlin</div></div>
-          <div class="stadium-card"><img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg"><div class="label">Volksparkstadion Hamburg</div></div>
-          <div class="stadium-card"><img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg"><div class="label">Millerntor-Stadion</div></div>
-          <div class="stadium-card"><img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach"><div class="label">Borussia-Park</div></div>
-          <div class="stadium-card"><img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen"><div class="label">Veltins-Arena</div></div>
-          <div class="stadium-card"><img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden"><div class="label">Rudolf-Harbig-Stadion</div></div>
-          <div class="stadium-card"><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf"><div class="label">Merkur Spiel-Arena</div></div>
-          <div class="stadium-card"><img src="./titel.jpeg" alt="Titelbild Stadionreisen"><div class="label">Stadionreisen</div></div>
+
+        <div class="carousel-wrap reveal" id="stadiumCarousel">
+          <div class="carousel-slide active">
+            <img src="./berlin2.jpeg" alt="Olympiastadion Berlin">
+            <div class="carousel-label">Olympiastadion Berlin</div>
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg">
+            <div class="carousel-label">Volksparkstadion Hamburg</div>
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg">
+            <div class="carousel-label">Millerntor-Stadion</div>
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach">
+            <div class="carousel-label">Borussia-Park</div>
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen">
+            <div class="carousel-label">Veltins-Arena</div>
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden">
+            <div class="carousel-label">Rudolf-Harbig-Stadion</div>
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf">
+            <div class="carousel-label">Merkur Spiel-Arena</div>
+          </div>
+
+          <div class="carousel-slide">
+            <img src="./pyro.jpeg" alt="Pyro im Stadion">
+            <div class="carousel-label">Pyro</div>
+          </div>
+
+          <div class="carousel-dots" id="carouselDots"></div>
         </div>
       </div>
     </section>
@@ -623,6 +686,41 @@
     try{
       animateSlide(document.querySelector('.slide.active'));
     }catch(e){}
+
+    const carousel = document.getElementById('stadiumCarousel');
+    const carouselSlides = carousel ? [...carousel.querySelectorAll('.carousel-slide')] : [];
+    const carouselDotsWrap = document.getElementById('carouselDots');
+    let carouselIndex = 0;
+
+    function updateCarousel(){
+      carouselSlides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === carouselIndex);
+      });
+
+      if(carouselDotsWrap){
+        [...carouselDotsWrap.children].forEach((dot, index) => {
+          dot.classList.toggle('active', index === carouselIndex);
+        });
+      }
+    }
+
+    if(carouselSlides.length && carouselDotsWrap){
+      carouselSlides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+        dot.onclick = () => {
+          carouselIndex = index;
+          updateCarousel();
+        };
+        carouselDotsWrap.appendChild(dot);
+      });
+
+      setInterval(() => {
+        carouselIndex = (carouselIndex + 1) % carouselSlides.length;
+        updateCarousel();
+      }, 5000);
+    }
   </script>
 </body>
 </html>
+</query>
