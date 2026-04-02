@@ -22,6 +22,7 @@
 
     .content{position:relative;z-index:2;width:100%;height:100%;padding:56px 62px 46px}
 
+    /* COVER */
     .cover{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:stretch;height:100%}
     .cover-text{padding:34px 10px;display:flex;flex-direction:column;justify-content:center}
     .eyebrow{font-size:17px;line-height:1.45;color:var(--muted);margin:0 0 22px;font-weight:500}
@@ -30,10 +31,10 @@
     .cover-image{display:flex;align-items:stretch;justify-content:flex-end;overflow:hidden}
     .cover-image img{width:100%;height:100%;object-fit:cover}
 
+    /* STANDARD STADIUM SLIDES (landscape) */
     .stadium-slide .content{
       display:grid;
       grid-template-columns:1fr 1fr;
-      grid-template-rows:1fr;
       gap:48px;
       height:100%;
       align-items:center;
@@ -60,11 +61,31 @@
       justify-content:center;
       gap:14px;
     }
+
+    /* PORTRAIT SLIDES (Folie 2 & 9) — schmales Handy-Hochformat */
+    .stadium-slide.portrait .content{
+      grid-template-columns:320px 1fr;
+      gap:56px;
+    }
+    .stadium-slide.portrait .img-col{
+      height:100%;
+      align-items:center;
+    }
+    .stadium-slide.portrait .img-col img{
+      width:100%;
+      height:calc(100vh - 120px);
+      max-height:calc(100vh - 120px);
+      object-fit:cover;
+      border-radius:10px;
+      box-shadow:0 12px 40px rgba(0,0,0,.45);
+    }
+
     .title{font-size:38px;line-height:1.05;font-weight:900;letter-spacing:-1.2px;color:#efe4e5;margin:0}
     .visit,.capacity{font-size:18px;line-height:1.4;color:#f2e8e6;font-weight:700;margin:0}
     .visit span,.capacity span{font-weight:500;color:#efe7e3}
     .desc{font-size:17px;line-height:1.6;color:var(--muted);margin:0;max-width:520px}
 
+    /* OVERVIEW */
     .overview-slide .content{display:flex;flex-direction:column;gap:20px}
     .overview-head h2{font-size:42px;margin:0 0 8px;font-weight:900;letter-spacing:-1.3px;color:#efe4e5}
     .overview-head p{margin:0;color:var(--muted);font-size:18px;line-height:1.5;margin-top:6px}
@@ -78,6 +99,7 @@
     .stadium-card:hover img{filter:brightness(.95)}
     .stadium-card .label{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;font-size:13px;font-weight:800;background:linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,.1));color:#fff}
 
+    /* MODAL */
     .image-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:999}
     .image-modal.active{opacity:1;pointer-events:auto}
     .image-modal-content{position:relative;width:min(92vw,1200px);height:min(86vh,760px);border-radius:12px;overflow:hidden;background:#111}
@@ -90,6 +112,7 @@
     #mNext{right:14px}
     .modal-count{position:absolute;top:16px;left:20px;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);z-index:2}
 
+    /* DANKE */
     .thanks-slide{position:absolute;inset:0;overflow:hidden}
     .thanks-slide::before{display:none}
     .thanks-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
@@ -100,6 +123,7 @@
 
     #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:5;display:none}
 
+    /* NAV */
     .nav-controls{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:100;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px);padding:10px 18px;border-radius:999px}
     .nav-btn{width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:22px;cursor:pointer;transition:background .2s,transform .15s}
     .nav-btn:hover{background:rgba(192,57,43,.55);transform:scale(1.1)}
@@ -135,8 +159,8 @@
     </div>
   </section>
 
-  <!-- SLIDE 2 -->
-  <section class="slide stadium-slide" data-slide="2">
+  <!-- SLIDE 2 — PORTRAIT -->
+  <section class="slide stadium-slide portrait" data-slide="2">
     <div class="content">
       <div class="img-col reveal">
         <img src="berlin2.jpeg" alt="Olympiastadion Berlin" loading="lazy">
@@ -240,8 +264,8 @@
     </div>
   </section>
 
-  <!-- SLIDE 9 -->
-  <section class="slide stadium-slide" data-slide="9">
+  <!-- SLIDE 9 — PORTRAIT -->
+  <section class="slide stadium-slide portrait" data-slide="9">
     <div class="content">
       <div class="img-col reveal">
         <img src="duesseldorf.jpeg" alt="Merkur Spiel-Arena" loading="lazy">
