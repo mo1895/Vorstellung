@@ -30,18 +30,40 @@
     .cover-image{display:flex;align-items:stretch;justify-content:flex-end;overflow:hidden}
     .cover-image img{width:100%;height:100%;object-fit:cover}
 
-    .stadium-layout{display:grid;grid-template-columns:430px 1fr;grid-template-rows:auto 1fr;column-gap:54px;row-gap:18px;height:100%}
-    .photo-wrap{grid-column:1;grid-row:1;display:flex;align-items:flex-start;padding-top:8px}
-    .photo-wrap img{width:100%;object-fit:cover;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.22)}
-    .title{font-size:36px;line-height:1.02;margin:0 0 10px;font-weight:900;letter-spacing:-1.2px;color:#efe4e5}
-    .capacity,.visit{font-size:18px;line-height:1.3;margin:0 0 10px;color:#f2e8e6;font-weight:700}
-    .capacity span,.visit span{font-weight:500;color:#efe7e3}
-    .desc{font-size:17px;line-height:1.5;margin:0;color:var(--muted);max-width:520px}
-    .bottom-copy{grid-column:1/span 2;grid-row:2;align-self:start;padding-top:10px}
-    .bottom-copy .title{font-size:38px;margin-bottom:14px}
-    .bottom-copy .desc{max-width:1100px}
-
-    .wide-photo{width:100%;height:520px;object-fit:cover;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.22);margin-bottom:24px;display:block}
+    .stadium-slide .content{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      grid-template-rows:1fr;
+      gap:48px;
+      height:100%;
+      align-items:center;
+    }
+    .stadium-slide .img-col{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .stadium-slide .img-col img{
+      width:100%;
+      height:100%;
+      max-height:calc(100vh - 140px);
+      object-fit:cover;
+      border-radius:6px;
+      box-shadow:0 10px 32px rgba(0,0,0,.35);
+      display:block;
+    }
+    .stadium-slide .text-col{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:14px;
+    }
+    .title{font-size:38px;line-height:1.05;font-weight:900;letter-spacing:-1.2px;color:#efe4e5;margin:0}
+    .visit,.capacity{font-size:18px;line-height:1.4;color:#f2e8e6;font-weight:700;margin:0}
+    .visit span,.capacity span{font-weight:500;color:#efe7e3}
+    .desc{font-size:17px;line-height:1.6;color:var(--muted);margin:0;max-width:520px}
 
     .overview-slide .content{display:flex;flex-direction:column;gap:20px}
     .overview-head h2{font-size:42px;margin:0 0 8px;font-weight:900;letter-spacing:-1.3px;color:#efe4e5}
@@ -114,114 +136,121 @@
   </section>
 
   <!-- SLIDE 2 -->
-  <section class="slide" data-slide="2">
-    <div class="content stadium-layout">
-      <div class="photo-wrap reveal">
-        <img src="berlin.jpeg" alt="Olympiastadion Berlin" style="height:580px" loading="lazy">
+  <section class="slide stadium-slide" data-slide="2">
+    <div class="content">
+      <div class="img-col reveal">
+        <img src="berlin2.jpeg" alt="Olympiastadion Berlin" loading="lazy">
       </div>
-      <div></div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Olympiastadion Berlin</h2>
-        <p class="visit">Besucht: <span>03 Oktober 2023</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>74.475 Zuschauer</span></p>
-        <p class="desc">Das Olympiastadion Berlin ist eines der gr&ouml;&szlig;ten Stadien Deutschlands und wurde 1936 f&uuml;r die Olympischen Spiele erbaut. Heimat von Hertha BSC und Austragungsort internationaler Gro&szlig;veranstaltungen.</p>
+      <div class="text-col">
+        <h2 class="title reveal">Olympiastadion Berlin</h2>
+        <p class="visit reveal">Besucht: <span>03 Oktober 2023</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>74.475 Zuschauer</span></p>
+        <p class="desc reveal">Das Olympiastadion Berlin ist eines der gr&ouml;&szlig;ten Stadien Deutschlands und wurde 1936 f&uuml;r die Olympischen Spiele erbaut. Heimat von Hertha BSC und Austragungsort internationaler Gro&szlig;veranstaltungen.</p>
       </div>
     </div>
   </section>
 
   <!-- SLIDE 3 -->
-  <section class="slide" data-slide="3">
+  <section class="slide stadium-slide" data-slide="3">
     <div class="content">
-      <img src="berlin2.jpeg" alt="Olympiastadion Berlin" class="wide-photo reveal" loading="lazy">
-      <div class="bottom-copy reveal" style="grid-column:unset">
-        <h2 class="title">Olympiastadion Berlin</h2>
-        <p class="visit">Besucht: <span>14 Februar 2024</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>74.475 Zuschauer</span></p>
-        <p class="desc">Erbaut 1936 f&uuml;r die Olympischen Spiele &ndash; eines der bedeutendsten Stadien Deutschlands und Europa.</p>
+      <div class="img-col reveal">
+        <img src="berlin2.jpeg" alt="Olympiastadion Berlin" loading="lazy">
+      </div>
+      <div class="text-col">
+        <h2 class="title reveal">Olympiastadion Berlin</h2>
+        <p class="visit reveal">Besucht: <span>14 Februar 2024</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>74.475 Zuschauer</span></p>
+        <p class="desc reveal">Erbaut 1936 f&uuml;r die Olympischen Spiele &ndash; eines der bedeutendsten Stadien Deutschlands und Europas.</p>
       </div>
     </div>
   </section>
 
   <!-- SLIDE 4 -->
-  <section class="slide" data-slide="4">
+  <section class="slide stadium-slide" data-slide="4">
     <div class="content">
-      <img src="volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" class="wide-photo reveal" loading="lazy">
-      <div class="bottom-copy reveal" style="grid-column:unset">
-        <h2 class="title">Volksparkstadion Hamburg</h2>
-        <p class="visit">Besucht: <span>19 Mai 2024</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>57.000 Zuschauer</span></p>
-        <p class="desc">Heimat des Hamburger SV &ndash; eines der traditionsreichsten Stadien Deutschlands. Er&ouml;ffnet 1953.</p>
+      <div class="img-col reveal">
+        <img src="volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" loading="lazy">
+      </div>
+      <div class="text-col">
+        <h2 class="title reveal">Volksparkstadion Hamburg</h2>
+        <p class="visit reveal">Besucht: <span>19 Mai 2024</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>57.000 Zuschauer</span></p>
+        <p class="desc reveal">Heimat des Hamburger SV &ndash; eines der traditionsreichsten Stadien Deutschlands. Er&ouml;ffnet 1953.</p>
       </div>
     </div>
   </section>
 
   <!-- SLIDE 5 -->
-  <section class="slide" data-slide="5">
-    <div class="content stadium-layout">
-      <div class="photo-wrap reveal">
-        <img src="millerntor1.jpeg" alt="Millerntor-Stadion" style="height:580px" loading="lazy">
+  <section class="slide stadium-slide" data-slide="5">
+    <div class="content">
+      <div class="img-col reveal">
+        <img src="millerntor1.jpeg" alt="Millerntor-Stadion" loading="lazy">
       </div>
-      <div></div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Millerntor-Stadion Hamburg</h2>
-        <p class="visit">Besucht: <span>20 Mai 2024</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>29.546 Zuschauer</span></p>
-        <p class="desc">Heimat des FC St. Pauli &ndash; klein aber mit unglaublicher Atmosph&auml;re. Eines der charaktervollsten Stadien Deutschlands.</p>
+      <div class="text-col">
+        <h2 class="title reveal">Millerntor-Stadion Hamburg</h2>
+        <p class="visit reveal">Besucht: <span>20 Mai 2024</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>29.546 Zuschauer</span></p>
+        <p class="desc reveal">Heimat des FC St. Pauli &ndash; klein aber mit unglaublicher Atmosph&auml;re. Eines der charaktervollsten Stadien Deutschlands.</p>
       </div>
     </div>
   </section>
 
   <!-- SLIDE 6 -->
-  <section class="slide" data-slide="6">
+  <section class="slide stadium-slide" data-slide="6">
     <div class="content">
-      <img src="gladbach.jpeg" alt="Borussia-Park" class="wide-photo reveal" loading="lazy">
-      <div class="bottom-copy reveal" style="grid-column:unset">
-        <h2 class="title">Borussia-Park M&ouml;nchengladbach</h2>
-        <p class="visit">Besucht: <span>14 September 2024</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>54.067 Zuschauer</span></p>
-        <p class="desc">Heimat von Borussia M&ouml;nchengladbach &ndash; eines der modernsten Stadien Deutschlands. Er&ouml;ffnet 2004.</p>
+      <div class="img-col reveal">
+        <img src="gladbach.jpeg" alt="Borussia-Park" loading="lazy">
+      </div>
+      <div class="text-col">
+        <h2 class="title reveal">Borussia-Park M&ouml;nchengladbach</h2>
+        <p class="visit reveal">Besucht: <span>14 September 2024</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>54.067 Zuschauer</span></p>
+        <p class="desc reveal">Heimat von Borussia M&ouml;nchengladbach &ndash; eines der modernsten Stadien Deutschlands. Er&ouml;ffnet 2004.</p>
       </div>
     </div>
   </section>
 
   <!-- SLIDE 7 -->
-  <section class="slide" data-slide="7">
+  <section class="slide stadium-slide" data-slide="7">
     <div class="content">
-      <img src="gelsenkirchen.jpeg" alt="Veltins-Arena" class="wide-photo reveal" loading="lazy">
-      <div class="bottom-copy reveal" style="grid-column:unset">
-        <h2 class="title">Veltins-Arena Gelsenkirchen</h2>
-        <p class="visit">Besucht: <span>14 Dezember 2024</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>62.271 Zuschauer</span></p>
-        <p class="desc">Heimat des FC Schalke 04. Er&ouml;ffnet 2001 &ndash; bekannt f&uuml;r modernste Architektur und Technologie.</p>
+      <div class="img-col reveal">
+        <img src="gelsenkirchen.jpeg" alt="Veltins-Arena" loading="lazy">
+      </div>
+      <div class="text-col">
+        <h2 class="title reveal">Veltins-Arena Gelsenkirchen</h2>
+        <p class="visit reveal">Besucht: <span>14 Dezember 2024</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>62.271 Zuschauer</span></p>
+        <p class="desc reveal">Heimat des FC Schalke 04. Er&ouml;ffnet 2001 &ndash; bekannt f&uuml;r modernste Architektur und Technologie.</p>
       </div>
     </div>
   </section>
 
   <!-- SLIDE 8 -->
-  <section class="slide" data-slide="8">
+  <section class="slide stadium-slide" data-slide="8">
     <div class="content">
-      <img src="dresden.jpeg" alt="Rudolf-Harbig-Stadion" class="wide-photo reveal" loading="lazy">
-      <div class="bottom-copy reveal" style="grid-column:unset">
-        <h2 class="title">Rudolf-Harbig-Stadion Dresden</h2>
-        <p class="visit">Besucht: <span>23 August 2023</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>32.065 Zuschauer</span></p>
-        <p class="desc">Heimat von Dynamo Dresden. Er&ouml;ffnet 1923 &ndash; eines der traditionsreichsten Stadien Ostdeutschlands.</p>
+      <div class="img-col reveal">
+        <img src="dresden.jpeg" alt="Rudolf-Harbig-Stadion" loading="lazy">
+      </div>
+      <div class="text-col">
+        <h2 class="title reveal">Rudolf-Harbig-Stadion Dresden</h2>
+        <p class="visit reveal">Besucht: <span>23 August 2023</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>32.065 Zuschauer</span></p>
+        <p class="desc reveal">Heimat von Dynamo Dresden. Er&ouml;ffnet 1923 &ndash; eines der traditionsreichsten Stadien Ostdeutschlands.</p>
       </div>
     </div>
   </section>
 
   <!-- SLIDE 9 -->
-  <section class="slide" data-slide="9">
-    <div class="content stadium-layout">
-      <div class="photo-wrap reveal">
-        <img src="duesseldorf.jpeg" alt="Merkur Spiel-Arena" style="height:580px" loading="lazy">
+  <section class="slide stadium-slide" data-slide="9">
+    <div class="content">
+      <div class="img-col reveal">
+        <img src="duesseldorf.jpeg" alt="Merkur Spiel-Arena" loading="lazy">
       </div>
-      <div></div>
-      <div class="bottom-copy reveal">
-        <h2 class="title">Merkur Spiel-Arena D&uuml;sseldorf</h2>
-        <p class="visit">Besucht: <span>05 Dezember 2025</span></p>
-        <p class="capacity">Kapazit&auml;t: <span>54.600 Zuschauer</span></p>
-        <p class="desc">Heimat von Fortuna D&uuml;sseldorf. Er&ouml;ffnet 2005 &ndash; moderne Architektur und hervorragende Infrastruktur.</p>
+      <div class="text-col">
+        <h2 class="title reveal">Merkur Spiel-Arena D&uuml;sseldorf</h2>
+        <p class="visit reveal">Besucht: <span>05 Dezember 2025</span></p>
+        <p class="capacity reveal">Kapazit&auml;t: <span>54.600 Zuschauer</span></p>
+        <p class="desc reveal">Heimat von Fortuna D&uuml;sseldorf. Er&ouml;ffnet 2005 &ndash; moderne Architektur und hervorragende Infrastruktur.</p>
       </div>
     </div>
   </section>
@@ -240,36 +269,28 @@
       </div>
       <div class="stadium-grid reveal">
         <div class="stadium-card" data-full="berlin2.jpeg" data-title="Olympiastadion Berlin">
-          <img src="berlin2.jpeg" alt="Berlin" loading="lazy">
-          <div class="label">Olympiastadion Berlin</div>
+          <img src="berlin2.jpeg" alt="Berlin" loading="lazy"><div class="label">Olympiastadion Berlin</div>
         </div>
         <div class="stadium-card" data-full="volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg">
-          <img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy">
-          <div class="label">Volksparkstadion Hamburg</div>
+          <img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy"><div class="label">Volksparkstadion Hamburg</div>
         </div>
         <div class="stadium-card" data-full="millerntor1.jpeg" data-title="Millerntor-Stadion">
-          <img src="millerntor1.jpeg" alt="Millerntor" loading="lazy">
-          <div class="label">Millerntor-Stadion</div>
+          <img src="millerntor1.jpeg" alt="Millerntor" loading="lazy"><div class="label">Millerntor-Stadion</div>
         </div>
         <div class="stadium-card" data-full="gladbach.jpeg" data-title="Borussia-Park">
-          <img src="gladbach.jpeg" alt="Gladbach" loading="lazy">
-          <div class="label">Borussia-Park</div>
+          <img src="gladbach.jpeg" alt="Gladbach" loading="lazy"><div class="label">Borussia-Park</div>
         </div>
         <div class="stadium-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena">
-          <img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy">
-          <div class="label">Veltins-Arena</div>
+          <img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="label">Veltins-Arena</div>
         </div>
         <div class="stadium-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion">
-          <img src="dresden.jpeg" alt="Dresden" loading="lazy">
-          <div class="label">Rudolf-Harbig-Stadion</div>
+          <img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="label">Rudolf-Harbig-Stadion</div>
         </div>
         <div class="stadium-card" data-full="duesseldorf.jpeg" data-title="Merkur Spiel-Arena">
-          <img src="duesseldorf.jpeg" alt="Duesseldorf" loading="lazy">
-          <div class="label">Merkur Spiel-Arena</div>
+          <img src="duesseldorf.jpeg" alt="Duesseldorf" loading="lazy"><div class="label">Merkur Spiel-Arena</div>
         </div>
         <div class="stadium-card" data-full="pyro.jpeg" data-title="Pyro">
-          <img src="pyro.jpeg" alt="Pyro" loading="lazy">
-          <div class="label">Pyro</div>
+          <img src="pyro.jpeg" alt="Pyro" loading="lazy"><div class="label">Pyro</div>
         </div>
       </div>
     </div>
@@ -409,7 +430,6 @@
   animateSlide(document.querySelector('.slide.active'));
   updateNav();
 
-  // LIGHTBOX
   var modal = document.getElementById('imageModal');
   var modalImg = document.getElementById('modalImg');
   var modalCaption = document.getElementById('modalCaption');
@@ -437,7 +457,6 @@
   document.getElementById('mPrev').addEventListener('click', mPrev);
   modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
 
-  // CONFETTI
   var ccvs = document.getElementById('confetti-canvas');
   var cctx = ccvs.getContext('2d');
   var confOn = false;
