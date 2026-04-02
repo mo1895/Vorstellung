@@ -13,9 +13,7 @@
     html,body{height:100%;background:var(--bg);font-family:'Montserrat',sans-serif;color:var(--text);overflow:hidden}
 
     #progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:600;background:linear-gradient(90deg,#7b0000,var(--red),var(--red2),#ffb347);box-shadow:0 0 20px 4px rgba(230,51,41,.75);transition:width .5s cubic-bezier(.4,0,.2,1)}
-
     #clock{position:fixed;top:18px;right:28px;z-index:550;font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.45);background:rgba(12,8,8,.7);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px);padding:6px 14px;border-radius:999px}
-
     body::after{content:'';position:fixed;inset:0;z-index:400;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.5;mix-blend-mode:overlay}
 
     .deck{width:100vw;height:100vh;position:relative}
@@ -25,12 +23,10 @@
     .accent-line{position:absolute;left:58px;top:0;bottom:0;width:2px;z-index:1;background:linear-gradient(to bottom,transparent 4%,var(--red) 25%,var(--red2) 75%,transparent 96%);box-shadow:0 0 22px 3px rgba(230,51,41,.55)}
     .content{position:relative;z-index:2;width:100%;height:100%;padding:50px 66px 50px 88px}
 
-    /* FOOTBALL PARTICLES */
     #particles{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
     .fb{position:absolute;font-size:22px;animation:fall linear infinite;opacity:0;user-select:none}
     @keyframes fall{0%{transform:translateY(-40px) rotate(0deg);opacity:.7}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
-    /* COVER */
     .cover-grid{display:grid;grid-template-columns:1fr 400px;height:100%;align-items:stretch}
     .cover-left{display:flex;flex-direction:column;justify-content:center;padding-right:54px}
     .eyebrow-row{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2);margin-bottom:24px}
@@ -46,7 +42,6 @@
     .cover-right::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(6,4,4,.7) 0%,transparent 45%)}
     .cover-right::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(6,4,4,.55) 0%,transparent 50%)}
 
-    /* STADIUM 3-SPALTEN */
     .stad-grid3{display:grid;grid-template-columns:1fr 1fr 170px;gap:36px;height:100%;align-items:center}
     .stad-img-wrap{position:relative;height:calc(100vh - 110px);overflow:hidden;border-radius:6px}
     .stad-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(.85) saturate(1.08);transition:transform 9s ease;transform:scale(1.06)}
@@ -54,36 +49,28 @@
     .stad-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(6,4,4,.6) 0%,transparent 50%),linear-gradient(to top,rgba(6,4,4,.65) 0%,transparent 55%)}
     .stad-img-wrap::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 70px 0 rgba(180,15,15,.15)}
     .stad-img-wrap .img-bar{position:absolute;bottom:0;left:0;right:0;z-index:2;height:3px;background:linear-gradient(90deg,var(--red),var(--red2),transparent);box-shadow:0 0 14px 2px rgba(230,51,41,.5)}
-    .stad-text{display:flex;flex-direction:column;justify-content:center;gap:18px}
-    .stad-num{font-size:130px;line-height:1;font-weight:900;letter-spacing:-8px;color:transparent;-webkit-text-stroke:1px rgba(230,51,41,.15);user-select:none;margin-bottom:-28px}
+    .stad-text{display:flex;flex-direction:column;justify-content:center;gap:14px}
+    .stad-num{font-size:110px;line-height:1;font-weight:900;letter-spacing:-8px;color:transparent;-webkit-text-stroke:1px rgba(230,51,41,.15);user-select:none;margin-bottom:-22px}
     .stad-eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2)}
     .stad-eyebrow span{display:block;width:22px;height:2px;background:var(--red2);border-radius:2px}
-    .stad-title{font-size:44px;line-height:.93;font-weight:900;letter-spacing:-2px;color:#fff}
+    .stad-title{font-size:40px;line-height:.93;font-weight:900;letter-spacing:-2px;color:#fff}
     .stad-divider{width:48px;height:2px;background:linear-gradient(90deg,var(--red),transparent);border-radius:2px}
-    .stad-meta{display:flex;flex-direction:column;gap:9px}
-    .stad-row{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:var(--muted)}
+    .stad-meta{display:flex;flex-direction:column;gap:7px}
+    .stad-row{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:var(--muted)}
     .stad-row strong{color:#fff;font-weight:800}
-    .stad-icon{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:rgba(230,51,41,.12);border:1px solid rgba(230,51,41,.25);display:flex;align-items:center;justify-content:center;font-size:12px}
-    .stad-desc{font-size:14px;line-height:1.7;color:var(--muted);max-width:420px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
-    .stad-badge{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:7px 18px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.28);font-size:12px;font-weight:700;color:var(--red2)}
+    .stad-icon{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:rgba(230,51,41,.12);border:1px solid rgba(230,51,41,.25);display:flex;align-items:center;justify-content:center;font-size:11px}
+    .stad-desc{font-size:13px;line-height:1.7;color:var(--muted);padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+    .stad-badge{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:6px 16px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.28);font-size:11px;font-weight:700;color:var(--red2)}
 
-    /* TRIKOT SLOT */
     .trikot-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:100%}
-    .trikot-slot{
-      width:150px;height:185px;border-radius:14px;
-      border:2px dashed rgba(230,51,41,.3);
-      background:rgba(230,51,41,.04);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-      overflow:hidden;position:relative;transition:border-color .25s,background .25s;
-    }
+    .trikot-slot{width:150px;height:185px;border-radius:14px;border:2px dashed rgba(230,51,41,.3);background:rgba(230,51,41,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;position:relative;transition:border-color .25s,background .25s}
     .trikot-slot:hover{border-color:rgba(230,51,41,.6);background:rgba(230,51,41,.1)}
     .trikot-slot img{width:100%;height:100%;object-fit:contain;display:block}
-    .trikot-slot .trikot-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px}
-    .trikot-slot .trikot-placeholder span{font-size:30px}
-    .trikot-slot .trikot-placeholder small{font-size:9px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase;text-align:center}
+    .trikot-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .trikot-placeholder span{font-size:30px}
+    .trikot-placeholder small{font-size:9px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase;text-align:center}
     .trikot-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;text-align:center}
 
-    /* OVERVIEW */
     .ov-wrap{display:flex;flex-direction:column;gap:20px;height:100%}
     .ov-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
     .ov-title{font-size:50px;font-weight:900;letter-spacing:-2.5px;color:#fff}
@@ -102,7 +89,6 @@
     .ov-card:hover .ov-zoom{opacity:1}
     .ov-num{position:absolute;top:10px;left:12px;z-index:2;font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px}
 
-    /* CHART */
     .chart-wrap{display:flex;flex-direction:column;gap:24px;height:100%}
     .chart-title{font-size:48px;font-weight:900;letter-spacing:-2px;color:#fff}
     .chart-sub{font-size:14px;color:var(--muted);margin-top:4px}
@@ -114,7 +100,6 @@
     .bar-fill span{font-size:12px;font-weight:800;color:#fff;white-space:nowrap}
     .bar-home{background:linear-gradient(90deg,#c0392b,#e74c3c,#ff6b6b,#ffb347)}
 
-    /* STATS */
     .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;height:100%}
     .stat-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:32px 28px;display:flex;flex-direction:column;justify-content:center;gap:12px;transition:border-color .3s,background .3s;position:relative;overflow:hidden}
     .stat-card:hover{border-color:rgba(230,51,41,.3);background:rgba(230,51,41,.05)}
@@ -127,7 +112,6 @@
     .stats-head{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
     .stats-head h2{font-size:48px;font-weight:900;letter-spacing:-2px;color:#fff}
 
-    /* LIGHTBOX */
     .lbox{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.93);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .3s}
     .lbox.open{opacity:1;pointer-events:auto}
     .lbox-inner{position:relative;width:min(90vw,1340px);height:min(84vh,820px);border-radius:14px;overflow:hidden;background:#080505;box-shadow:0 50px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05)}
@@ -142,7 +126,6 @@
     .lbox-arr:hover{background:rgba(230,51,41,.75);transform:translateY(-50%) scale(1.1)}
     #lPrev{left:14px}#lNext{right:14px}
 
-    /* DANKE */
     .thanks-slide{position:absolute;inset:0;overflow:hidden;background:#030202}
     .thanks-slide .slide-bg{display:none}
     .thanks-slide .accent-line{display:none}
@@ -153,7 +136,7 @@
     @keyframes pulse{from{opacity:.6;transform:scale(1)}to{opacity:1;transform:scale(1.1)}}
     .thanks-vid-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:82%;height:78%;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px rgba(230,51,41,.2),0 40px 100px rgba(0,0,0,.95);z-index:1}
     .thanks-vid-frame video{width:100%;height:100%;object-fit:cover;display:block}
-    .thanks-vid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.65);border-radius:22px;z-index:2}
+    .thanks-vid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.65);z-index:2}
     .thanks-content{position:relative;z-index:3;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
     .thanks-eyebrow{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--red2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
     .thanks-eyebrow span{display:block;width:24px;height:2px;background:var(--red2);border-radius:2px}
@@ -165,7 +148,6 @@
     .qr-box img{width:100%;height:100%;object-fit:contain}
     .qr-label{font-size:13px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1px}
 
-    /* KONAMI */
     #konami{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:linear-gradient(135deg,#e63329,#fff,#e63329,#fff,#e63329);background-size:400% 400%;animation:kbg 1s ease infinite}
     #konami.show{display:flex}
     @keyframes kbg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
@@ -233,20 +215,19 @@
         <div class="stad-text">
           <div class="stad-num r">01</div>
           <div class="stad-eyebrow r"><span></span>Berlin</div>
-          <h2 class="stad-title r">Olympia&shy;stadion<br>Berlin</h2>
+          <h2 class="stad-title r">Olympia&shy;stadion Berlin</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>03 Oktober 2023</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>74.475</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Hertha BSC vs. Borussia Dortmund</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>560 km</strong> von Neuss entfernt</div></div>
           </div>
-          <p class="stad-desc r">Erbaut 1936 für die Olympischen Spiele — eines der bedeutendsten Stadien Deutschlands. Heimat von Hertha BSC.</p>
+          <p class="stad-desc r">Erbaut 1936 für die Olympischen Spiele — eines der historisch bedeutsamsten Stadien Deutschlands. Mit seiner markanten Marathontor-Einfahrt und beeindruckenden Architektur ist es ein Wahrzeichen der Stadt. Heimat von Hertha BSC.</p>
           <div class="stad-badge r">🏟 Bundesliga</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="hertha_trikot.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>Hertha BSC<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="herthatrikot.jpeg" alt="Hertha Trikot"></div>
           <div class="trikot-label">Hertha BSC</div>
         </div>
       </div>
@@ -262,20 +243,19 @@
         <div class="stad-text">
           <div class="stad-num r">02</div>
           <div class="stad-eyebrow r"><span></span>Berlin</div>
-          <h2 class="stad-title r">Olympia&shy;stadion<br>Berlin</h2>
+          <h2 class="stad-title r">Olympia&shy;stadion Berlin</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>14 Februar 2024</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>74.475</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Hertha BSC vs. FC Schalke 04</div></div>
+            <div class="stad-row r"><div class="stad-icon">🌡</div><div>Winterspiel — ca. <strong>2°C</strong></div></div>
           </div>
-          <p class="stad-desc r">Zweiter Besuch — diesmal im Winter. Die Atmosphäre im ausverkauften Olympiastadion ist unvergesslich.</p>
+          <p class="stad-desc r">Mein zweiter Besuch im Olympiastadion — diesmal mitten im Winter. Die Atmosphäre bei Flutlicht und Kälte war unvergesslich. Das Stadion war nahezu ausverkauft und die Stimmung trotz Minusgrade heiß.</p>
           <div class="stad-badge r">🏟 Bundesliga</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="hertha_trikot2.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>Hertha BSC<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="herthatrikot.jpeg" alt="Hertha Trikot"></div>
           <div class="trikot-label">Hertha BSC</div>
         </div>
       </div>
@@ -291,20 +271,19 @@
         <div class="stad-text">
           <div class="stad-num r">03</div>
           <div class="stad-eyebrow r"><span></span>Hamburg</div>
-          <h2 class="stad-title r">Volkspark&shy;stadion<br>Hamburg</h2>
+          <h2 class="stad-title r">Volkspark&shy;stadion Hamburg</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>19 Mai 2024</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>57.000</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Hamburger SV vs. Fortuna Düsseldorf</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>480 km</strong> von Neuss entfernt</div></div>
           </div>
-          <p class="stad-desc r">Heimat des Hamburger SV — traditionsreicher Koloss im Norden. Eröffnet 1953.</p>
+          <p class="stad-desc r">Heimat des traditionsreichen Hamburger SV — eröffnet 1953. Der einzige Verein der durchgehend in der Bundesliga spielte bis zum Abstieg 2018. Die Nordkurve gehört zu den lautesten Deutschlands.</p>
           <div class="stad-badge r">🏟 2. Bundesliga</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="hsv_trikot.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>HSV<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="hsvtrikot.jpeg" alt="HSV Trikot"></div>
           <div class="trikot-label">Hamburger SV</div>
         </div>
       </div>
@@ -320,20 +299,19 @@
         <div class="stad-text">
           <div class="stad-num r">04</div>
           <div class="stad-eyebrow r"><span></span>Hamburg</div>
-          <h2 class="stad-title r">Millerntor-<br>Stadion</h2>
+          <h2 class="stad-title r">Millerntor-Stadion</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>20 Mai 2024</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>29.546</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>FC St. Pauli vs. 1. FC Kaiserslautern</div></div>
+            <div class="stad-row r"><div class="stad-icon">🏆</div><div>Aufstiegsspiel zur Bundesliga</div></div>
           </div>
-          <p class="stad-desc r">Heimat des FC St. Pauli — klein, laut, einzigartig.</p>
+          <p class="stad-desc r">Heimat des FC St. Pauli im Hamburger Stadtteil St. Pauli — klein, laut und einzigartig. Bekannt für seine linke, alternative Fankultur. Der Besuch fiel mit der Aufstiegsfeier in die Bundesliga zusammen — die Stimmung war unbeschreiblich.</p>
           <div class="stad-badge r">🏟 Bundesliga</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="stpauli_trikot.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>FC St. Pauli<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="stpaulitrikot.jpeg" alt="St. Pauli Trikot"></div>
           <div class="trikot-label">FC St. Pauli</div>
         </div>
       </div>
@@ -349,20 +327,19 @@
         <div class="stad-text">
           <div class="stad-num r">05</div>
           <div class="stad-eyebrow r"><span></span>Mönchengladbach</div>
-          <h2 class="stad-title r">Borussia-<br>Park</h2>
+          <h2 class="stad-title r">Borussia-Park</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>14 September 2024</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>54.067</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Borussia MG vs. Bayer 04 Leverkusen</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>45 km</strong> von Neuss entfernt</div></div>
           </div>
-          <p class="stad-desc r">Heimat von Borussia Mönchengladbach — eröffnet 2004.</p>
+          <p class="stad-desc r">Eines der modernsten Stadien Deutschlands — eröffnet 2004, komplett freistehendes Dach und perfekte Sichtlinien von jedem Platz. Mein nächstgelegenes Bundesliga-Stadion und gleichzeitig eines der schönsten.</p>
           <div class="stad-badge r">🏟 Bundesliga</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="gladbach_trikot.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>Borussia MG<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="bmgtrikot.jpeg" alt="BMG Trikot"></div>
           <div class="trikot-label">Borussia MG</div>
         </div>
       </div>
@@ -378,20 +355,19 @@
         <div class="stad-text">
           <div class="stad-num r">06</div>
           <div class="stad-eyebrow r"><span></span>Gelsenkirchen</div>
-          <h2 class="stad-title r">Veltins-<br>Arena</h2>
+          <h2 class="stad-title r">Veltins-Arena</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>14 Dezember 2024</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>62.271</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>FC Schalke 04 vs. Hamburger SV</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>60 km</strong> von Neuss entfernt</div></div>
           </div>
-          <p class="stad-desc r">Heimat des FC Schalke 04 — eröffnet 2001.</p>
+          <p class="stad-desc r">Die Veltins-Arena ist ein technisches Meisterwerk — eröffnet 2001 mit einfahrbarem Rasen und verschiebbarem Dach. Heimat des FC Schalke 04. Die Nordkurve beim Flutlichtspiel im Dezember war schlicht beeindruckend.</p>
           <div class="stad-badge r">🏟 2. Bundesliga</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="schalke_trikot.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>FC Schalke 04<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="schlake04trikot.jpeg" alt="Schalke Trikot"></div>
           <div class="trikot-label">FC Schalke 04</div>
         </div>
       </div>
@@ -407,20 +383,19 @@
         <div class="stad-text">
           <div class="stad-num r">07</div>
           <div class="stad-eyebrow r"><span></span>Dresden</div>
-          <h2 class="stad-title r">Rudolf-Harbig-<br>Stadion</h2>
+          <h2 class="stad-title r">Rudolf-Harbig-Stadion</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>23 August 2023</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>32.065</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Dynamo Dresden vs. Fortuna Düsseldorf</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>680 km</strong> von Neuss entfernt</div></div>
           </div>
-          <p class="stad-desc r">Heimat von Dynamo Dresden — eröffnet 1923.</p>
+          <p class="stad-desc r">Benannt nach dem deutschen Leichtathletik-Star Rudolf Harbig — Heimat von Dynamo Dresden, einem der traditionsreichsten Vereine Ostdeutschlands. Eröffnet 1923, mehrfach umgebaut. Die Dresdner Fans gelten als besonders leidenschaftlich.</p>
           <div class="stad-badge r">🏟 3. Liga</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="dynamo_trikot.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>Dynamo Dresden<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="dresdentrikot.jpeg" alt="Dresden Trikot"></div>
           <div class="trikot-label">Dynamo Dresden</div>
         </div>
       </div>
@@ -436,20 +411,19 @@
         <div class="stad-text">
           <div class="stad-num r">08</div>
           <div class="stad-eyebrow r"><span></span>Düsseldorf</div>
-          <h2 class="stad-title r">Merkur<br>Spiel-Arena</h2>
+          <h2 class="stad-title r">Merkur Spiel-Arena</h2>
           <div class="stad-divider r"></div>
           <div class="stad-meta">
             <div class="stad-row r"><div class="stad-icon">📅</div><strong>05 Dezember 2025</strong></div>
             <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>54.600</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Fortuna Düsseldorf vs. Hamburger SV</div></div>
+            <div class="stad-row r"><div class="stad-icon">🏠</div><div>Mein <strong>Heimstadion</strong></div></div>
           </div>
-          <p class="stad-desc r">Heimat von Fortuna Düsseldorf — eröffnet 2005. Mein Heimstadion, mein Herzensverein.</p>
+          <p class="stad-desc r">Die Merkur Spiel-Arena ist seit 2005 die Heimat meines Herzensvereins Fortuna Düsseldorf. Eine der besten Atmosphären der 2. Bundesliga — die Südkurve ist laut, leidenschaftlich und treu. Alte Liebe rostet nicht. ❤️🤍</p>
           <div class="stad-badge r">❤️ Heimstadion</div>
         </div>
         <div class="trikot-col r">
-          <div class="trikot-slot">
-            <!-- Trikot Bild: src="fortuna_trikot.jpeg" einfügen -->
-            <div class="trikot-placeholder"><span>👕</span><small>Fortuna F95<br>Trikot</small></div>
-          </div>
+          <div class="trikot-slot"><img src="fortunatrikot.jpeg" alt="Fortuna Trikot"></div>
           <div class="trikot-label" style="color:rgba(255,180,80,.5)">Fortuna F95 ❤️</div>
         </div>
       </div>
@@ -486,7 +460,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 11 — KAPAZITÄTS-CHART -->
+  <!-- SLIDE 11 — CHART -->
   <section class="slide" data-slide="11">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -508,7 +482,7 @@
     </div>
   </section>
 
-  <!-- SLIDE 12 — STATISTIKEN -->
+  <!-- SLIDE 12 — STATS -->
   <section class="slide" data-slide="12">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
@@ -551,7 +525,6 @@
 
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <button class="nav-btn" id="btnPrev">&#8249;</button>
   <div class="dots" id="dots"></div>
@@ -559,7 +532,6 @@
   <span class="nav-count" id="counter">01/13</span>
 </div>
 
-<!-- LIGHTBOX -->
 <div class="lbox" id="lbox">
   <div class="lbox-inner">
     <span class="lbox-count" id="lCount"></span>
@@ -662,7 +634,6 @@
   reveal(document.querySelector('.slide.active'));
   updateUI();
 
-  // PARTICLES
   var pEl=document.getElementById('particles');
   for(var p=0;p<18;p++){
     var fb=document.createElement('div');
@@ -674,7 +645,6 @@
     pEl.appendChild(fb);
   }
 
-  // BARS
   var barsAnimated=false;
   function animateBars(){
     if(barsAnimated)return;barsAnimated=true;
@@ -683,7 +653,6 @@
     },400);
   }
 
-  // LIGHTBOX
   var lbox=document.getElementById('lbox');
   var lImg=document.getElementById('lImg');
   var lTitle=document.getElementById('lTitle');
@@ -700,7 +669,6 @@
   document.getElementById('lPrev').onclick=function(){lStep(-1);};
   lbox.onclick=function(e){if(e.target===lbox)lClose();};
 
-  // CONFETTI
   var cv=document.getElementById('confetti');
   var ctx=cv.getContext('2d');
   var running=false;
@@ -730,7 +698,6 @@
     })();
   }
 
-  // KONAMI
   var konamiSeq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
   var konamiIdx=0;
   var hint=document.getElementById('konami-hint');
@@ -768,7 +735,6 @@
     document.getElementById('konami').classList.remove('show');
     document.getElementById('konami-canvas').getContext('2d').clearRect(0,0,innerWidth,innerHeight);
   };
-
 })();
 </script>
 </body>
