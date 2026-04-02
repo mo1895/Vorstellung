@@ -13,7 +13,6 @@
     html,body{height:100%;background:var(--bg);font-family:'Montserrat',sans-serif;color:var(--text);overflow:hidden}
 
     #progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:600;background:linear-gradient(90deg,#7b0000,var(--red),var(--red2),#ffb347);box-shadow:0 0 20px 4px rgba(230,51,41,.75);transition:width .5s cubic-bezier(.4,0,.2,1)}
-    #clock{position:fixed;top:18px;right:28px;z-index:550;font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.45);background:rgba(12,8,8,.7);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px);padding:6px 14px;border-radius:999px}
     body::after{content:'';position:fixed;inset:0;z-index:400;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.5;mix-blend-mode:overlay}
 
     .deck{width:100vw;height:100vh;position:relative}
@@ -170,7 +169,10 @@
   </style>
 </head>
 <body>
-<div id="clock"></div>
+
+<!-- F95 Link oben links -->
+<a href="https://www.fortuna-duesseldorf.de" target="_blank" style="position:fixed;top:18px;left:28px;z-index:550;font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.45);background:rgba(12,8,8,.7);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px);padding:6px 14px;border-radius:999px;text-decoration:none;transition:color .2s,border-color .2s" onmouseover="this.style.color='#ff4f43';this.style.borderColor='rgba(230,51,41,.5)'" onmouseout="this.style.color='rgba(255,255,255,.45)';this.style.borderColor='rgba(255,255,255,.08)'">⚽ Fortuna Düsseldorf</a>
+
 <div id="progress"></div>
 <canvas id="confetti"></canvas>
 <div id="konami-hint">🎮 Konami Code aktiv...</div>
@@ -198,7 +200,14 @@
             <span class="tag">Finn Moritz</span>
             <span class="tag">Fachinformatiker SI</span>
             <span class="tag">Fortuna Düsseldorf</span>
-            <span class="tag">8 Stadien</span>
+            <span class="tag">7 Stadien</span>
+          </div>
+          <div class="r" style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:50%;background:rgba(230,51,41,.12);border:1px solid rgba(230,51,41,.25);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">📸</div>
+            <div>
+              <div style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px">Alle Fotos selbst aufgenommen</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">Jedes Bild wurde von mir persönlich vor Ort fotografiert</div>
+            </div>
           </div>
         </div>
         <div class="cover-right r"><img src="titel.jpeg" alt="Cover"></div>
@@ -223,7 +232,7 @@
             <div class="stad-row r"><div class="stad-icon">📍</div><div>Hertha BSC vs. FC Schalke 04</div></div>
             <div class="stad-row r"><div class="stad-icon">🌡</div><div>Winterspiel — ca. <strong>2°C</strong></div></div>
           </div>
-          <p class="stad-desc r">Meine Besuche im Olympiastadion — waren super nice! Die Atmosphäre bei Flutlicht und Kälte war unvergesslich. Das Stadion war nahezu ausverkauft und die Stimmung trotz Minusgrade heiß.</p>
+          <p class="stad-desc r">Mein Besuch im Olympiastadion — war super nice! Die Atmosphäre bei Flutlicht und Kälte war unvergesslich. Das Stadion war nahezu ausverkauft und die Stimmung trotz Minusgrade heiß.</p>
           <div class="stad-badge r">🏟 2. Bundesliga</div>
         </div>
         <div class="trikot-col r">
@@ -497,6 +506,7 @@
 
 </div>
 
+<!-- NAV -->
 <div class="nav">
   <button class="nav-btn" id="btnPrev">&#8249;</button>
   <div class="dots" id="dots"></div>
@@ -504,6 +514,7 @@
   <span class="nav-count" id="counter">01/12</span>
 </div>
 
+<!-- LIGHTBOX -->
 <div class="lbox" id="lbox">
   <div class="lbox-inner">
     <span class="lbox-count" id="lCount"></span>
@@ -515,6 +526,18 @@
   </div>
 </div>
 
+<!-- FOTO HINT POPUP -->
+<div id="foto-hint" style="position:fixed;top:28px;left:50%;transform:translateX(-50%);z-index:999;background:rgba(12,8,8,.95);border:1px solid rgba(230,51,41,.3);border-radius:999px;padding:10px 22px;font-size:12px;font-weight:700;color:#fff;backdrop-filter:blur(16px);white-space:nowrap;opacity:0;transition:opacity .5s;pointer-events:none">
+  📸 Alle Fotos wurden von mir persönlich vor Ort aufgenommen
+</div>
+
+<!-- EASTER EGG -->
+<div id="egg" style="position:fixed;bottom:22px;right:22px;z-index:550;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.04);cursor:pointer;border:1px solid rgba(255,255,255,.06)"></div>
+<div id="egg-popup" style="position:fixed;bottom:70px;right:22px;z-index:551;background:rgba(12,8,8,.95);border:1px solid rgba(230,51,41,.3);border-radius:14px;padding:18px 22px;font-size:13px;font-weight:700;color:#fff;backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap">
+  ❤️🤍 Alte Liebe rostet nicht 🤍❤️<br>
+  <span style="font-size:11px;color:#b0a6a4;font-weight:500">— Finn Moritz, F95 seit immer</span>
+</div>
+
 <script>
 (function(){
   var cur=1,total=12;
@@ -522,14 +545,6 @@
   var dotsEl=document.getElementById('dots');
   var ctrEl=document.getElementById('counter');
   var thanksVideo=document.getElementById('thanksVideo');
-
-  // Uhr
-  function tick(){
-    var n=new Date();
-    var h=n.getHours(),m=n.getMinutes();
-    document.getElementById('clock').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
-  }
-  tick();setInterval(tick,10000);
 
   for(var i=1;i<=total;i++){
     (function(n){
@@ -720,16 +735,15 @@
     document.getElementById('konami').classList.remove('show');
     document.getElementById('konami-canvas').getContext('2d').clearRect(0,0,innerWidth,innerHeight);
   };
-})();
-</script>
-  <div id="egg" style="position:fixed;bottom:22px;right:22px;z-index:550;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.04);cursor:pointer;border:1px solid rgba(255,255,255,.06);transition:all .3s"></div>
 
-<div id="egg-popup" style="position:fixed;bottom:70px;right:22px;z-index:551;background:rgba(12,8,8,.95);border:1px solid rgba(230,51,41,.3);border-radius:14px;padding:18px 22px;font-size:13px;font-weight:700;color:#fff;backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap">
-  ❤️🤍 Alter Liebe rostet nicht 🤍❤️<br>
-  <span style="font-size:11px;color:var(--muted);font-weight:500">— Finn Moritz, F95 seit immer</span>
-</div>
+  // Foto Hint Popup
+  setTimeout(function(){
+    var h=document.getElementById('foto-hint');
+    h.style.opacity='1';
+    setTimeout(function(){h.style.opacity='0';},5000);
+  },800);
 
-<script>
+  // Easter Egg
   var egg=document.getElementById('egg');
   var pop=document.getElementById('egg-popup');
   var clicks=0,eggT;
@@ -742,6 +756,8 @@
       eggT=setTimeout(function(){pop.style.opacity='0';pop.style.pointerEvents='none';},3500);
     }
   });
+
+})();
 </script>
 </body>
 </html>
