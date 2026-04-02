@@ -235,31 +235,31 @@
       line-height:1.5;
     }
 
-    .carousel-wrap{
-      position:relative;
+    .stadium-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:16px;
       flex:1;
       min-height:0;
+    }
+
+    .stadium-card{
+      position:relative;
       border-radius:8px;
       overflow:hidden;
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.08);
       box-shadow:0 8px 24px rgba(0,0,0,.18);
+      cursor:pointer;
+      transition:transform .25s ease, box-shadow .25s ease;
     }
 
-    .carousel-slide{
-      position:absolute;
-      inset:0;
-      opacity:0;
-      transition:opacity .7s ease;
-      pointer-events:none;
+    .stadium-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 16px 36px rgba(0,0,0,.28);
     }
 
-    .carousel-slide.active{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .carousel-slide img{
+    .stadium-card img{
       width:100%;
       height:100%;
       object-fit:cover;
@@ -267,39 +267,80 @@
       filter:brightness(.82);
     }
 
-    .carousel-label{
+    .stadium-card .label{
       position:absolute;
       left:0;
       right:0;
       bottom:0;
-      padding:18px 20px;
-      font-size:20px;
+      padding:12px 14px;
+      font-size:14px;
       font-weight:800;
       background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.15));
       color:#fff;
       letter-spacing:.2px;
     }
 
-    .carousel-dots{
-      position:absolute;
-      left:50%;
-      bottom:18px;
-      transform:translateX(-50%);
+    .image-modal{
+      position:fixed;
+      inset:0;
       display:flex;
-      gap:8px;
-      z-index:4;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.82);
+      backdrop-filter:blur(6px);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:999;
     }
 
-    .carousel-dot{
-      width:10px;
-      height:10px;
+    .image-modal.active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .image-modal-content{
+      position:relative;
+      width:min(92vw, 1200px);
+      height:min(86vh, 760px);
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 18px 50px rgba(0,0,0,.45);
+      background:#111;
+    }
+
+    .image-modal-content img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .image-modal-caption{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:18px 22px;
+      font-size:22px;
+      font-weight:800;
+      color:#fff;
+      background:linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.18));
+    }
+
+    .image-modal-close{
+      position:absolute;
+      top:16px;
+      right:16px;
+      width:44px;
+      height:44px;
+      border:none;
       border-radius:50%;
-      background:rgba(255,255,255,.28);
+      background:rgba(0,0,0,.55);
+      color:#fff;
+      font-size:26px;
       cursor:pointer;
-    }
-
-    .carousel-dot.active{
-      background:#fff;
+      z-index:2;
     }
 
     .thanks-slide{
@@ -555,51 +596,49 @@
       <div class="content">
         <div class="overview-head reveal">
           <h2>Alle besuchten Stadien</h2>
-          <p>Eine Übersicht meiner Stadionreisen als Karussell.</p>
+          <p>Klicke auf ein Bild, um es groß anzuzeigen.</p>
         </div>
 
-        <div class="carousel-wrap reveal" id="stadiumCarousel">
-          <div class="carousel-slide active">
+        <div class="stadium-grid reveal">
+          <div class="stadium-card" data-full="./berlin2.jpeg" data-title="Olympiastadion Berlin">
             <img src="./berlin2.jpeg" alt="Olympiastadion Berlin">
-            <div class="carousel-label">Olympiastadion Berlin</div>
+            <div class="label">Olympiastadion Berlin</div>
           </div>
 
-          <div class="carousel-slide">
+          <div class="stadium-card" data-full="./volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg">
             <img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg">
-            <div class="carousel-label">Volksparkstadion Hamburg</div>
+            <div class="label">Volksparkstadion Hamburg</div>
           </div>
 
-          <div class="carousel-slide">
+          <div class="stadium-card" data-full="./millerntor1.jpeg" data-title="Millerntor-Stadion">
             <img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg">
-            <div class="carousel-label">Millerntor-Stadion</div>
+            <div class="label">Millerntor-Stadion</div>
           </div>
 
-          <div class="carousel-slide">
+          <div class="stadium-card" data-full="./gladbach.jpeg" data-title="Borussia-Park">
             <img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach">
-            <div class="carousel-label">Borussia-Park</div>
+            <div class="label">Borussia-Park</div>
           </div>
 
-          <div class="carousel-slide">
+          <div class="stadium-card" data-full="./gelsenkirchen.jpeg" data-title="Veltins-Arena">
             <img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen">
-            <div class="carousel-label">Veltins-Arena</div>
+            <div class="label">Veltins-Arena</div>
           </div>
 
-          <div class="carousel-slide">
+          <div class="stadium-card" data-full="./dresden.jpeg" data-title="Rudolf-Harbig-Stadion">
             <img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden">
-            <div class="carousel-label">Rudolf-Harbig-Stadion</div>
+            <div class="label">Rudolf-Harbig-Stadion</div>
           </div>
 
-          <div class="carousel-slide">
+          <div class="stadium-card" data-full="./duesseldorf.jpeg" data-title="Merkur Spiel-Arena">
             <img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf">
-            <div class="carousel-label">Merkur Spiel-Arena</div>
+            <div class="label">Merkur Spiel-Arena</div>
           </div>
 
-          <div class="carousel-slide">
+          <div class="stadium-card" data-full="./pyro.jpeg" data-title="Pyro">
             <img src="./pyro.jpeg" alt="Pyro im Stadion">
-            <div class="carousel-label">Pyro</div>
+            <div class="label">Pyro</div>
           </div>
-
-          <div class="carousel-dots" id="carouselDots"></div>
         </div>
       </div>
     </section>
@@ -621,6 +660,14 @@
     <div class="slide-dots" id="dots"></div>
     <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
     <span class="slide-counter" id="counter">1 / 11</span>
+  </div>
+
+  <div class="image-modal" id="imageModal">
+    <div class="image-modal-content">
+      <button class="image-modal-close" id="imageModalClose">&times;</button>
+      <img id="imageModalImg" src="" alt="">
+      <div class="image-modal-caption" id="imageModalCaption"></div>
+    </div>
   </div>
 
   <script>
@@ -681,46 +728,45 @@
         e.preventDefault();
         changeSlide(-1);
       }
+      if(e.key === 'Escape'){
+        closeImageModal();
+      }
     });
 
     try{
       animateSlide(document.querySelector('.slide.active'));
     }catch(e){}
 
-    const carousel = document.getElementById('stadiumCarousel');
-    const carouselSlides = carousel ? [...carousel.querySelectorAll('.carousel-slide')] : [];
-    const carouselDotsWrap = document.getElementById('carouselDots');
-    let carouselIndex = 0;
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('imageModalImg');
+    const modalCaption = document.getElementById('imageModalCaption');
+    const modalClose = document.getElementById('imageModalClose');
+    const galleryCards = document.querySelectorAll('.stadium-card');
 
-    function updateCarousel(){
-      carouselSlides.forEach((slide, index) => {
-        slide.classList.toggle('active', index === carouselIndex);
+    function openImageModal(src, title){
+      modalImg.src = src;
+      modalImg.alt = title;
+      modalCaption.textContent = title;
+      modal.classList.add('active');
+    }
+
+    function closeImageModal(){
+      modal.classList.remove('active');
+    }
+
+    galleryCards.forEach(card => {
+      card.addEventListener('click', () => {
+        openImageModal(card.dataset.full, card.dataset.title);
       });
+    });
 
-      if(carouselDotsWrap){
-        [...carouselDotsWrap.children].forEach((dot, index) => {
-          dot.classList.toggle('active', index === carouselIndex);
-        });
+    modalClose.addEventListener('click', closeImageModal);
+
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal){
+        closeImageModal();
       }
-    }
-
-    if(carouselSlides.length && carouselDotsWrap){
-      carouselSlides.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-        dot.onclick = () => {
-          carouselIndex = index;
-          updateCarousel();
-        };
-        carouselDotsWrap.appendChild(dot);
-      });
-
-      setInterval(() => {
-        carouselIndex = (carouselIndex + 1) % carouselSlides.length;
-        updateCarousel();
-      }, 5000);
-    }
+    });
   </script>
 </body>
 </html>
-</query>
