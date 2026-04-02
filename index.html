@@ -21,7 +21,6 @@
       transition:width .5s cubic-bezier(.4,0,.2,1);
     }
 
-    /* FIXED CLOCK */
     #clock{
       position:fixed;top:18px;right:28px;z-index:550;
       font-size:13px;font-weight:700;letter-spacing:2px;
@@ -40,31 +39,12 @@
     }
 
     .deck{width:100vw;height:100vh;position:relative}
-
-    .slide{
-      position:absolute;inset:0;opacity:0;pointer-events:none;overflow:hidden;
-      transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);
-      transform:translateX(70px) scale(.96);
-    }
+    .slide{position:absolute;inset:0;opacity:0;pointer-events:none;overflow:hidden;transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);transform:translateX(70px) scale(.96)}
     .slide.active{opacity:1!important;transform:none!important;pointer-events:auto}
-
-    .slide-bg{
-      position:absolute;inset:0;z-index:0;
-      background:
-        radial-gradient(ellipse 55% 70% at 105% 50%,rgba(110,8,8,.28) 0%,transparent 65%),
-        radial-gradient(ellipse 35% 60% at -5% 30%,rgba(70,5,5,.35) 0%,transparent 60%),
-        linear-gradient(155deg,#0f0706 0%,#060404 55%,#0c0605 100%);
-    }
-
-    .accent-line{
-      position:absolute;left:58px;top:0;bottom:0;width:2px;z-index:1;
-      background:linear-gradient(to bottom,transparent 4%,var(--red) 25%,var(--red2) 75%,transparent 96%);
-      box-shadow:0 0 22px 3px rgba(230,51,41,.55);
-    }
-
+    .slide-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 55% 70% at 105% 50%,rgba(110,8,8,.28) 0%,transparent 65%),radial-gradient(ellipse 35% 60% at -5% 30%,rgba(70,5,5,.35) 0%,transparent 60%),linear-gradient(155deg,#0f0706 0%,#060404 55%,#0c0605 100%)}
+    .accent-line{position:absolute;left:58px;top:0;bottom:0;width:2px;z-index:1;background:linear-gradient(to bottom,transparent 4%,var(--red) 25%,var(--red2) 75%,transparent 96%);box-shadow:0 0 22px 3px rgba(230,51,41,.55)}
     .content{position:relative;z-index:2;width:100%;height:100%;padding:50px 66px 50px 88px}
 
-    /* COVER */
     .cover-grid{display:grid;grid-template-columns:1fr 400px;height:100%;align-items:stretch}
     .cover-left{display:flex;flex-direction:column;justify-content:center;padding-right:54px}
     .eyebrow-row{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2);margin-bottom:24px}
@@ -80,7 +60,6 @@
     .cover-right::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(6,4,4,.7) 0%,transparent 45%)}
     .cover-right::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(6,4,4,.55) 0%,transparent 50%)}
 
-    /* STADIUM */
     .stad-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;height:100%;align-items:center}
     .stad-img-wrap{position:relative;height:calc(100vh - 110px);overflow:hidden;border-radius:6px}
     .stad-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(.85) saturate(1.08);transition:transform 9s ease,filter 1.2s ease;transform:scale(1.06)}
@@ -88,7 +67,6 @@
     .stad-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(6,4,4,.6) 0%,transparent 50%),linear-gradient(to top,rgba(6,4,4,.65) 0%,transparent 55%)}
     .stad-img-wrap::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 70px 0 rgba(180,15,15,.15)}
     .stad-img-wrap .img-bar{position:absolute;bottom:0;left:0;right:0;z-index:2;height:3px;background:linear-gradient(90deg,var(--red),var(--red2),transparent);box-shadow:0 0 14px 2px rgba(230,51,41,.5)}
-
     .stad-text{display:flex;flex-direction:column;justify-content:center;gap:18px}
     .stad-num{font-size:130px;line-height:1;font-weight:900;letter-spacing:-8px;color:transparent;-webkit-text-stroke:1px rgba(230,51,41,.15);user-select:none;margin-bottom:-28px}
     .stad-eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2)}
@@ -103,7 +81,6 @@
     .stad-badge{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:7px 18px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.28);font-size:12px;font-weight:700;color:var(--red2);transition:background .2s}
     .stad-badge:hover{background:rgba(230,51,41,.2)}
 
-    /* OVERVIEW */
     .ov-wrap{display:flex;flex-direction:column;gap:20px;height:100%}
     .ov-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
     .ov-title{font-size:50px;font-weight:900;letter-spacing:-2.5px;color:#fff}
@@ -122,7 +99,6 @@
     .ov-card:hover .ov-zoom{opacity:1}
     .ov-num{position:absolute;top:10px;left:12px;z-index:2;font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px}
 
-    /* LIGHTBOX */
     .lbox{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.93);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .3s}
     .lbox.open{opacity:1;pointer-events:auto}
     .lbox-inner{position:relative;width:min(90vw,1340px);height:min(84vh,820px);border-radius:14px;overflow:hidden;background:#080505;box-shadow:0 50px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05)}
@@ -137,7 +113,6 @@
     .lbox-arr:hover{background:rgba(230,51,41,.75);transform:translateY(-50%) scale(1.1)}
     #lPrev{left:14px}#lNext{right:14px}
 
-    /* DANKE */
     .thanks-slide{position:absolute;inset:0;overflow:hidden;background:#030202}
     .thanks-slide .slide-bg{display:none}
     .thanks-slide .accent-line{display:none}
@@ -146,18 +121,9 @@
     .b2{width:450px;height:450px;background:rgba(190,25,10,.14);bottom:-100px;right:-100px;animation-delay:2s}
     .b3{width:340px;height:340px;background:rgba(90,4,4,.18);top:35%;left:55%;animation-delay:4s}
     @keyframes pulse{from{opacity:.6;transform:scale(1)}to{opacity:1;transform:scale(1.1)}}
-
-    .thanks-vid-frame{
-      position:absolute;top:50%;left:50%;
-      transform:translate(-50%,-50%);
-      width:82%;height:78%;
-      border-radius:22px;overflow:hidden;
-      box-shadow:0 0 0 1px rgba(230,51,41,.2),0 0 0 8px rgba(230,51,41,.04),0 40px 100px rgba(0,0,0,.95),0 0 100px 15px rgba(160,15,15,.25);
-      z-index:1;
-    }
+    .thanks-vid-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:82%;height:78%;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px rgba(230,51,41,.2),0 0 0 8px rgba(230,51,41,.04),0 40px 100px rgba(0,0,0,.95),0 0 100px 15px rgba(160,15,15,.25);z-index:1}
     .thanks-vid-frame video{width:100%;height:100%;object-fit:cover;display:block}
     .thanks-vid-frame::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.2);border-radius:22px}
-
     .thanks-content{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
     .thanks-eyebrow{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--red2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
     .thanks-eyebrow span{display:block;width:24px;height:2px;background:var(--red2);border-radius:2px}
@@ -166,7 +132,6 @@
     .thanks-sub{font-size:17px;color:var(--muted);font-weight:500}
 
     #confetti{position:fixed;inset:0;pointer-events:none;z-index:10;display:none}
-
     .nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:500;display:flex;align-items:center;gap:12px;background:rgba(12,8,8,.85);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px);padding:10px 20px;border-radius:999px;box-shadow:0 10px 40px rgba(0,0,0,.6),0 0 0 1px rgba(230,51,41,.08)}
     .nav-btn{width:34px;height:34px;border:none;border-radius:50%;background:rgba(255,255,255,.07);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s}
     .nav-btn:hover{background:rgba(230,51,41,.65);transform:scale(1.12)}
@@ -174,15 +139,12 @@
     .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:background .25s,width .25s,border-radius .25s}
     .dot.on{background:#fff;width:20px;border-radius:4px}
     .nav-count{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);min-width:32px;text-align:center;letter-spacing:1px}
-
     .r{opacity:0;transform:translateY(24px)}
   </style>
 </head>
 <body>
 
-<!-- FIXED CLOCK -->
 <div id="clock">🕕 18:95</div>
-
 <div id="progress"></div>
 <canvas id="confetti"></canvas>
 <div class="deck">
@@ -274,12 +236,12 @@
     </div>
   </section>
 
-  <!-- SLIDE 5 -->
+  <!-- SLIDE 5 — Millerntor (millerntor.jpeg) -->
   <section class="slide" data-slide="5">
     <div class="slide-bg"></div><div class="accent-line"></div>
     <div class="content">
       <div class="stad-grid">
-        <div class="stad-img-wrap r"><img src="millerntor1.jpeg" alt="Millerntor" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-img-wrap r"><img src="millerntor.jpeg" alt="Millerntor" loading="lazy"><div class="img-bar"></div></div>
         <div class="stad-text">
           <div class="stad-num r">04</div>
           <div class="stad-eyebrow r"><span></span>Hamburg</div>
@@ -403,7 +365,7 @@
         <div class="ov-grid r">
           <div class="ov-card" data-full="berlin2.jpeg" data-title="Olympiastadion Berlin" data-sub="Berlin · 2023 & 2024"><img src="berlin2.jpeg" alt="Berlin" loading="lazy"><div class="ov-num">01</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Olympiastadion Berlin<small>Berlin · 2023 & 2024</small></div></div>
           <div class="ov-card" data-full="volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg" data-sub="Hamburg · Mai 2024"><img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy"><div class="ov-num">02</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Volksparkstadion<small>Hamburg · Mai 2024</small></div></div>
-          <div class="ov-card" data-full="millerntor1.jpeg" data-title="Millerntor-Stadion" data-sub="Hamburg · Mai 2024"><img src="millerntor1.jpeg" alt="Millerntor" loading="lazy"><div class="ov-num">03</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Millerntor-Stadion<small>Hamburg · Mai 2024</small></div></div>
+          <div class="ov-card" data-full="millerntor.jpeg" data-title="Millerntor-Stadion" data-sub="Hamburg · Mai 2024"><img src="millerntor.jpeg" alt="Millerntor" loading="lazy"><div class="ov-num">03</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Millerntor-Stadion<small>Hamburg · Mai 2024</small></div></div>
           <div class="ov-card" data-full="gladbach.jpeg" data-title="Borussia-Park" data-sub="Mönchengladbach · Sep 2024"><img src="gladbach.jpeg" alt="Gladbach" loading="lazy"><div class="ov-num">04</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Borussia-Park<small>Mönchengladbach · Sep 2024</small></div></div>
           <div class="ov-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena" data-sub="Gelsenkirchen · Dez 2024"><img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="ov-num">05</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Veltins-Arena<small>Gelsenkirchen · Dez 2024</small></div></div>
           <div class="ov-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion" data-sub="Dresden · Aug 2023"><img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="ov-num">06</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Rudolf-Harbig-Stadion<small>Dresden · Aug 2023</small></div></div>
@@ -546,7 +508,6 @@
   reveal(document.querySelector('.slide.active'));
   updateUI();
 
-  // LIGHTBOX
   var lbox=document.getElementById('lbox');
   var lImg=document.getElementById('lImg');
   var lTitle=document.getElementById('lTitle');
@@ -565,7 +526,6 @@
   document.getElementById('lPrev').onclick=function(){lStep(-1);};
   lbox.onclick=function(e){if(e.target===lbox)lClose();};
 
-  // CONFETTI
   var cv=document.getElementById('confetti');
   var ctx=cv.getContext('2d');
   var running=false;
