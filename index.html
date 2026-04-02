@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="slides-format" content="viewport" />
   <title>Finn Moritz – Stadionreisen</title>
+  //fonts.googleapis.com">
+  //fonts.gstatic.com" crossorigin>
+  //fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#0d0908;
@@ -16,7 +19,7 @@
       --glow:110,20,20;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--text);overflow:hidden}
+    html,body{margin:0;height:100%;background:var(--bg);font-family:'Montserrat',system-ui,sans-serif;color:var(--text);overflow:hidden}
     .deck{width:100vw;height:100vh;position:relative;background:radial-gradient(circle at left center, rgba(90,10,10,.25), transparent 35%), linear-gradient(90deg, #120908 0%, #0d0908 55%, #0a0707 100%)}
     .slide{position:absolute;inset:0;opacity:0;transform:scale(.985);transition:opacity .55s ease, transform .55s ease;pointer-events:none;overflow:hidden}
     .slide.active{opacity:1;transform:scale(1);pointer-events:auto}
@@ -41,6 +44,110 @@
     .bottom-copy{grid-column:1 / span 2;grid-row:2;align-self:start;padding-top:2px}
     .bottom-copy .title{font-size:38px;margin-bottom:14px}
     .bottom-copy .desc{max-width:1220px}
+    .visit{font-size:18px;line-height:1.3;margin:0 0 10px 0;color:#f2e8e6;font-weight:700}
+    .visit span{font-weight:500;color:#efe7e3}
+
+    .overview-slide .content{
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+    }
+    .overview-head h2{
+      font-size:42px;
+      margin:0 0 8px 0;
+      font-weight:900;
+      letter-spacing:-1.3px;
+      color:#efe4e5;
+    }
+    .overview-head p{
+      margin:0;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.5;
+    }
+    .stadium-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:16px;
+      flex:1;
+      min-height:0;
+    }
+    .stadium-card{
+      position:relative;
+      border-radius:8px;
+      overflow:hidden;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+    }
+    .stadium-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter:brightness(.82);
+    }
+    .stadium-card .label{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:12px 14px;
+      font-size:14px;
+      font-weight:800;
+      background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.15));
+      color:#fff;
+      letter-spacing:.2px;
+    }
+
+    .thanks-slide{
+      position:relative;
+      overflow:hidden;
+    }
+    .thanks-video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      z-index:0;
+    }
+    .thanks-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.30) 0%, rgba(0,0,0,.45) 100%),
+        radial-gradient(circle at center, rgba(90,10,10,.22), rgba(0,0,0,.45));
+      z-index:1;
+    }
+    .thanks-content{
+      position:relative;
+      z-index:2;
+      width:100%;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:40px;
+    }
+    .thanks-content h2{
+      font-size:72px;
+      line-height:.95;
+      margin:0 0 20px 0;
+      font-weight:900;
+      letter-spacing:-2px;
+      color:#fff;
+      text-shadow:0 6px 28px rgba(0,0,0,.35);
+    }
+    .thanks-content p{
+      margin:0;
+      font-size:24px;
+      color:#f0e8e8;
+      font-weight:500;
+      text-shadow:0 4px 18px rgba(0,0,0,.35);
+    }
 
     .nav-controls{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:100;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px);padding:10px 18px;border-radius:999px}
     .nav-btn{width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer}
@@ -60,25 +167,147 @@
         <p class="reveal">Ich liebe es zu reisen und versuche, jedes Stadion zu besuchen – ob durch Führungen, Spiele oder kurze Besuche. Mein Ziel ist es, sagen zu können: Ich war schon drinnen und durfte mir das Stadion anschauen!</p>
         <p class="reveal">Diese Präsentation zeigt eine Auswahl der Stadien, die ich bereits besucht habe.</p>
       </div>
-      <div class="cover-image reveal"><img src="Finn-Moritz.pdf#page=10" alt="Covermotiv Stadionreisen"></div>
+      <div class="cover-image reveal"><img src="./titel.jpeg" alt="Covermotiv Stadionreisen"></div>
     </div>
   </section>
 
-  <section class="slide" data-slide="2"><div class="content stadium-layout"><div class="photo-wrap reveal"><img src="Finn-Moritz.pdf#page=2" alt="Olympiastadion Berlin" style="max-width:430px;width:430px;height:610px"></div><div></div><div class="bottom-copy reveal"><h2 class="title">Olympiastadion Berlin</h2><p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p><p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p></div></div></section>
-  <section class="slide" data-slide="3"><div class="content"><div class="photo-wrap reveal" style="padding-top:20px"><img src="Screenshot-2026-04-02-141331-6.jpg" alt="Olympiastadion München" style="max-width:1280px;width:1280px;height:540px"></div><div class="bottom-copy reveal"><h2 class="title">Olympiastadion München</h2><p class="capacity">Kapazität: <span>75.000 Zuschauer</span></p><p class="desc">Das Olympiastadion München wurde 1972 für die Olympischen Spiele erbaut und ist eines der modernsten Stadien Europas. Es ist die Heimat des FC Bayern München und wird für internationale Fußballspiele und Großveranstaltungen genutzt.</p></div></div></section>
-  <section class="slide" data-slide="4"><div class="content"><div class="photo-wrap reveal" style="padding-top:18px"><img src="Screenshot-2026-04-02-141348-8.jpg" alt="Volksparkstadion Hamburg" style="max-width:1280px;width:1280px;height:520px"></div><div class="bottom-copy reveal"><h2 class="title">Volksparkstadion Hamburg</h2><p class="capacity">Kapazität: <span>57.000 Zuschauer</span></p><p class="desc">Das Volksparkstadion ist die Heimat des Hamburger SV (HSV) und eines der traditionsreichsten Stadien Deutschlands. Es wurde 1953 eröffnet und ist bekannt für seine leidenschaftlichen Fans.</p></div></div></section>
-  <section class="slide" data-slide="5"><div class="content stadium-layout"><div class="photo-wrap reveal"><img src="Screenshot-2026-04-02-141339-7.jpg" alt="Millerntor-Stadion Hamburg" style="max-width:420px;width:420px;height:610px"></div><div></div><div class="bottom-copy reveal"><h2 class="title">Millerntor-Stadion Hamburg</h2><p class="capacity">Kapazität: <span>29.546 Zuschauer</span></p><p class="desc">Das Millerntor-Stadion ist die Heimat des FC St. Pauli und bekannt für seine einzigartige Atmosphäre und die leidenschaftlichen Fans. Es ist eines der kleineren, aber charaktervollsten Stadien Deutschlands.</p></div></div></section>
-  <section class="slide" data-slide="6"><div class="content"><div class="photo-wrap reveal" style="padding-top:20px"><img src="Screenshot-2026-04-02-141245-3.jpg" alt="Borussia-Park Mönchengladbach" style="max-width:1060px;width:1060px;height:500px"></div><div class="bottom-copy reveal"><h2 class="title">Borussia-Park Mönchengladbach</h2><p class="capacity">Kapazität: <span>54.067 Zuschauer</span></p><p class="desc">Das Borussia-Park ist die Heimat von Borussia Mönchengladbach und eines der modernsten Stadien in Deutschland. Es wurde 2004 eröffnet und ist bekannt für seine hervorragende Infrastruktur und Atmosphäre.</p></div></div></section>
-  <section class="slide" data-slide="7"><div class="content"><div class="photo-wrap reveal" style="padding-top:22px"><img src="Screenshot-2026-04-02-141323-5.jpg" alt="Veltins-Arena Gelsenkirchen" style="max-width:1160px;width:1160px;height:520px"></div><div class="bottom-copy reveal"><h2 class="title">Veltins-Arena Gelsenkirchen</h2><p class="capacity">Kapazität: <span>62.271 Zuschauer</span></p><p class="desc">Die Veltins-Arena ist die Heimat des FC Schalke 04 und eines der modernsten Stadien Deutschlands. Sie wurde 2001 eröffnet und ist bekannt für ihre beeindruckende Architektur und Technologie.</p></div></div></section>
-  <section class="slide" data-slide="8"><div class="content"><div class="photo-wrap reveal" style="padding-top:22px"><img src="Screenshot-2026-04-02-141237-2.jpg" alt="Rudolf-Harbig-Stadion Dresden" style="max-width:1060px;width:1060px;height:520px"></div><div class="bottom-copy reveal"><h2 class="title">Rudolf-Harbig-Stadion Dresden</h2><p class="capacity">Kapazität: <span>32.065 Zuschauer</span></p><p class="desc">Das Rudolf-Harbig-Stadion ist die Heimat von Dynamo Dresden und eines der traditionsreichsten Stadien in Ostdeutschland. Es wurde 1923 eröffnet und ist bekannt für seine Geschichte und leidenschaftlichen Fans.</p></div></div></section>
-  <section class="slide" data-slide="9"><div class="content stadium-layout"><div class="photo-wrap reveal"><img src="Screenshot-2026-04-02-141306-4.jpg" alt="Merkur Spiel-Arena Düsseldorf" style="max-width:430px;width:430px;height:610px"></div><div></div><div class="bottom-copy reveal"><h2 class="title">Merkur Spiel-Arena Düsseldorf</h2><p class="capacity">Kapazität: <span>54.600 Zuschauer</span></p><p class="desc">Die Merkur Spiel-Arena ist die Heimat von Fortuna Düsseldorf und eines der modernsten Stadien in Deutschland. Das Stadion wurde 2005 eröffnet und ist bekannt für seine beeindruckende Architektur und hervorragende Infrastruktur.</p></div></div></section>
+  <section class="slide" data-slide="2">
+    <div class="content stadium-layout">
+      <div class="photo-wrap reveal"><img src="./berlin2.jpeg" alt="Olympiastadion Berlin"></div>
+      <div class="side-copy reveal">
+        <h2 class="title">Olympiastadion Berlin</h2>
+        <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
+        <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="3">
+    <div class="content">
+      <div class="photo-wrap reveal" style="padding-top:20px">
+        <img src="./berlin2.jpeg" alt="Olympiastadion Berlin" style="max-width:1280px;width:1280px;height:540px">
+      </div>
+      <div class="bottom-copy reveal">
+        <h2 class="title">Olympiastadion Berlin</h2>
+        <p class="visit">Besucht: <span>11. Februar 2024</span></p>
+        <p class="capacity">Kapazität: <span>74.475 Zuschauer</span></p>
+        <p class="desc">Das Olympiastadion Berlin ist eines der größten Stadien Deutschlands und wurde 1936 für die Olympischen Spiele erbaut. Es ist die Heimat von Hertha BSC und wird auch für internationale Fußballspiele und andere Großveranstaltungen genutzt.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="4">
+    <div class="content">
+      <div class="photo-wrap reveal" style="padding-top:18px">
+        <img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg" style="max-width:1280px;width:1280px;height:520px">
+      </div>
+      <div class="bottom-copy reveal">
+        <h2 class="title">Volksparkstadion Hamburg</h2>
+        <p class="capacity">Kapazität: <span>57.000 Zuschauer</span></p>
+        <p class="desc">Das Volksparkstadion ist die Heimat des Hamburger SV (HSV) und eines der traditionsreichsten Stadien Deutschlands. Es wurde 1953 eröffnet und ist bekannt für seine leidenschaftlichen Fans.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="5">
+    <div class="content stadium-layout">
+      <div class="photo-wrap reveal"><img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg" style="max-width:420px;width:420px;height:610px"></div>
+      <div></div>
+      <div class="bottom-copy reveal">
+        <h2 class="title">Millerntor-Stadion Hamburg</h2>
+        <p class="capacity">Kapazität: <span>29.546 Zuschauer</span></p>
+        <p class="desc">Das Millerntor-Stadion ist die Heimat des FC St. Pauli und bekannt für seine einzigartige Atmosphäre und die leidenschaftlichen Fans. Es ist eines der kleineren, aber charaktervollsten Stadien Deutschlands.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="6">
+    <div class="content">
+      <div class="photo-wrap reveal" style="padding-top:20px">
+        <img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach" style="max-width:1060px;width:1060px;height:500px">
+      </div>
+      <div class="bottom-copy reveal">
+        <h2 class="title">Borussia-Park Mönchengladbach</h2>
+        <p class="capacity">Kapazität: <span>54.067 Zuschauer</span></p>
+        <p class="desc">Das Borussia-Park ist die Heimat von Borussia Mönchengladbach und eines der modernsten Stadien in Deutschland. Es wurde 2004 eröffnet und ist bekannt für seine hervorragende Infrastruktur und Atmosphäre.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="7">
+    <div class="content">
+      <div class="photo-wrap reveal" style="padding-top:22px">
+        <img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen" style="max-width:1160px;width:1160px;height:520px">
+      </div>
+      <div class="bottom-copy reveal">
+        <h2 class="title">Veltins-Arena Gelsenkirchen</h2>
+        <p class="capacity">Kapazität: <span>62.271 Zuschauer</span></p>
+        <p class="desc">Die Veltins-Arena ist die Heimat des FC Schalke 04 und eines der modernsten Stadien Deutschlands. Sie wurde 2001 eröffnet und ist bekannt für ihre beeindruckende Architektur und Technologie.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="8">
+    <div class="content">
+      <div class="photo-wrap reveal" style="padding-top:22px">
+        <img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden" style="max-width:1060px;width:1060px;height:520px">
+      </div>
+      <div class="bottom-copy reveal">
+        <h2 class="title">Rudolf-Harbig-Stadion Dresden</h2>
+        <p class="capacity">Kapazität: <span>32.065 Zuschauer</span></p>
+        <p class="desc">Das Rudolf-Harbig-Stadion ist die Heimat von Dynamo Dresden und eines der traditionsreichsten Stadien in Ostdeutschland. Es wurde 1923 eröffnet und ist bekannt für seine Geschichte und leidenschaftlichen Fans.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="9">
+    <div class="content stadium-layout">
+      <div class="photo-wrap reveal"><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf" style="max-width:430px;width:430px;height:610px"></div>
+      <div></div>
+      <div class="bottom-copy reveal">
+        <h2 class="title">Merkur Spiel-Arena Düsseldorf</h2>
+        <p class="capacity">Kapazität: <span>54.600 Zuschauer</span></p>
+        <p class="desc">Die Merkur Spiel-Arena ist die Heimat von Fortuna Düsseldorf und eines der modernsten Stadien in Deutschland. Das Stadion wurde 2005 eröffnet und ist bekannt für seine beeindruckende Architektur und hervorragende Infrastruktur.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide overview-slide" data-slide="10">
+    <div class="content">
+      <div class="overview-head reveal">
+        <h2>Alle besuchten Stadien</h2>
+        <p>Eine Übersicht meiner Stadionreisen auf einen Blick.</p>
+      </div>
+      <div class="stadium-grid reveal">
+        <div class="stadium-card"><img src="./berlin2.jpeg" alt="Olympiastadion Berlin"><div class="label">Olympiastadion Berlin</div></div>
+        <div class="stadium-card"><img src="./volksparkstadion.jpeg" alt="Volksparkstadion Hamburg"><div class="label">Volksparkstadion Hamburg</div></div>
+        <div class="stadium-card"><img src="./millerntor1.jpeg" alt="Millerntor-Stadion Hamburg"><div class="label">Millerntor-Stadion</div></div>
+        <div class="stadium-card"><img src="./gladbach.jpeg" alt="Borussia-Park Mönchengladbach"><div class="label">Borussia-Park</div></div>
+        <div class="stadium-card"><img src="./gelsenkirchen.jpeg" alt="Veltins-Arena Gelsenkirchen"><div class="label">Veltins-Arena</div></div>
+        <div class="stadium-card"><img src="./dresden.jpeg" alt="Rudolf-Harbig-Stadion Dresden"><div class="label">Rudolf-Harbig-Stadion</div></div>
+        <div class="stadium-card"><img src="./duesseldorf.jpeg" alt="Merkur Spiel-Arena Düsseldorf"><div class="label">Merkur Spiel-Arena</div></div>
+        <div class="stadium-card"><img src="./titel.jpeg" alt="Titelbild Stadionreisen"><div class="label">Stadionreisen</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide thanks-slide" data-slide="11">
+    <video class="thanks-video" autoplay muted loop playsinline>
+      <source src="./hintergrund.mp4" type="video/mp4">
+    </video>
+    <div class="thanks-overlay"></div>
+    <div class="thanks-content">
+      <h2 class="reveal">Vielen Dank<br>für eure Aufmerksamkeit</h2>
+      <p class="reveal">Danke fürs Zuhören.</p>
+    </div>
+  </section>
 </div>
 
 <div class="nav-controls">
   <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
   <div class="slide-dots" id="dots"></div>
   <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
-  <span class="slide-counter" id="counter">1 / 9</span>
+  <span class="slide-counter" id="counter">1 / 11</span>
 </div>
 
 <script>
