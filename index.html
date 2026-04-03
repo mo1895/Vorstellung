@@ -1337,8 +1337,8 @@
       html: function(){
         var out='<p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;">Bundesliga und 2. Bundesliga — Fußball pur mit klarem Fokus.</p>';
         var ligen=[
-          {name:'Bundesliga',    spiele:2, farbe:'#e63329', stadien:'St. Pauli, Gladbach'},
-          {name:'2. Bundesliga', spiele:52, farbe:'#ff8c42', stadien:'Berlin, Hamburg, Gelsenkirchen, Düsseldorf'},
+          {name:'Bundesliga',    spiele:'2×', farbe:'#e63329', stadien:'St. Pauli, Gladbach'},
+          {name:'2. Bundesliga', spiele:'52×', farbe:'#ff8c42', stadien:'Berlin, Hamburg, Gelsenkirchen, Düsseldorf'},
         ];
         out+='<div style="display:flex;flex-direction:column;gap:14px;">';
         ligen.forEach(function(l){
@@ -1347,7 +1347,7 @@
              +'<div style="display:flex;align-items:center;gap:10px;">'
              +'<div style="width:12px;height:12px;border-radius:50%;background:'+l.farbe+';"></div>'
              +'<span style="font-size:16px;font-weight:900;color:#fff;">'+l.name+'</span></div>'
-             +'<span style="font-size:22px;font-weight:900;color:'+l.farbe+';">'+l.spiele+'×</span>'
+             +'<span style="font-size:22px;font-weight:900;color:'+l.farbe+';">'+l.spiele+'</span>'
              +'</div>'
              +'<div style="font-size:12px;color:rgba(255,255,255,.35);">📍 '+l.stadien+'</div>'
              +'</div>';
