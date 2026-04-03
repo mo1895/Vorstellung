@@ -817,6 +817,7 @@
       <div class="lbox-img-side">
         <img id="lImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" />
         <video id="lVideo" style="width:100%;height:100%;object-fit:cover;display:none;" muted controls playsinline></video>
+        <img id="lPlaceholder" src="wappen.jpg" alt="Wappen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;opacity:0;transition:opacity .3s;filter:brightness(0.1);" />
       </div>
       <div class="lbox-info-side">
         <div class="lbox-info-eyebrow"><span></span><span id="lLiga">—</span></div>
@@ -1089,14 +1090,22 @@
     lVideo.currentTime=0;
     lImg.style.opacity = '0';
     lVideo.style.opacity = '0';
+    lPlaceholder.style.opacity = '0';
+    lPlaceholder.style.display = 'none';
   }
   function lStep(d){
-    // fade out
+    // Zeige Placeholder während Übergang
+    lPlaceholder.style.display = 'block';
+    lPlaceholder.style.opacity = '1';
     lImg.style.opacity = '0';
     lVideo.style.opacity = '0';
     setTimeout(function(){
-      li=(li+d+cards.length)%cards.length;
-      lOpen(li);
+      lPlaceholder.style.opacity = '0';
+      setTimeout(function(){
+        lPlaceholder.style.display = 'none';
+        li = (li + d + cards.length) % cards.length;
+        lOpen(li);
+      }, 300);
     }, 300);
   }
   cards.forEach(function(c,i){c.onclick=function(){lOpen(i);};});
