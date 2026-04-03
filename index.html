@@ -225,14 +225,33 @@
 
     .lbox{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.93);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .3s}
     .lbox.open{opacity:1;pointer-events:auto}
-    .lbox-inner{position:relative;width:min(95vw,1340px);height:min(85vh,820px);border-radius:14px;overflow:hidden;background:#080505;box-shadow:0 50px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05)}
-    .lbox-inner img{width:100%;height:100%;object-fit:cover;display:block}
-    .lbox-caption{position:absolute;left:0;right:0;bottom:0;padding:28px 30px;background:linear-gradient(to top,rgba(0,0,0,.96),transparent)}
-    .lbox-caption strong{display:block;font-size:22px;font-weight:800;color:#fff}
-    .lbox-caption small{font-size:13px;font-weight:500;color:rgba(255,255,255,.45)}
-    .lbox-count{position:absolute;top:18px;left:22px;font-size:12px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px}
-    .lbox-close{position:absolute;top:14px;right:14px;width:44px;height:44px;border:none;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:22px;cursor:pointer;z-index:2;transition:background .2s}
-    .lbox-arr{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border:none;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:28px;cursor:pointer;z-index:2;transition:background .2s,transform .2s;display:flex;align-items:center;justify-content:center}
+    .lbox-inner{position:relative;width:min(96vw,1200px);height:min(88vh,740px);border-radius:18px;overflow:hidden;background:#080505;box-shadow:0 50px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05);display:flex;}
+
+    /* Split layout */
+    .lbox-split{display:flex;width:100%;height:100%;}
+    .lbox-img-side{flex:1.2;position:relative;overflow:hidden;min-width:0;}
+    .lbox-img-side img{width:100%;height:100%;object-fit:cover;display:block;}
+    .lbox-img-side::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,rgba(8,5,5,.95) 100%),linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 40%);}
+    .lbox-info-side{width:340px;flex-shrink:0;padding:48px 36px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px;background:linear-gradient(145deg,#0f0707,#080505);border-left:1px solid rgba(255,255,255,.05);overflow-y:auto;}
+    @media(max-width:768px){.lbox-split{flex-direction:column;}.lbox-img-side{flex:none;height:45%;}.lbox-img-side::after{background:linear-gradient(to bottom,transparent 50%,rgba(8,5,5,.95) 100%);}.lbox-info-side{width:100%;padding:20px 22px 24px;gap:12px;}}
+
+    .lbox-info-eyebrow{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red2);}
+    .lbox-info-eyebrow span:first-child{display:block;width:18px;height:2px;background:var(--red2);border-radius:2px;}
+    .lbox-info-title{font-size:28px;font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:1.05;}
+    .lbox-info-divider{width:40px;height:2px;background:linear-gradient(90deg,var(--red),transparent);border-radius:2px;}
+    .lbox-info-rows{display:flex;flex-direction:column;gap:12px;}
+    .lbox-info-row{display:flex;align-items:flex-start;gap:12px;}
+    .lbox-info-icon{width:30px;height:30px;border-radius:50%;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.22);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;}
+    .lbox-info-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px;}
+    .lbox-info-val{font-size:13px;font-weight:700;color:#fff;line-height:1.4;}
+    .lbox-info-desc{font-size:13px;line-height:1.7;color:var(--muted);padding-top:14px;border-top:1px solid rgba(255,255,255,.06);}
+    .lbox-info-badge{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:5px 14px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.28);font-size:11px;font-weight:700;color:var(--red2);}
+
+    .lbox-count{position:absolute;top:16px;left:20px;font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;z-index:10;}
+    .lbox-close{position:absolute;top:14px;right:14px;width:44px;height:44px;border:none;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:22px;cursor:pointer;z-index:10;transition:background .2s;}
+    .lbox-close:hover{background:rgba(230,51,41,.5);}
+    .lbox-arr{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border:none;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:26px;cursor:pointer;z-index:10;transition:background .2s;display:flex;align-items:center;justify-content:center;}
+    .lbox-arr:hover{background:rgba(230,51,41,.45);}
     #lPrev{left:8px}#lNext{right:8px}
 
     .thanks-slide{position:absolute;inset:0;overflow:hidden;background:#030202}
@@ -243,9 +262,9 @@
     .b2{width:450px;height:450px;background:rgba(190,25,10,.14);bottom:-100px;right:-100px;animation-delay:2s}
     .b3{width:340px;height:340px;background:rgba(90,4,4,.18);top:35%;left:55%;animation-delay:4s}
     @keyframes pulse{from{opacity:.6;transform:scale(1)}to{opacity:1;transform:scale(1.1)}}
-    .thanks-vid-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:82%;height:78%;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px rgba(230,51,41,.2),0 40px 100px rgba(0,0,0,.95);z-index:1}
+    .thanks-vid-frame{position:absolute;inset:0;overflow:hidden;z-index:1}
     .thanks-vid-frame video{width:100%;height:100%;object-fit:cover;display:block}
-    .thanks-vid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.65);z-index:2}
+    .thanks-vid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:2}
     .thanks-content{position:relative;z-index:3;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
     .thanks-eyebrow{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--red2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
     .thanks-eyebrow span{display:block;width:24px;height:2px;background:var(--red2);border-radius:2px}
@@ -626,14 +645,14 @@
           </div>
         </div>
         <div class="ov-grid r">
-          <div class="ov-card" data-full="berlin2.jpeg" data-title="Olympiastadion Berlin" data-sub="Berlin · 2024"><img src="berlin2.jpeg" alt="Berlin" loading="lazy"><div class="ov-num">01</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Olympiastadion Berlin<small>Berlin · 2024</small></div></div>
-          <div class="ov-card" data-full="volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg" data-sub="Hamburg · Mai 2024"><img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy"><div class="ov-num">02</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Volksparkstadion<small>Hamburg · Mai 2024</small></div></div>
-          <div class="ov-card" data-full="millerntor.jpeg" data-title="Millerntor-Stadion" data-sub="Hamburg · Mai 2024"><img src="millerntor.jpeg" alt="Millerntor" loading="lazy"><div class="ov-num">03</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Millerntor-Stadion<small>Hamburg · Mai 2024</small></div></div>
-          <div class="ov-card" data-full="gladbach.jpeg" data-title="Borussia-Park" data-sub="Mönchengladbach · Sep 2024"><img src="gladbach.jpeg" alt="Gladbach" loading="lazy"><div class="ov-num">04</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Borussia-Park<small>Mönchengladbach · Sep 2024</small></div></div>
-          <div class="ov-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena" data-sub="Gelsenkirchen · Dez 2024"><img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="ov-num">05</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Veltins-Arena<small>Gelsenkirchen · Dez 2024</small></div></div>
-          <div class="ov-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion" data-sub="Dresden · Aug 2023"><img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="ov-num">06</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Rudolf-Harbig-Stadion<small>Dresden · Aug 2023</small></div></div>
-          <div class="ov-card" data-full="fortuna.JPEG" data-title="Merkur Spiel-Arena" data-sub="Düsseldorf · Dez 2025"><img src="fortuna.JPEG" alt="Düsseldorf" loading="lazy"><div class="ov-num">07</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Merkur Spiel-Arena<small>Düsseldorf · Dez 2025</small></div></div>
-          <div class="ov-card" data-full="pyro.jpeg" data-title="Pyro" data-sub="Atmosphäre pur"><img src="pyro.jpeg" alt="Pyro" loading="lazy"><div class="ov-num">⚽</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Atmosphäre<small>Pyro & Stimmung</small></div></div>
+          <div class="ov-card" data-full="berlin2.jpeg" data-title="Olympiastadion Berlin" data-sub="Berlin · 2024" data-liga="2. Bundesliga" data-datum="14. Februar 2024" data-zuschauer="74.475" data-spiel="Hertha BSC vs. FC Schalke 04" data-info="Das Olympiastadion wurde 1936 für die Olympischen Spiele erbaut und fasst über 74.000 Zuschauer. Ein Winterspiel bei 2°C — die Stimmung war trotzdem heiß."><img src="berlin2.jpeg" alt="Berlin" loading="lazy"><div class="ov-num">01</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Olympiastadion Berlin<small>Berlin · 2024</small></div></div>
+          <div class="ov-card" data-full="volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg" data-sub="Hamburg · Mai 2024" data-liga="2. Bundesliga" data-datum="19. Mai 2024" data-zuschauer="57.000" data-spiel="Hamburger SV vs. Fortuna Düsseldorf" data-info="Heimat des traditionsreichen Hamburger SV — eröffnet 1953. Der einzige Verein, der durchgehend in der Bundesliga spielte bis zum Abstieg 2018. Die Nordkurve gehört zu den lautesten Deutschlands."><img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy"><div class="ov-num">02</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Volksparkstadion<small>Hamburg · Mai 2024</small></div></div>
+          <div class="ov-card" data-full="millerntor.jpeg" data-title="Millerntor-Stadion" data-sub="Hamburg · Mai 2024" data-liga="Bundesliga" data-datum="20. Mai 2024" data-zuschauer="29.546" data-spiel="FC St. Pauli vs. 1. FC Kaiserslautern" data-info="Heimat des FC St. Pauli — klein, laut und einzigartig. Der Besuch fiel mit der Aufstiegsfeier in die Bundesliga zusammen. Die Stimmung war unbeschreiblich."><img src="millerntor.jpeg" alt="Millerntor" loading="lazy"><div class="ov-num">03</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Millerntor-Stadion<small>Hamburg · Mai 2024</small></div></div>
+          <div class="ov-card" data-full="gladbach.jpeg" data-title="Borussia-Park" data-sub="Mönchengladbach · Sep 2024" data-liga="Bundesliga" data-datum="14. September 2024" data-zuschauer="54.067" data-spiel="Borussia MG vs. Bayer 04 Leverkusen" data-info="Eines der modernsten Stadien Deutschlands — eröffnet 2004, komplett freistehendes Dach und perfekte Sichtlinien. Mein nächstgelegenes Bundesliga-Stadion."><img src="gladbach.jpeg" alt="Gladbach" loading="lazy"><div class="ov-num">04</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Borussia-Park<small>Mönchengladbach · Sep 2024</small></div></div>
+          <div class="ov-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena" data-sub="Gelsenkirchen · Dez 2024" data-liga="2. Bundesliga" data-datum="14. Dezember 2024" data-zuschauer="62.271" data-spiel="FC Schalke 04 vs. Hamburger SV" data-info="Die Veltins-Arena ist ein technisches Meisterwerk — eröffnet 2001 mit einfahrbarem Rasen und verschiebbarem Dach. Die Nordkurve beim Flutlichtspiel im Dezember war beeindruckend."><img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="ov-num">05</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Veltins-Arena<small>Gelsenkirchen · Dez 2024</small></div></div>
+          <div class="ov-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion" data-sub="Dresden · Aug 2023" data-liga="3. Liga" data-datum="23. August 2023" data-zuschauer="32.065" data-spiel="Dynamo Dresden vs. Fortuna Düsseldorf" data-info="Benannt nach Leichtathletik-Star Rudolf Harbig — Heimat von Dynamo Dresden, einem der traditionsreichsten Vereine Ostdeutschlands. Die Fans gelten als besonders leidenschaftlich."><img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="ov-num">06</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Rudolf-Harbig-Stadion<small>Dresden · Aug 2023</small></div></div>
+          <div class="ov-card" data-full="fortuna.JPEG" data-title="Merkur Spiel-Arena" data-sub="Düsseldorf · Dez 2025" data-liga="2. Bundesliga" data-datum="05. Dezember 2025" data-zuschauer="54.600" data-spiel="Fortuna Düsseldorf vs. Hamburger SV" data-info="Die Merkur Spiel-Arena ist seit 2005 die Heimat meines Herzensvereins Fortuna Düsseldorf. Die Südkurve ist laut, leidenschaftlich und treu. Alte Liebe rostet nicht. ❤️🤍"><img src="fortuna.JPEG" alt="Düsseldorf" loading="lazy"><div class="ov-num">07</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Merkur Spiel-Arena<small>Düsseldorf · Dez 2025</small></div></div>
+          <div class="ov-card" data-full="pyro.jpeg" data-title="Atmosphäre & Pyro" data-sub="Stimmung pur" data-liga="—" data-datum="Verschiedene Spiele" data-zuschauer="—" data-spiel="Mehrere Stadien" data-info="Pyro, Gesang, Choreos — die Seele des Fußballs. Diese Momente machen jeden Stadionbesuch unvergesslich. Kein Bildschirm kann das ersetzen."><img src="pyro.jpeg" alt="Pyro" loading="lazy"><div class="ov-num">⚽</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Atmosphäre<small>Pyro & Stimmung</small></div></div>
         </div>
       </div>
     </div>
@@ -719,8 +738,25 @@
     <button class="lbox-close" id="lClose">&times;</button>
     <button class="lbox-arr" id="lPrev">&#8249;</button>
     <button class="lbox-arr" id="lNext">&#8250;</button>
-    <img id="lImg" src="" alt="">
-    <div class="lbox-caption"><strong id="lTitle"></strong><small id="lSub"></small></div>
+
+    <!-- Split: Bild links, Infos rechts -->
+    <div class="lbox-split">
+      <div class="lbox-img-side">
+        <img id="lImg" src="" alt="">
+      </div>
+      <div class="lbox-info-side">
+        <div class="lbox-info-eyebrow"><span></span><span id="lLiga">—</span></div>
+        <h2 id="lTitle" class="lbox-info-title"></h2>
+        <div class="lbox-info-divider"></div>
+        <div class="lbox-info-rows">
+          <div class="lbox-info-row"><div class="lbox-info-icon">📅</div><div><div class="lbox-info-label">Datum</div><div class="lbox-info-val" id="lDatum">—</div></div></div>
+          <div class="lbox-info-row"><div class="lbox-info-icon">⚽</div><div><div class="lbox-info-label">Spiel</div><div class="lbox-info-val" id="lSpiel">—</div></div></div>
+          <div class="lbox-info-row"><div class="lbox-info-icon">👥</div><div><div class="lbox-info-label">Zuschauer</div><div class="lbox-info-val" id="lZuschauer">—</div></div></div>
+        </div>
+        <p id="lInfo" class="lbox-info-desc"></p>
+        <div class="lbox-info-badge" id="lBadge"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -932,12 +968,23 @@
   // Lightbox
   var lbox=document.getElementById('lbox');
   var lImg=document.getElementById('lImg');
-  var lTitle=document.getElementById('lTitle');
-  var lSub=document.getElementById('lSub');
   var lCount=document.getElementById('lCount');
   var cards=document.querySelectorAll('.ov-card');
   var li=0;var lTx=0;
-  function lOpen(i){li=i;lImg.src=cards[i].dataset.full;lTitle.textContent=cards[i].dataset.title;lSub.textContent=cards[i].dataset.sub||'';lCount.textContent=pad(i+1)+' / '+pad(cards.length);lbox.classList.add('open');}
+  function lOpen(i){
+    li=i;
+    var c=cards[i];
+    lImg.src=c.dataset.full;
+    document.getElementById('lTitle').textContent=c.dataset.title;
+    document.getElementById('lLiga').textContent=c.dataset.liga||'—';
+    document.getElementById('lDatum').textContent=c.dataset.datum||'—';
+    document.getElementById('lSpiel').textContent=c.dataset.spiel||'—';
+    document.getElementById('lZuschauer').textContent=c.dataset.zuschauer||'—';
+    document.getElementById('lInfo').textContent=c.dataset.info||'';
+    document.getElementById('lBadge').textContent='🏟 '+( c.dataset.liga||'—');
+    lCount.textContent=pad(i+1)+' / '+pad(cards.length);
+    lbox.classList.add('open');
+  }
   function lClose(){lbox.classList.remove('open');}
   function lStep(d){li=(li+d+cards.length)%cards.length;lOpen(li);}
   cards.forEach(function(c,i){c.onclick=function(){lOpen(i);};});
