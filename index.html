@@ -674,7 +674,7 @@
 
   <!-- SLIDE 10 — CHART -->
   <section class="slide" data-slide="10">
-    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="slide-bg" style="background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('liebe.png') center/cover no-repeat;opacity:0.14;mix-blend-mode:soft-light;"></div><div class="accent-line"></div>
     <div class="content">
       <div class="chart-wrap">
         <div class="r">
@@ -696,7 +696,7 @@
 
   <!-- SLIDE 11 — STATS -->
   <section class="slide" data-slide="11">
-    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="slide-bg" style="background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('liebe.png') center/cover no-repeat;opacity:0.14;mix-blend-mode:soft-light;"></div><div class="accent-line"></div>
     <div class="content">
       <div class="stats-grid">
         <div class="stats-head r">
@@ -757,6 +757,7 @@
 
   <!-- SLIDE 12 — DANKE -->
   <section class="slide thanks-slide" data-slide="12">
+    <div class="slide-bg" style="background:linear-gradient(rgba(0,0,0,.46),rgba(0,0,0,.46)),url('liebe.png') center/cover no-repeat;opacity:0.1;mix-blend-mode:soft-light;"></div>
     <div class="bokeh b1"></div><div class="bokeh b2"></div><div class="bokeh b3"></div>
     <div class="thanks-vid-frame">
       <video id="thanksVideo" muted loop playsinline preload="auto">
@@ -1168,12 +1169,12 @@
       icon:'🏟', title:'7 besuchte Stadien',
       html: function(){
         var rows=[
-          {name:'Olympiastadion Berlin',    km:580, year:'2024'},
-          {name:'Volksparkstadion Hamburg', km:480, year:'2024'},
-          {name:'Millerntor-Stadion',       km:480, year:'2024'},
+          {name:'Merkur Spiel-Arena',       km:25,  year:'2025'},
           {name:'Borussia-Park',            km:45,  year:'2024'},
           {name:'Veltins-Arena',            km:60,  year:'2024'},
-          {name:'Merkur Spiel-Arena',       km:25,  year:'2025'},
+          {name:'Volksparkstadion Hamburg', km:480, year:'2024'},
+          {name:'Millerntor-Stadion',       km:480, year:'2024'},
+          {name:'Olympiastadion Berlin',    km:580, year:'2024'},
           {name:'Rudolf-Harbig-Stadion',    km:680, year:'2023'},
         ];
         var max=680;
@@ -1190,7 +1191,7 @@
         out+='</div>';
         out+='<div style="margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:28px;">'
            +'<div><div style="font-size:28px;font-weight:900;color:#fff;">6</div><div style="font-size:11px;color:var(--muted);">Städte</div></div>'
-           +'<div><div style="font-size:28px;font-weight:900;color:#fff;">3</div><div style="font-size:11px;color:var(--muted);">Ligen</div></div>'
+           +'<div><div style="font-size:28px;font-weight:900;color:#fff;">2</div><div style="font-size:11px;color:var(--muted);">Ligen</div></div>'
            +'<div><div style="font-size:28px;font-weight:900;color:#fff;">2023–25</div><div style="font-size:11px;color:var(--muted);">Zeitraum</div></div>'
            +'</div>';
         return out;
