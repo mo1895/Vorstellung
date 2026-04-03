@@ -949,8 +949,14 @@
   }
 
   function handleVideo(n){
-    if(n===12){thanksVideo.currentTime=0;thanksVideo.play().catch(function(){});}
-    else{thanksVideo.pause();thanksVideo.currentTime=0;}
+    if(!thanksVideo) return;
+    if(n===12){
+      thanksVideo.currentTime=0;
+      thanksVideo.play().catch(function(){});
+    } else {
+      thanksVideo.pause();
+      thanksVideo.currentTime=0;
+    }
   }
 
   function go(n){
