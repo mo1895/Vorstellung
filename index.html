@@ -62,9 +62,7 @@
     .qr-popup-img-wrap{
       background:#fff;border-radius:20px;padding:16px;
       box-shadow:0 0 0 1px rgba(230,51,41,.2),0 20px 60px rgba(0,0,0,.7),0 0 40px rgba(230,51,41,.15);
-      transition:transform .3s ease;
     }
-    .qr-popup-img-wrap:hover{transform:scale(1.04);}
     .qr-popup-img-wrap img{width:260px;height:260px;display:block;}
 
     @media(max-width:480px){
@@ -287,9 +285,52 @@
 <body>
 
 <!-- ══════════════════════════════════════════════
+     FOTO POPUP — erscheint zuerst
+     ══════════════════════════════════════════════ -->
+<div id="foto-popup-overlay" style="position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(18px);animation:qrFadeIn .6s cubic-bezier(.4,0,.2,1) forwards;">
+  <div id="foto-popup-box" style="position:relative;background:linear-gradient(145deg,#110808,#0c0505);border:1px solid rgba(230,51,41,.35);border-radius:28px;padding:52px 56px 48px;display:flex;flex-direction:column;align-items:center;gap:24px;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 40px 100px rgba(0,0,0,.95),0 0 80px rgba(230,51,41,.12);animation:qrPopIn .65s cubic-bezier(.34,1.56,.64,1) forwards;max-width:92vw;text-align:center;">
+
+    <!-- roter Balken oben -->
+    <div style="content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:28px 28px 0 0;background:linear-gradient(90deg,transparent,var(--red),var(--red2),#ffb347,transparent);"></div>
+
+    <!-- X Button -->
+    <button onclick="closeFotoPopup()" style="position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;transition:background .2s;" onmouseover="this.style.background='rgba(230,51,41,.25)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)'">&times;</button>
+
+    <!-- Kamera Icon -->
+    <div style="width:80px;height:80px;border-radius:50%;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.3);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 30px rgba(230,51,41,.2);">📸</div>
+
+    <!-- Eyebrow -->
+    <div style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2);display:flex;align-items:center;gap:10px;">
+      <span style="display:block;width:22px;height:2px;background:var(--red2);border-radius:2px;"></span>
+      Hinweis
+      <span style="display:block;width:22px;height:2px;background:var(--red2);border-radius:2px;"></span>
+    </div>
+
+    <!-- Titel -->
+    <div style="font-size:36px;font-weight:900;letter-spacing:-2px;color:#fff;line-height:1.1;">
+      Alle Fotos<br><em style="font-style:italic;background:linear-gradient(100deg,var(--red),var(--red2),#ffb36b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">selbst gemacht!</em>
+    </div>
+
+    <!-- Text -->
+    <p style="font-size:15px;color:var(--muted);font-weight:500;line-height:1.7;max-width:340px;">
+      Jedes einzelne Foto in dieser Präsentation wurde von mir <strong style="color:#fff;">persönlich vor Ort</strong> aufgenommen — bei jedem Wetter, in jedem Stadion.
+    </p>
+
+    <!-- Divider -->
+    <div style="width:60px;height:2px;background:linear-gradient(90deg,var(--red),transparent);border-radius:2px;"></div>
+
+    <!-- Weiter Button -->
+    <button onclick="closeFotoPopup()" style="padding:14px 40px;border:none;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--red2));color:#fff;font-size:14px;font-weight:800;letter-spacing:1px;cursor:pointer;font-family:'Montserrat',sans-serif;box-shadow:0 8px 24px rgba(230,51,41,.4);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 32px rgba(230,51,41,.6)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 8px 24px rgba(230,51,41,.4)'">
+      Verstanden ✓
+    </button>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
      QR POPUP — erscheint sofort beim Laden
      ══════════════════════════════════════════════ -->
-<div id="qr-popup-overlay">
+<div id="qr-popup-overlay" style="display:none;">
   <div id="qr-popup-box">
     <button class="qr-close-btn" id="qrClose" title="Schließen">&times;</button>
 
@@ -297,16 +338,14 @@
       <span></span>Finn Moritz · Stadionreisen<span></span>
     </div>
 
-    <div class="qr-popup-title">Scan mich&<br><em>bleib auf dem Laufenden!</em></div>
+    <div class="qr-popup-title">Scan mich &amp;<br><em>bleib auf dem Laufenden!</em></div>
 
-    <a href="https://mo1895.github.io/Vorstellung/" target="_blank" style="text-decoration:none;">
-      <div class="qr-popup-img-wrap">
-        <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://mo1895.github.io/Vorstellung/&color=000000&bgcolor=ffffff&margin=2"
-          alt="QR Code – mo1895.github.io/Vorstellung"
-        >
-      </div>
-    </a>
+    <div class="qr-popup-img-wrap" style="cursor:default;pointer-events:none;">
+      <img
+        src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://mo1895.github.io/Vorstellung/&color=000000&bgcolor=ffffff&margin=2"
+        alt="QR Code – mo1895.github.io/Vorstellung"
+      >
+    </div>
 
     <div class="qr-popup-handle">📸 <strong>@_mo.1895_</strong> &nbsp;·&nbsp; mo1895.github.io</div>
 
@@ -701,6 +740,24 @@
 (function(){
 
   /* ═══════════════════════════════════
+     FOTO POPUP (erscheint zuerst)
+  ═══════════════════════════════════ */
+  window.closeFotoPopup = function(){
+    var fo = document.getElementById('foto-popup-overlay');
+    fo.style.animation = 'qrFadeOut .5s cubic-bezier(.4,0,.2,1) forwards';
+    setTimeout(function(){
+      fo.style.display = 'none';
+      // QR Popup einblenden
+      var qo = document.getElementById('qr-popup-overlay');
+      qo.style.display = 'flex';
+      qo.style.animation = 'none';
+      void qo.offsetHeight; // reflow
+      qo.style.animation = 'qrFadeIn .6s cubic-bezier(.4,0,.2,1) forwards';
+      startQRTimer();
+    }, 500);
+  };
+
+  /* ═══════════════════════════════════
      QR POPUP LOGIC
   ═══════════════════════════════════ */
   var qrOverlay  = document.getElementById('qr-popup-overlay');
@@ -708,23 +765,29 @@
   var timerCircle= document.getElementById('timerCircle');
   var timerNum   = document.getElementById('timerNum');
   var TOTAL_SECS = 30;
-  var circumference = 2 * Math.PI * 22; // r=22 → ≈138.2
+  var circumference = 2 * Math.PI * 22;
+  var qrInterval = null;
 
   timerCircle.style.strokeDasharray  = circumference;
   timerCircle.style.strokeDashoffset = 0;
 
-  var remaining = TOTAL_SECS;
-  var qrInterval = setInterval(function(){
-    remaining--;
+  function startQRTimer(){
+    var remaining = TOTAL_SECS;
     timerNum.textContent = remaining;
-    var offset = circumference * (1 - remaining / TOTAL_SECS);
-    timerCircle.style.strokeDashoffset = offset;
-    if(remaining <= 0){ clearInterval(qrInterval); closeQR(); }
-  }, 1000);
+    timerCircle.style.strokeDashoffset = 0;
+    if(qrInterval) clearInterval(qrInterval);
+    qrInterval = setInterval(function(){
+      remaining--;
+      timerNum.textContent = remaining;
+      var offset = circumference * (1 - remaining / TOTAL_SECS);
+      timerCircle.style.strokeDashoffset = offset;
+      if(remaining <= 0){ closeQR(); }
+    }, 1000);
+  }
 
   function closeQR(){
-    clearInterval(qrInterval);
-    qrOverlay.classList.add('hiding');
+    if(qrInterval){ clearInterval(qrInterval); qrInterval = null; }
+    qrOverlay.style.animation = 'qrFadeOut .6s cubic-bezier(.4,0,.2,1) forwards';
     setTimeout(function(){
       qrOverlay.style.display = 'none';
     }, 600);
