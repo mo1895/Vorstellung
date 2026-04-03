@@ -671,7 +671,7 @@
           <div class="ov-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena" data-sub="Gelsenkirchen · Dez 2024" data-liga="2. Bundesliga" data-datum="14. Dezember 2024" data-zuschauer="62.271" data-spiel="FC Schalke 04 vs. Hamburger SV" data-info="Die Veltins-Arena ist ein technisches Meisterwerk — eröffnet 2001 mit einfahrbarem Rasen und verschiebbarem Dach. Die Nordkurve beim Flutlichtspiel im Dezember war beeindruckend."><img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="ov-num">05</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Veltins-Arena<small>Gelsenkirchen · Dez 2024</small></div></div>
           <div class="ov-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion" data-sub="Dresden · Aug 2023" data-liga="3. Liga" data-datum="23. August 2023" data-zuschauer="32.065" data-spiel="Dynamo Dresden vs. Fortuna Düsseldorf" data-info="Benannt nach Leichtathletik-Star Rudolf Harbig — Heimat von Dynamo Dresden, einem der traditionsreichsten Vereine Ostdeutschlands. Die Fans gelten als besonders leidenschaftlich."><img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="ov-num">06</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Rudolf-Harbig-Stadion<small>Dresden · Aug 2023</small></div></div>
           <div class="ov-card" data-full="liebe.png" data-title="Merkur Spiel-Arena" data-sub="Düsseldorf · Dez 2025" data-liga="2. Bundesliga" data-datum="05. Dezember 2025" data-zuschauer="54.600" data-spiel="Fortuna Düsseldorf vs. Hamburger SV" data-info="Die Merkur Spiel-Arena ist seit 2005 die Heimat meines Herzensvereins Fortuna Düsseldorf. Die Südkurve ist laut, leidenschaftlich und treu. Alte Liebe rostet nicht. ❤️🤍"><img src="liebe.png" alt="Düsseldorf" loading="lazy"><div class="ov-num">07</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Merkur Spiel-Arena<small>Düsseldorf · Dez 2025</small></div></div>
-          <div class="ov-card" data-full="hintergrund.mp4" data-title="Atmosphäre & Pyro" data-sub="Stimmung pur" data-liga="—" data-datum="Verschiedene Spiele" data-zuschauer="—" data-spiel="Mehrere Stadien" data-info="Pyro, Gesang, Choreos — die Seele des Fußballs. Diese Momente machen jeden Stadionbesuch unvergesslich. Kein Bildschirm kann das ersetzen."><img src="fortuna.jpeg" alt="Düsseldorf" loading="lazy"></video><div class="ov-num">⚽</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Atmosphäre<small>Pyro & Stimmung</small></div></div>
+          <div class="ov-card" data-full="hintergrund.mp4" data-title="Atmosphäre & Pyro" data-sub="Stimmung pur" data-liga="—" data-datum="Verschiedene Spiele" data-zuschauer="—" data-spiel="Mehrere Stadien" data-info="Pyro, Gesang, Choreos — die Seele des Fußballs. Diese Momente machen jeden Stadionbesuch unvergesslich. Kein Bildschirm kann das ersetzen."><img src="pyro.jpeg" alt="Pyro" loading="lazy"><div class="ov-num">⚽</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Atmosphäre<small>Pyro & Stimmung</small></div></div>
         </div>
       </div>
     </div>
@@ -814,7 +814,8 @@
     <!-- Split: Bild links, Infos rechts -->
     <div class="lbox-split">
       <div class="lbox-img-side">
-        <img id="lImg" src="" alt="">
+        <img id="lImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <video id="lVideo" style="width:100%;height:100%;object-fit:cover;display:none;" muted controls playsinline></video>
       </div>
       <div class="lbox-info-side">
         <div class="lbox-info-eyebrow"><span></span><span id="lLiga">—</span></div>
@@ -1046,13 +1047,26 @@
   // Lightbox
   var lbox=document.getElementById('lbox');
   var lImg=document.getElementById('lImg');
+  var lVideo=document.getElementById('lVideo');
   var lCount=document.getElementById('lCount');
   var cards=document.querySelectorAll('.ov-card');
   var li=0;var lTx=0;
   function lOpen(i){
     li=i;
     var c=cards[i];
-    lImg.src=c.dataset.full;
+    if(c.dataset.full && c.dataset.full.toLowerCase().endsWith('.mp4')){
+      lImg.style.display='none';
+      lVideo.style.display='block';
+      lVideo.src=c.dataset.full;
+      lVideo.currentTime=0;
+      lVideo.play().catch(function(){});
+    } else {
+      lVideo.pause();
+      lVideo.style.display='none';
+      lVideo.src='';
+      lImg.style.display='block';
+      lImg.src=c.dataset.full || '';
+    }
     document.getElementById('lTitle').textContent=c.dataset.title;
     document.getElementById('lLiga').textContent=c.dataset.liga||'—';
     document.getElementById('lDatum').textContent=c.dataset.datum||'—';
@@ -1063,7 +1077,11 @@
     lCount.textContent=pad(i+1)+' / '+pad(cards.length);
     lbox.classList.add('open');
   }
-  function lClose(){lbox.classList.remove('open');}
+  function lClose(){
+    lbox.classList.remove('open');
+    lVideo.pause();
+    lVideo.currentTime=0;
+  }
   function lStep(d){li=(li+d+cards.length)%cards.length;lOpen(li);}
   cards.forEach(function(c,i){c.onclick=function(){lOpen(i);};});
   document.getElementById('lClose').onclick=lClose;
