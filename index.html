@@ -244,7 +244,8 @@
     /* Split layout */
     .lbox-split{display:flex;width:100%;height:100%;}
     .lbox-img-side{flex:1.2;position:relative;overflow:hidden;min-width:0;}
-    .lbox-img-side img{width:100%;height:100%;object-fit:cover;display:block;}
+    .lbox-img-side img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s;}
+    .lbox-img-side video{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s;}
     .lbox-img-side::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,rgba(8,5,5,.95) 100%),linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 40%);}
     .lbox-info-side{width:340px;flex-shrink:0;padding:48px 36px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px;background:linear-gradient(145deg,#0f0707,#080505);border-left:1px solid rgba(255,255,255,.05);overflow-y:auto;}
     @media(max-width:768px){.lbox-split{flex-direction:column;}.lbox-img-side{flex:none;height:45%;}.lbox-img-side::after{background:linear-gradient(to bottom,transparent 50%,rgba(8,5,5,.95) 100%);}.lbox-info-side{width:100%;padding:20px 22px 24px;gap:12px;}}
@@ -1076,13 +1077,28 @@
     document.getElementById('lBadge').textContent='🏟 '+( c.dataset.liga||'—');
     lCount.textContent=pad(i+1)+' / '+pad(cards.length);
     lbox.classList.add('open');
+    // fade in
+    setTimeout(function(){
+      lImg.style.opacity = '1';
+      lVideo.style.opacity = '1';
+    }, 50);
   }
   function lClose(){
     lbox.classList.remove('open');
     lVideo.pause();
     lVideo.currentTime=0;
+    lImg.style.opacity = '0';
+    lVideo.style.opacity = '0';
   }
-  function lStep(d){li=(li+d+cards.length)%cards.length;lOpen(li);}
+  function lStep(d){
+    // fade out
+    lImg.style.opacity = '0';
+    lVideo.style.opacity = '0';
+    setTimeout(function(){
+      li=(li+d+cards.length)%cards.length;
+      lOpen(li);
+    }, 300);
+  }
   cards.forEach(function(c,i){c.onclick=function(){lOpen(i);};});
   document.getElementById('lClose').onclick=lClose;
   document.getElementById('lNext').onclick=function(){lStep(1);};
