@@ -1,221 +1,1432 @@
-// ===============================
-// UTILITIES
-// ===============================
-const $ = (id) => document.getElementById(id);
-const $$ = (sel) => document.querySelectorAll(sel);
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <title>Finn Moritz – Stadionreisen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;0,900;1,900&display=swap" rel="stylesheet">
+  <style>
+    :root{--red:#e63329;--red2:#ff4f43;--bg:#060404;--muted:#b0a6a4;--text:#f5efee}
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;background:var(--bg);font-family:'Montserrat',sans-serif;color:var(--text);overflow:hidden;touch-action:none}
 
-// ===============================
-// CLOCK MODULE
-// ===============================
-const Clock = (() => {
-  function update() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    $('clock-el').textContent = `${h}:${m}`;
+    /* ── QR POPUP ── */
+    #qr-popup-overlay{
+      position:fixed;inset:0;z-index:2000;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.88);backdrop-filter:blur(18px);
+      animation:qrFadeIn .6s cubic-bezier(.4,0,.2,1) forwards;
+    }
+    #qr-popup-overlay.hiding{animation:qrFadeOut .6s cubic-bezier(.4,0,.2,1) forwards;}
+    @keyframes qrFadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes qrFadeOut{from{opacity:1}to{opacity:0;pointer-events:none}}
+
+    #qr-popup-box{
+      position:relative;
+      background:linear-gradient(145deg,#110808,#0c0505);
+      border:1px solid rgba(230,51,41,.35);
+      border-radius:28px;
+      padding:48px 52px 44px;
+      display:flex;flex-direction:column;align-items:center;gap:28px;
+      box-shadow:0 0 0 1px rgba(255,255,255,.04),0 40px 100px rgba(0,0,0,.95),0 0 80px rgba(230,51,41,.12);
+      animation:qrPopIn .65s cubic-bezier(.34,1.56,.64,1) forwards;
+      max-width:92vw;
+    }
+    @keyframes qrPopIn{from{transform:scale(.7) translateY(40px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+
+    #qr-popup-box::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;
+      border-radius:28px 28px 0 0;
+      background:linear-gradient(90deg,transparent,var(--red),var(--red2),#ffb347,transparent);
+    }
+
+    .qr-popup-eyebrow{
+      font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+      color:var(--red2);display:flex;align-items:center;gap:10px;
+    }
+    .qr-popup-eyebrow span{display:block;width:22px;height:2px;background:var(--red2);border-radius:2px;}
+
+    .qr-popup-title{
+      font-size:42px;font-weight:900;letter-spacing:-2.5px;color:#fff;text-align:center;line-height:.9;
+    }
+    .qr-popup-title em{
+      font-style:italic;
+      background:linear-gradient(100deg,var(--red),var(--red2),#ffb36b);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+
+    .qr-popup-sub{font-size:14px;color:var(--muted);text-align:center;font-weight:500;line-height:1.6;max-width:320px;}
+
+    .qr-popup-img-wrap{
+      background:#fff;border-radius:20px;padding:16px;
+      box-shadow:0 0 0 1px rgba(230,51,41,.2),0 20px 60px rgba(0,0,0,.7),0 0 40px rgba(230,51,41,.15);
+    }
+    .qr-popup-img-wrap img{width:260px;height:260px;display:block;}
+
+    @media(max-width:480px){
+      #qr-popup-box{padding:36px 28px 32px;}
+      .qr-popup-img-wrap img{width:200px;height:200px;}
+      .qr-popup-title{font-size:32px;}
+    }
+
+    .qr-popup-handle{
+      font-size:15px;font-weight:700;color:rgba(255,255,255,.6);
+      display:flex;align-items:center;gap:8px;
+    }
+    .qr-popup-handle strong{color:#fff;}
+
+    /* Timer ring */
+    .qr-timer-wrap{position:relative;width:52px;height:52px;}
+    .qr-timer-wrap svg{transform:rotate(-90deg);}
+    .qr-timer-circle{
+      fill:none;stroke:rgba(230,51,41,.15);stroke-width:3;
+    }
+    .qr-timer-progress{
+      fill:none;stroke:var(--red2);stroke-width:3;stroke-linecap:round;
+      stroke-dasharray:138;stroke-dashoffset:0;
+      transition:stroke-dashoffset 1s linear;
+    }
+    .qr-timer-num{
+      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      font-size:15px;font-weight:800;color:#fff;
+    }
+
+    .qr-close-btn{
+      position:absolute;top:16px;right:16px;
+      width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);
+      font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .2s,color .2s,transform .15s;
+    }
+    .qr-close-btn:hover{background:rgba(230,51,41,.25);color:#fff;transform:scale(1.1);}
+
+    /* ── REST OF ORIGINAL STYLES ── */
+    #progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:600;background:linear-gradient(90deg,#7b0000,var(--red),var(--red2),#ffb347);box-shadow:0 0 20px 4px rgba(230,51,41,.75);transition:width .5s cubic-bezier(.4,0,.2,1)}
+    body::after{content:'';position:fixed;inset:0;z-index:400;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.5;mix-blend-mode:overlay}
+
+    .deck{width:100vw;height:100vh;position:relative}
+    .slide{position:absolute;inset:0;opacity:0;pointer-events:none;overflow:hidden;transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);transform:translateX(70px) scale(.96)}
+    .slide.active{opacity:1!important;transform:none!important;pointer-events:auto}
+    .slide-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 55% 70% at 105% 50%,rgba(110,8,8,.28) 0%,transparent 65%),radial-gradient(ellipse 35% 60% at -5% 30%,rgba(70,5,5,.35) 0%,transparent 60%),linear-gradient(155deg,#0f0706 0%,#060404 55%,#0c0605 100%)}
+    .accent-line{position:absolute;left:58px;top:0;bottom:0;width:2px;z-index:1;background:linear-gradient(to bottom,transparent 4%,var(--red) 25%,var(--red2) 75%,transparent 96%);box-shadow:0 0 22px 3px rgba(230,51,41,.55)}
+    .content{position:relative;z-index:2;width:100%;height:100%;padding:50px 66px 80px 88px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+    @media(max-width:768px){
+      .accent-line{left:18px}
+      .content{padding:60px 18px 90px 36px}
+      .cover-grid{grid-template-columns:1fr!important}
+      .cover-right{display:none}
+      .cover-h1{font-size:48px!important;letter-spacing:-3px!important}
+      .cover-sub{font-size:14px!important}
+      .stad-grid3{grid-template-columns:1fr!important;grid-template-rows:auto!important;gap:14px!important;height:auto!important;padding-bottom:20px}
+      .stad-img-wrap{height:200px!important}
+      .stad-num{font-size:60px!important}
+      .stad-title{font-size:26px!important}
+      .trikot-col{flex-direction:row!important;justify-content:flex-start!important;gap:16px!important;height:auto!important}
+      .trikot-slot{width:80px!important;height:100px!important}
+      .ov-grid{grid-template-columns:repeat(2,1fr)!important;grid-template-rows:repeat(4,1fr)!important}
+      .ov-title{font-size:32px!important}
+      .chart-title{font-size:28px!important}
+      .bar-label{width:110px!important;font-size:11px!important}
+      .stats-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}
+      .stat-num{font-size:36px!important}
+      .stats-head h2{font-size:28px!important}
+      .thanks-h2{font-size:52px!important;letter-spacing:-3px!important}
+      .nav{padding:8px 14px!important;gap:8px!important}
+      .dots{display:none!important}
+      #f95link{font-size:11px!important;padding:5px 10px!important;top:12px!important;left:12px!important}
+      #clock-el{font-size:11px!important;padding:5px 10px!important;top:12px!important;right:12px!important}
+    }
+
+    #particles{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+    .fb{position:absolute;font-size:22px;animation:fall linear infinite;opacity:0;user-select:none}
+    @keyframes fall{0%{transform:translateY(-40px) rotate(0deg);opacity:.7}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+    .cover-grid{display:grid;grid-template-columns:1fr 400px;height:100%;align-items:stretch}
+    .cover-left{display:flex;flex-direction:column;justify-content:center;padding-right:54px}
+    .eyebrow-row{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2);margin-bottom:24px}
+    .eyebrow-row span{display:block;width:28px;height:2px;background:var(--red2);border-radius:2px}
+    .cover-h1{font-size:82px;line-height:.86;font-weight:900;letter-spacing:-5px;color:#fff;margin-bottom:30px}
+    .cover-h1 em{font-style:italic;background:linear-gradient(100deg,var(--red) 0%,var(--red2) 50%,#ffb36b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .cover-sub{font-size:16px;line-height:1.7;color:var(--muted);max-width:480px;margin-bottom:34px}
+    .cover-tags{display:flex;gap:9px;flex-wrap:wrap}
+    .tag{padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(230,51,41,.35);color:var(--red2);background:rgba(230,51,41,.07)}
+    .cover-right{position:relative;overflow:hidden}
+    .cover-right img{width:100%;height:100%;object-fit:cover;filter:brightness(.88) saturate(1.1)}
+    .cover-right::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(6,4,4,.7) 0%,transparent 45%)}
+    .cover-right::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(6,4,4,.55) 0%,transparent 50%)}
+
+    .stad-grid3{display:grid;grid-template-columns:1fr 1fr 170px;gap:36px;height:100%;align-items:center}
+    .stad-img-wrap{position:relative;height:calc(100vh - 110px);overflow:hidden;border-radius:6px}
+    .stad-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(.85) saturate(1.08);transition:transform 9s ease;transform:scale(1.06)}
+    .slide.active .stad-img-wrap img{transform:scale(1)}
+    .stad-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(6,4,4,.6) 0%,transparent 50%),linear-gradient(to top,rgba(6,4,4,.65) 0%,transparent 55%)}
+    .stad-img-wrap::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 70px 0 rgba(180,15,15,.15)}
+    .stad-img-wrap .img-bar{position:absolute;bottom:0;left:0;right:0;z-index:2;height:3px;background:linear-gradient(90deg,var(--red),var(--red2),transparent);box-shadow:0 0 14px 2px rgba(230,51,41,.5)}
+    .stad-text{display:flex;flex-direction:column;justify-content:center;gap:14px}
+    .stad-num{font-size:110px;line-height:1;font-weight:900;letter-spacing:-8px;color:transparent;-webkit-text-stroke:1px rgba(230,51,41,.15);user-select:none;margin-bottom:-22px}
+    .stad-eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2)}
+    .stad-eyebrow span{display:block;width:22px;height:2px;background:var(--red2);border-radius:2px}
+    .stad-title{font-size:40px;line-height:.93;font-weight:900;letter-spacing:-2px;color:#fff}
+    .stad-divider{width:48px;height:2px;background:linear-gradient(90deg,var(--red),transparent);border-radius:2px}
+    .stad-meta{display:flex;flex-direction:column;gap:7px}
+    .stad-row{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:var(--muted)}
+    .stad-row strong{color:#fff;font-weight:800}
+    .stad-icon{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:rgba(230,51,41,.12);border:1px solid rgba(230,51,41,.25);display:flex;align-items:center;justify-content:center;font-size:11px}
+    .stad-desc{font-size:13px;line-height:1.7;color:var(--muted);padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+    .stad-badge{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:6px 16px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.28);font-size:11px;font-weight:700;color:var(--red2)}
+
+    .trikot-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;height:100%}
+    .trikot-slot{width:150px;height:185px;border-radius:14px;border:2px dashed rgba(230,51,41,.3);background:rgba(230,51,41,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;position:relative;transition:border-color .25s,background .25s}
+    .trikot-slot img{width:100%;height:100%;object-fit:contain;display:block}
+    .trikot-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;text-align:center}
+
+    .ov-wrap{display:flex;flex-direction:column;gap:20px;height:100%}
+    .ov-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .ov-title{font-size:50px;font-weight:900;letter-spacing:-2.5px;color:#fff}
+    .ov-chips{display:flex;gap:9px;flex-wrap:wrap}
+    .ov-chip{padding:6px 15px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(230,51,41,.35);color:var(--red2);background:rgba(230,51,41,.07)}
+    .ov-sub{font-size:14px;color:var(--muted);margin-top:4px}
+    .ov-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:11px;flex:1;min-height:0}
+    .ov-card{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;background:#0e0909;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:transform .3s ease,box-shadow .3s ease}
+    .ov-card:active{transform:scale(.97)}
+    .ov-card img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.7) saturate(.85);transition:filter .4s ease,transform .5s ease;transform:scale(1.05)}
+    .ov-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 0%,transparent 55%)}
+    .ov-card-label{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:14px 15px 12px;font-size:13px;font-weight:800;color:#fff;line-height:1.3}
+    .ov-card-label small{display:block;font-size:10px;font-weight:500;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:.5px}
+    .ov-zoom{position:absolute;top:10px;right:10px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0;transition:opacity .3s}
+    .ov-card:hover .ov-zoom{opacity:1}
+    .ov-num{position:absolute;top:10px;left:12px;z-index:2;font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px}
+
+    .chart-wrap{display:flex;flex-direction:column;gap:24px;height:100%}
+    .chart-title{font-size:48px;font-weight:900;letter-spacing:-2px;color:#fff}
+    .chart-sub{font-size:14px;color:var(--muted);margin-top:4px}
+    .bars{display:flex;flex-direction:column;gap:14px;flex:1;justify-content:center}
+    .bar-row{display:flex;align-items:center;gap:16px}
+    .bar-label{font-size:13px;font-weight:700;color:var(--muted);width:200px;flex-shrink:0;text-align:right}
+    .bar-track{flex:1;height:36px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:4px;width:0%;transition:width 1.2s cubic-bezier(.4,0,.2,1);background:linear-gradient(90deg,var(--red),var(--red2));box-shadow:0 0 12px rgba(230,51,41,.4);display:flex;align-items:center;justify-content:flex-end;padding-right:10px}
+    .bar-fill span{font-size:12px;font-weight:800;color:#fff;white-space:nowrap}
+    .bar-home{background:linear-gradient(90deg,#c0392b,#e74c3c,#ff6b6b,#ffb347)}
+
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;height:100%}
+    .stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:32px 28px;display:flex;flex-direction:column;justify-content:center;gap:12px;transition:border-color .3s,background .3s;position:relative;overflow:hidden}
+    .stat-card:hover{border-color:rgba(230,51,41,.25);background:rgba(230,51,41,.06)}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),transparent)}
+    .stat-icon{font-size:32px}
+    .stat-num{font-size:54px;font-weight:900;letter-spacing:-3px;color:#fff;line-height:1}
+    .stat-num em{font-style:normal;font-size:28px;color:var(--red2)}
+    .stat-label{font-size:14px;font-weight:600;color:var(--muted)}
+    .stat-detail{font-size:12px;color:rgba(255,255,255,.25);margin-top:4px}
+    .stat-hint{font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(230,51,41,.5);text-transform:uppercase;margin-top:10px;opacity:0;transition:opacity .2s;}
+    .stat-card:hover .stat-hint{opacity:1;}
+    .stat-card[data-stat]{transition:border-color .3s,background .3s,transform .2s,box-shadow .2s;}
+    .stat-card[data-stat]:hover{border-color:rgba(230,51,41,.5);background:rgba(230,51,41,.08);transform:translateY(-3px);box-shadow:0 12px 32px rgba(230,51,41,.15);}
+    .stat-card[data-stat]:active{transform:scale(.97);}
+
+    /* Popup chart bars */
+    .sp-bar-track{flex:1;height:28px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden;}
+    .sp-bar-fill{height:100%;border-radius:4px;width:0%;background:linear-gradient(90deg,var(--red),var(--red2));display:flex;align-items:center;justify-content:flex-end;padding-right:8px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+    .sp-bar-fill span{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;}
+    .sp-bar-label{font-size:12px;font-weight:700;color:var(--muted);width:160px;flex-shrink:0;text-align:right;}
+    .sp-donut-wrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+    .sp-legend-item{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#fff;}
+    .sp-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+    .stats-head{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
+    .stats-head h2{font-size:48px;font-weight:900;letter-spacing:-2px;color:#fff}
+
+    .lbox{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.93);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .3s}
+    .lbox.open{opacity:1;pointer-events:auto}
+    .lbox-inner{position:relative;width:min(96vw,1200px);height:min(88vh,740px);border-radius:18px;overflow:hidden;background:#080505;box-shadow:0 50px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.05);display:flex;}
+
+    /* Split layout */
+    .lbox-split{display:flex;width:100%;height:100%;}
+    .lbox-img-side{flex:1.2;position:relative;overflow:hidden;min-width:0;}
+    .lbox-img-side img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s;}
+    .lbox-img-side video{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s;}
+    .lbox-img-side::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,rgba(8,5,5,.95) 100%),linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 40%);}
+    .lbox-info-side{width:340px;flex-shrink:0;padding:48px 36px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px;background:linear-gradient(145deg,#0f0707,#080505);border-left:1px solid rgba(255,255,255,.05);overflow-y:auto;}
+    @media(max-width:768px){.lbox-split{flex-direction:column;}.lbox-img-side{flex:none;height:45%;}.lbox-img-side::after{background:linear-gradient(to bottom,transparent 50%,rgba(8,5,5,.95) 100%);}.lbox-info-side{width:100%;padding:20px 22px 24px;gap:12px;}}
+
+    .lbox-info-eyebrow{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red2);}
+    .lbox-info-eyebrow span:first-child{display:block;width:18px;height:2px;background:var(--red2);border-radius:2px;}
+    .lbox-info-title{font-size:28px;font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:1.05;}
+    .lbox-info-divider{width:40px;height:2px;background:linear-gradient(90deg,var(--red),transparent);border-radius:2px;}
+    .lbox-info-rows{display:flex;flex-direction:column;gap:12px;}
+    .lbox-info-row{display:flex;align-items:flex-start;gap:12px;}
+    .lbox-info-icon{width:30px;height:30px;border-radius:50%;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.22);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;}
+    .lbox-info-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px;}
+    .lbox-info-val{font-size:13px;font-weight:700;color:#fff;line-height:1.4;}
+    .lbox-info-desc{font-size:13px;line-height:1.7;color:var(--muted);padding-top:14px;border-top:1px solid rgba(255,255,255,.06);}
+    .lbox-info-badge{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:5px 14px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.28);font-size:11px;font-weight:700;color:var(--red2);}
+
+    .lbox-count{position:absolute;top:16px;left:20px;font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;z-index:10;}
+    .lbox-close{position:absolute;top:14px;right:14px;width:44px;height:44px;border:none;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:22px;cursor:pointer;z-index:10;transition:background .2s;}
+    .lbox-close:hover{background:rgba(230,51,41,.5);}
+    .lbox-arr{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border:none;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:26px;cursor:pointer;z-index:10;transition:background .2s;display:flex;align-items:center;justify-content:center;}
+    .lbox-arr:hover{background:rgba(230,51,41,.45);}
+    #lPrev{left:8px}#lNext{right:8px}
+
+    .thanks-slide{position:absolute;inset:0;overflow:hidden;background:#030202}
+    .thanks-slide .slide-bg{display:block;z-index:0}
+    .thanks-slide .accent-line{display:none}
+    .thanks-vid-frame{position:absolute;inset:0;overflow:hidden;z-index:1;opacity:.24}
+    .thanks-vid-frame video{width:100%;height:100%;object-fit:cover;display:block}
+    .thanks-vid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.22);z-index:2}
+    .bokeh{position:absolute;border-radius:50%;filter:blur(90px);z-index:0;pointer-events:none;animation:pulse 6s ease-in-out infinite alternate}
+    .b1{width:560px;height:560px;background:rgba(140,8,8,.2);top:-130px;left:-130px}
+    .b2{width:450px;height:450px;background:rgba(190,25,10,.14);bottom:-100px;right:-100px;animation-delay:2s}
+    .b3{width:340px;height:340px;background:rgba(90,4,4,.18);top:35%;left:55%;animation-delay:4s}
+    @keyframes pulse{from{opacity:.6;transform:scale(1)}to{opacity:1;transform:scale(1.1)}}
+    .thanks-vid-frame{position:absolute;inset:0;overflow:hidden;z-index:1}
+    .thanks-vid-frame video{width:100%;height:100%;object-fit:cover;display:block}
+    .thanks-vid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:2}
+    .thanks-content{position:relative;z-index:3;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
+    .thanks-eyebrow{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--red2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .thanks-eyebrow span{display:block;width:24px;height:2px;background:var(--red2);border-radius:2px}
+    .thanks-h2{font-size:88px;line-height:.85;font-weight:900;letter-spacing:-6px;color:#fff;text-shadow:0 10px 50px rgba(0,0,0,.7);margin-bottom:18px}
+    .thanks-h2 em{font-style:italic;background:linear-gradient(100deg,var(--red),var(--red2),#ffb36b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .thanks-sub{font-size:17px;color:var(--muted);font-weight:500;margin-bottom:28px}
+    .qr-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .qr-box{width:160px;height:160px;background:#fff;border-radius:14px;padding:10px;display:flex;align-items:center;justify-content:center}
+    .qr-box img{width:100%;height:100%;object-fit:contain}
+    .qr-label{font-size:13px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1px}
+
+    #konami{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:linear-gradient(135deg,#e63329,#fff,#e63329,#fff,#e63329);background-size:400% 400%;animation:kbg 1s ease infinite}
+    #konami.show{display:flex}
+    @keyframes kbg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    #konami h2{font-size:60px;font-weight:900;letter-spacing:-3px;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.3);text-align:center;animation:kpop .5s ease infinite alternate}
+    @keyframes kpop{from{transform:scale(1)}to{transform:scale(1.05)}}
+    #konami p{font-size:20px;font-weight:700;color:rgba(255,255,255,.8)}
+    #konami-close{margin-top:20px;padding:14px 36px;border:none;border-radius:999px;background:rgba(0,0,0,.25);color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif}
+    #konami-canvas{position:absolute;inset:0;pointer-events:none}
+    #konami-hint{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:550;background:rgba(230,51,41,.15);border:1px solid rgba(230,51,41,.3);border-radius:999px;padding:6px 16px;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--red2);text-transform:uppercase;opacity:0;transition:opacity .5s;pointer-events:none;white-space:nowrap}
+
+    #confetti{position:fixed;inset:0;pointer-events:none;z-index:10;display:none}
+
+    #swipe-hint{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:490;display:none;align-items:center;gap:8px;font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;animation:fadeHint 3s forwards}
+    @keyframes fadeHint{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0}}
+
+    .nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:500;display:flex;align-items:center;gap:12px;background:rgba(12,8,8,.85);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px);padding:10px 20px;border-radius:999px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+    .nav-btn{width:44px;height:44px;border:none;border-radius:50%;background:rgba(255,255,255,.07);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s}
+    .nav-btn:active{background:rgba(230,51,41,.65);transform:scale(.95)}
+    .dots{display:flex;gap:7px;align-items:center}
+    .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:background .25s,width .25s,border-radius .25s}
+    .dot.on{background:#fff;width:20px;border-radius:4px}
+    .nav-count{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);min-width:32px;text-align:center;letter-spacing:1px}
+    .r{opacity:0;transform:translateY(24px)}
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     FOTO POPUP — erscheint zuerst
+     ══════════════════════════════════════════════ -->
+<div id="foto-popup-overlay" style="position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(18px);animation:qrFadeIn .6s cubic-bezier(.4,0,.2,1) forwards;">
+  <div id="foto-popup-box" style="position:relative;background:linear-gradient(145deg,#110808,#0c0505);border:1px solid rgba(230,51,41,.35);border-radius:28px;padding:52px 56px 48px;display:flex;flex-direction:column;align-items:center;gap:24px;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 40px 100px rgba(0,0,0,.95),0 0 80px rgba(230,51,41,.12);animation:qrPopIn .65s cubic-bezier(.34,1.56,.64,1) forwards;max-width:92vw;text-align:center;">
+
+    <!-- roter Balken oben -->
+    <div style="content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:28px 28px 0 0;background:linear-gradient(90deg,transparent,var(--red),var(--red2),#ffb347,transparent);"></div>
+
+    <!-- X Button -->
+    <button onclick="closeFotoPopup()" style="position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;transition:background .2s;" onmouseover="this.style.background='rgba(230,51,41,.25)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.5)'">&times;</button>
+
+    <!-- Kamera Icon -->
+    <div style="width:80px;height:80px;border-radius:50%;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.3);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 30px rgba(230,51,41,.2);">📸</div>
+
+    <!-- Eyebrow -->
+    <div style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red2);display:flex;align-items:center;gap:10px;">
+      <span style="display:block;width:22px;height:2px;background:var(--red2);border-radius:2px;"></span>
+      Hinweis
+      <span style="display:block;width:22px;height:2px;background:var(--red2);border-radius:2px;"></span>
+    </div>
+
+    <!-- Titel -->
+    <div style="font-size:36px;font-weight:900;letter-spacing:-2px;color:#fff;line-height:1.1;">
+      Alle Fotos<br><em style="font-style:italic;background:linear-gradient(100deg,var(--red),var(--red2),#ffb36b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">selbst gemacht!</em>
+    </div>
+
+    <!-- Text -->
+    <p style="font-size:15px;color:var(--muted);font-weight:500;line-height:1.7;max-width:340px;">
+      Jedes einzelne Foto in dieser Präsentation wurde von mir <strong style="color:#fff;">persönlich vor Ort</strong> aufgenommen — bei jedem Wetter, in jedem Stadion.
+    </p>
+
+    <!-- Divider -->
+    <div style="width:60px;height:2px;background:linear-gradient(90deg,var(--red),transparent);border-radius:2px;"></div>
+
+    <!-- Weiter Button -->
+    <button onclick="closeFotoPopup()" style="padding:14px 40px;border:none;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--red2));color:#fff;font-size:14px;font-weight:800;letter-spacing:1px;cursor:pointer;font-family:'Montserrat',sans-serif;box-shadow:0 8px 24px rgba(230,51,41,.4);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 32px rgba(230,51,41,.6)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 8px 24px rgba(230,51,41,.4)'">
+      Verstanden ✓
+    </button>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     QR POPUP — erscheint sofort beim Laden
+     ══════════════════════════════════════════════ -->
+<div id="qr-popup-overlay" style="display:none;">
+  <div id="qr-popup-box">
+    <button class="qr-close-btn" id="qrClose" title="Schließen">&times;</button>
+
+    <div class="qr-popup-eyebrow">
+      <span></span>Finn Moritz · Stadionreisen<span></span>
+    </div>
+
+    <div class="qr-popup-title">Scan mich &amp;<br><em>bleib auf dem Laufenden!</em></div>
+
+    <div class="qr-popup-img-wrap" style="cursor:default;pointer-events:none;">
+      <img
+        src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://mo1895.github.io/Vorstellung/&color=000000&bgcolor=ffffff&margin=2"
+        alt="QR Code – mo1895.github.io/Vorstellung"
+      >
+    </div>
+
+    <div class="qr-popup-handle">📸 <strong>@_mo.1895_</strong> &nbsp;·&nbsp; mo1895.github.io</div>
+
+    <p class="qr-popup-sub">Scanne den QR-Code, um die Präsentation auf deinem Handy zu öffnen — oder tippe auf den Code.</p>
+
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="qr-timer-wrap">
+        <svg width="52" height="52" viewBox="0 0 52 52">
+          <circle class="qr-timer-circle" cx="26" cy="26" r="22"/>
+          <circle class="qr-timer-progress" id="timerCircle" cx="26" cy="26" r="22"/>
+        </svg>
+        <div class="qr-timer-num" id="timerNum">30</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600;line-height:1.5;">Schließt sich<br>automatisch</div>
+    </div>
+  </div>
+</div>
+
+<!-- F95 Link oben links -->
+<a id="f95link" href="https://www.fortuna-duesseldorf.de" target="_blank" style="position:fixed;top:18px;left:28px;z-index:550;font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.45);background:rgba(12,8,8,.7);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px);padding:6px 14px;border-radius:999px;text-decoration:none">⚽ Fortuna Düsseldorf</a>
+
+<!-- Uhrzeit oben rechts -->
+<div id="clock-el" style="position:fixed;top:18px;right:28px;z-index:550;font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.45);background:rgba(12,8,8,.7);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px);padding:6px 14px;border-radius:999px"></div>
+
+<div id="progress"></div>
+<canvas id="confetti"></canvas>
+<div id="konami-hint">🎮 Konami Code aktiv...</div>
+<div id="swipe-hint">← Wischen zum Navigieren →</div>
+<div id="konami">
+  <canvas id="konami-canvas"></canvas>
+  <h2>⚽ Alte Liebe<br>rostet nicht!</h2>
+  <p>❤️🤍 Fortuna Düsseldorf 🤍❤️</p>
+  <button id="konami-close">Weitermachen</button>
+</div>
+
+<div class="deck">
+
+  <!-- SLIDE 1 — COVER -->
+  <section class="slide active" data-slide="1">
+    <div class="slide-bg"></div>
+    <div id="particles"></div>
+    <div class="accent-line"></div>
+    <div class="content">
+      <div class="cover-grid">
+        <div class="cover-left">
+          <div class="eyebrow-row r"><span></span>Persönliche Präsentation</div>
+          <h1 class="cover-h1 r">Mein<br>Hobby:<br><em>Stadion&shy;reisen</em></h1>
+          <p class="cover-sub r">Ich reise durch Deutschland und besuche jedes Stadion — durch Spiele, Führungen oder einfach einen Besuch. Mein Ziel: Ich war schon drinnen.</p>
+          <div class="cover-tags r">
+            <span class="tag">Finn Moritz</span>
+            <span class="tag">Fachinformatiker SI</span>
+            <span class="tag">Fortuna Düsseldorf</span>
+            <span class="tag">7 Stadien</span>
+          </div>
+          <div class="r" style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:50%;background:rgba(230,51,41,.12);border:1px solid rgba(230,51,41,.25);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">📸</div>
+            <div>
+              <div style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px">Alle Fotos selbst aufgenommen</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">Jedes Bild wurde von mir persönlich vor Ort fotografiert</div>
+            </div>
+          </div>
+        </div>
+        <div class="cover-right r">
+          <video src="hintergrund.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — Berlin -->
+  <section class="slide" data-slide="2">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stad-grid3">
+        <div class="stad-img-wrap r"><img src="berlin2.jpeg" alt="Berlin" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-text">
+          <div class="stad-num r">01</div>
+          <div class="stad-eyebrow r"><span></span>Berlin</div>
+          <h2 class="stad-title r">Olympia&shy;stadion Berlin</h2>
+          <div class="stad-divider r"></div>
+          <div class="stad-meta">
+            <div class="stad-row r"><div class="stad-icon">📅</div><strong>14 Februar 2024</strong></div>
+            <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>74.475</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Hertha BSC vs. FC Schalke 04</div></div>
+            <div class="stad-row r"><div class="stad-icon">🌡</div><div>Winterspiel — ca. <strong>2°C</strong></div></div>
+          </div>
+          <p class="stad-desc r">Mein Besuch im Olympiastadion — war super nice! Die Atmosphäre bei Flutlicht und Kälte war unvergesslich. Das Stadion war nahezu ausverkauft und die Stimmung trotz Minusgrade heiß.</p>
+          <div class="stad-badge r">🏟 2. Bundesliga</div>
+        </div>
+        <div class="trikot-col r">
+          <div class="trikot-slot"><img src="herthatrikot.jpeg" alt="Hertha Trikot"></div>
+          <div class="trikot-label">Hertha BSC</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — Hamburg Volkspark -->
+  <section class="slide" data-slide="3">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stad-grid3">
+        <div class="stad-img-wrap r"><img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-text">
+          <div class="stad-num r">02</div>
+          <div class="stad-eyebrow r"><span></span>Hamburg</div>
+          <h2 class="stad-title r">Volkspark&shy;stadion Hamburg</h2>
+          <div class="stad-divider r"></div>
+          <div class="stad-meta">
+            <div class="stad-row r"><div class="stad-icon">📅</div><strong>19 Mai 2024</strong></div>
+            <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>57.000</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Hamburger SV vs. Fortuna Düsseldorf</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>480 km</strong> von Neuss entfernt</div></div>
+          </div>
+          <p class="stad-desc r">Heimat des traditionsreichen Hamburger SV — eröffnet 1953. Der einzige Verein der durchgehend in der Bundesliga spielte bis zum Abstieg 2018. Die Nordkurve gehört zu den lautesten Deutschlands.</p>
+          <div class="stad-badge r">🏟 2. Bundesliga</div>
+        </div>
+        <div class="trikot-col r">
+          <div class="trikot-slot"><img src="hsvtrikot.jpeg" alt="HSV Trikot"></div>
+          <div class="trikot-label">Hamburger SV</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — Millerntor -->
+  <section class="slide" data-slide="4">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stad-grid3">
+        <div class="stad-img-wrap r"><img src="millerntor.jpeg" alt="Millerntor" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-text">
+          <div class="stad-num r">03</div>
+          <div class="stad-eyebrow r"><span></span>Hamburg</div>
+          <h2 class="stad-title r">Millerntor-Stadion</h2>
+          <div class="stad-divider r"></div>
+          <div class="stad-meta">
+            <div class="stad-row r"><div class="stad-icon">📅</div><strong>20 Mai 2024</strong></div>
+            <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>29.546</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>FC St. Pauli vs. 1. FC Kaiserslautern</div></div>
+            <div class="stad-row r"><div class="stad-icon">🏆</div><div>Aufstiegsspiel zur Bundesliga</div></div>
+          </div>
+          <p class="stad-desc r">Heimat des FC St. Pauli im Hamburger Stadtteil St. Pauli — klein, laut und einzigartig. Der Besuch fiel mit der Aufstiegsfeier in die Bundesliga zusammen — die Stimmung war unbeschreiblich.</p>
+          <div class="stad-badge r">🏟 Bundesliga</div>
+        </div>
+        <div class="trikot-col r">
+          <div class="trikot-slot"><img src="stpaulitrikot.jpeg" alt="St. Pauli Trikot"></div>
+          <div class="trikot-label">FC St. Pauli</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — Gladbach -->
+  <section class="slide" data-slide="5">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stad-grid3">
+        <div class="stad-img-wrap r"><img src="gladbach.jpeg" alt="Gladbach" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-text">
+          <div class="stad-num r">04</div>
+          <div class="stad-eyebrow r"><span></span>Mönchengladbach</div>
+          <h2 class="stad-title r">Borussia-Park</h2>
+          <div class="stad-divider r"></div>
+          <div class="stad-meta">
+            <div class="stad-row r"><div class="stad-icon">📅</div><strong>14 September 2024</strong></div>
+            <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>54.067</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Borussia MG vs. Bayer 04 Leverkusen</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>45 km</strong> von Neuss entfernt</div></div>
+          </div>
+          <p class="stad-desc r">Eines der modernsten Stadien Deutschlands — eröffnet 2004, komplett freistehendes Dach und perfekte Sichtlinien von jedem Platz. Mein nächstgelegenes Bundesliga-Stadion.</p>
+          <div class="stad-badge r">🏟 Bundesliga</div>
+        </div>
+        <div class="trikot-col r">
+          <div class="trikot-slot"><img src="bmgtrikot.jpeg" alt="BMG Trikot"></div>
+          <div class="trikot-label">Borussia MG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — Gelsenkirchen -->
+  <section class="slide" data-slide="6">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stad-grid3">
+        <div class="stad-img-wrap r"><img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-text">
+          <div class="stad-num r">05</div>
+          <div class="stad-eyebrow r"><span></span>Gelsenkirchen</div>
+          <h2 class="stad-title r">Veltins-Arena</h2>
+          <div class="stad-divider r"></div>
+          <div class="stad-meta">
+            <div class="stad-row r"><div class="stad-icon">📅</div><strong>14 Dezember 2024</strong></div>
+            <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>62.271</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>FC Schalke 04 vs. Hamburger SV</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>60 km</strong> von Neuss entfernt</div></div>
+          </div>
+          <p class="stad-desc r">Die Veltins-Arena ist ein technisches Meisterwerk — eröffnet 2001 mit einfahrbarem Rasen und verschiebbarem Dach. Die Nordkurve beim Flutlichtspiel im Dezember war schlicht beeindruckend.</p>
+          <div class="stad-badge r">🏟 2. Bundesliga</div>
+        </div>
+        <div class="trikot-col r">
+          <div class="trikot-slot"><img src="schlake04trikot.jpeg" alt="Schalke Trikot"></div>
+          <div class="trikot-label">FC Schalke 04</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — Dresden -->
+  <section class="slide" data-slide="7">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stad-grid3">
+        <div class="stad-img-wrap r"><img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-text">
+          <div class="stad-num r">06</div>
+          <div class="stad-eyebrow r"><span></span>Dresden</div>
+          <h2 class="stad-title r">Rudolf-Harbig-Stadion</h2>
+          <div class="stad-divider r"></div>
+          <div class="stad-meta">
+            <div class="stad-row r"><div class="stad-icon">📅</div><strong>23 August 2023</strong></div>
+            <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>32.065</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Dynamo Dresden vs. Fortuna Düsseldorf</div></div>
+            <div class="stad-row r"><div class="stad-icon">🚗</div><div><strong>680 km</strong> von Neuss entfernt</div></div>
+          </div>
+          <p class="stad-desc r">Benannt nach dem deutschen Leichtathletik-Star Rudolf Harbig — Heimat von Dynamo Dresden, einem der traditionsreichsten Vereine Ostdeutschlands. Die Dresdner Fans gelten als besonders leidenschaftlich.</p>
+          <div class="stad-badge r">🏟 3. Liga</div>
+        </div>
+        <div class="trikot-col r">
+          <div class="trikot-slot"><img src="dresdentrikot.jpeg" alt="Dresden Trikot"></div>
+          <div class="trikot-label">Dynamo Dresden</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 — Düsseldorf -->
+  <section class="slide" data-slide="8">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stad-grid3">
+        <div class="stad-img-wrap r"><img src="liebe.png" alt="Liebe" loading="lazy"><div class="img-bar"></div></div>
+        <div class="stad-text">
+          <div class="stad-num r">07</div>
+          <div class="stad-eyebrow r"><span></span>Düsseldorf</div>
+          <h2 class="stad-title r">Merkur Spiel-Arena</h2>
+          <div class="stad-divider r"></div>
+          <div class="stad-meta">
+            <div class="stad-row r"><div class="stad-icon">📅</div><strong>05 Dezember 2025</strong></div>
+            <div class="stad-row r"><div class="stad-icon">👥</div><div><strong>54.600</strong> Zuschauer</div></div>
+            <div class="stad-row r"><div class="stad-icon">📍</div><div>Fortuna Düsseldorf vs. Hamburger SV</div></div>
+            <div class="stad-row r"><div class="stad-icon">🏠</div><div>Mein <strong>Heimstadion</strong></div></div>
+          </div>
+          <p class="stad-desc r">Die Merkur Spiel-Arena ist seit 2005 die Heimat meines Herzensvereins Fortuna Düsseldorf. Die Südkurve ist laut, leidenschaftlich und treu. Alte Liebe rostet nicht. ❤️🤍</p>
+          <div class="stad-badge r">❤️ Heimstadion</div>
+        </div>
+        <div class="trikot-col r">
+          <div class="trikot-slot"><img src="fortunatrikot.jpeg" alt="Fortuna Trikot"></div>
+          <div class="trikot-label" style="color:rgba(255,180,80,.5)">Fortuna F95 ❤️</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 — OVERVIEW -->
+  <section class="slide" data-slide="9">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="ov-wrap">
+        <div class="ov-head r">
+          <div>
+            <h2 class="ov-title">Alle Stadien</h2>
+            <p class="ov-sub">Tippe auf ein Bild zum Vergrößern.</p>
+          </div>
+          <div class="ov-chips">
+            <span class="ov-chip">7 Stadien</span>
+            <span class="ov-chip">6 Städte</span>
+            <span class="ov-chip">2023–2025</span>
+          </div>
+        </div>
+        <div class="ov-grid r">
+          <div class="ov-card" data-full="berlin2.jpeg" data-title="Olympiastadion Berlin" data-sub="Berlin · 2024" data-liga="2. Bundesliga" data-datum="14. Februar 2024" data-zuschauer="74.475" data-spiel="Hertha BSC vs. FC Schalke 04" data-info="Das Olympiastadion wurde 1936 für die Olympischen Spiele erbaut und fasst über 74.000 Zuschauer. Ein Winterspiel bei 2°C — die Stimmung war trotzdem heiß."><img src="berlin2.jpeg" alt="Berlin" loading="lazy"><div class="ov-num">01</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Olympiastadion Berlin<small>Berlin · 2024</small></div></div>
+          <div class="ov-card" data-full="volksparkstadion.jpeg" data-title="Volksparkstadion Hamburg" data-sub="Hamburg · Mai 2024" data-liga="2. Bundesliga" data-datum="19. Mai 2024" data-zuschauer="57.000" data-spiel="Hamburger SV vs. Fortuna Düsseldorf" data-info="Heimat des traditionsreichen Hamburger SV — eröffnet 1953. Der einzige Verein, der durchgehend in der Bundesliga spielte bis zum Abstieg 2018. Die Nordkurve gehört zu den lautesten Deutschlands."><img src="volksparkstadion.jpeg" alt="Hamburg" loading="lazy"><div class="ov-num">02</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Volksparkstadion<small>Hamburg · Mai 2024</small></div></div>
+          <div class="ov-card" data-full="millerntor.jpeg" data-title="Millerntor-Stadion" data-sub="Hamburg · Mai 2024" data-liga="Bundesliga" data-datum="20. Mai 2024" data-zuschauer="29.546" data-spiel="FC St. Pauli vs. 1. FC Kaiserslautern" data-info="Heimat des FC St. Pauli — klein, laut und einzigartig. Der Besuch fiel mit der Aufstiegsfeier in die Bundesliga zusammen. Die Stimmung war unbeschreiblich."><img src="millerntor.jpeg" alt="Millerntor" loading="lazy"><div class="ov-num">03</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Millerntor-Stadion<small>Hamburg · Mai 2024</small></div></div>
+          <div class="ov-card" data-full="gladbach.jpeg" data-title="Borussia-Park" data-sub="Mönchengladbach · Sep 2024" data-liga="Bundesliga" data-datum="14. September 2024" data-zuschauer="54.067" data-spiel="Borussia MG vs. Bayer 04 Leverkusen" data-info="Eines der modernsten Stadien Deutschlands — eröffnet 2004, komplett freistehendes Dach und perfekte Sichtlinien. Mein nächstgelegenes Bundesliga-Stadion."><img src="gladbach.jpeg" alt="Gladbach" loading="lazy"><div class="ov-num">04</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Borussia-Park<small>Mönchengladbach · Sep 2024</small></div></div>
+          <div class="ov-card" data-full="gelsenkirchen.jpeg" data-title="Veltins-Arena" data-sub="Gelsenkirchen · Dez 2024" data-liga="2. Bundesliga" data-datum="14. Dezember 2024" data-zuschauer="62.271" data-spiel="FC Schalke 04 vs. Hamburger SV" data-info="Die Veltins-Arena ist ein technisches Meisterwerk — eröffnet 2001 mit einfahrbarem Rasen und verschiebbarem Dach. Die Nordkurve beim Flutlichtspiel im Dezember war beeindruckend."><img src="gelsenkirchen.jpeg" alt="Gelsenkirchen" loading="lazy"><div class="ov-num">05</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Veltins-Arena<small>Gelsenkirchen · Dez 2024</small></div></div>
+          <div class="ov-card" data-full="dresden.jpeg" data-title="Rudolf-Harbig-Stadion" data-sub="Dresden · Aug 2023" data-liga="3. Liga" data-datum="23. August 2023" data-zuschauer="32.065" data-spiel="Dynamo Dresden vs. Fortuna Düsseldorf" data-info="Benannt nach Leichtathletik-Star Rudolf Harbig — Heimat von Dynamo Dresden, einem der traditionsreichsten Vereine Ostdeutschlands. Die Fans gelten als besonders leidenschaftlich."><img src="dresden.jpeg" alt="Dresden" loading="lazy"><div class="ov-num">06</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Rudolf-Harbig-Stadion<small>Dresden · Aug 2023</small></div></div>
+          <div class="ov-card" data-full="liebe.png" data-title="Merkur Spiel-Arena" data-sub="Düsseldorf · Dez 2025" data-liga="2. Bundesliga" data-datum="05. Dezember 2025" data-zuschauer="54.600" data-spiel="Fortuna Düsseldorf vs. Hamburger SV" data-info="Die Merkur Spiel-Arena ist seit 2005 die Heimat meines Herzensvereins Fortuna Düsseldorf. Die Südkurve ist laut, leidenschaftlich und treu. Alte Liebe rostet nicht. ❤️🤍"><img src="liebe.png" alt="Düsseldorf" loading="lazy"><div class="ov-num">07</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Merkur Spiel-Arena<small>Düsseldorf · Dez 2025</small></div></div>
+          <div class="ov-card" data-full="hintergrund.mp4" data-title="Atmosphäre & Pyro" data-sub="Stimmung pur" data-liga="—" data-datum="Verschiedene Spiele" data-zuschauer="—" data-spiel="Mehrere Stadien" data-info="Pyro, Gesang, Choreos — die Seele des Fußballs. Diese Momente machen jeden Stadionbesuch unvergesslich. Kein Bildschirm kann das ersetzen."><img src="pyro.jpeg" alt="Pyro" loading="lazy"><div class="ov-num">⚽</div><div class="ov-zoom">🔍</div><div class="ov-card-label">Atmosphäre<small>Pyro & Stimmung</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 — CHART -->
+  <section class="slide" data-slide="10">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="chart-wrap">
+        <div class="r">
+          <h2 class="chart-title">Kapazitäts-Vergleich</h2>
+          <p class="chart-sub">Alle besuchten Stadien nach Fassungsvermögen</p>
+        </div>
+        <div class="bars" id="bars">
+          <div class="bar-row r"><div class="bar-label">Olympiastadion Berlin</div><div class="bar-track"><div class="bar-fill" data-pct="100"><span>74.475</span></div></div></div>
+          <div class="bar-row r"><div class="bar-label">Veltins-Arena</div><div class="bar-track"><div class="bar-fill" data-pct="84"><span>62.271</span></div></div></div>
+          <div class="bar-row r"><div class="bar-label">Volksparkstadion</div><div class="bar-track"><div class="bar-fill" data-pct="77"><span>57.000</span></div></div></div>
+          <div class="bar-row r"><div class="bar-label">Merkur Spiel-Arena</div><div class="bar-track"><div class="bar-fill bar-home" data-pct="73"><span>54.600 ❤️</span></div></div></div>
+          <div class="bar-row r"><div class="bar-label">Borussia-Park</div><div class="bar-track"><div class="bar-fill" data-pct="73"><span>54.067</span></div></div></div>
+          <div class="bar-row r"><div class="bar-label">Rudolf-Harbig-Stadion</div><div class="bar-track"><div class="bar-fill" data-pct="43"><span>32.065</span></div></div></div>
+          <div class="bar-row r"><div class="bar-label">Millerntor-Stadion</div><div class="bar-track"><div class="bar-fill" data-pct="40"><span>29.546</span></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 — STATS -->
+  <section class="slide" data-slide="11">
+    <div class="slide-bg"></div><div class="accent-line"></div>
+    <div class="content">
+      <div class="stats-grid">
+        <div class="stats-head r">
+          <h2>Meine Stats</h2>
+          <span style="font-size:14px;color:var(--muted)">2023 – 2025</span>
+        </div>
+
+        <div class="stat-card r" data-stat="stadien" style="cursor:pointer;">
+          <div class="stat-icon">🏟</div>
+          <div class="stat-num">7<em> Stadien</em></div>
+          <div class="stat-label">Insgesamt besucht</div>
+          <div class="stat-detail">in 6 verschiedenen Städten</div>
+          <div class="stat-hint">Tippen für Details →</div>
+        </div>
+
+        <div class="stat-card r" data-stat="km" style="cursor:pointer;">
+          <div class="stat-icon">🚗</div>
+          <div class="stat-num">2.140<em> km</em></div>
+          <div class="stat-label">Gesamtkilometer gereist</div>
+          <div class="stat-detail">Neuss → Berlin → Hamburg → Dresden</div>
+          <div class="stat-hint">Tippen für Details →</div>
+        </div>
+
+        <div class="stat-card r" data-stat="zuschauer" style="cursor:pointer;">
+          <div class="stat-icon">👥</div>
+          <div class="stat-num">448<em>k</em></div>
+          <div class="stat-label">Gesamtkapazität aller Stadien</div>
+          <div class="stat-detail">Durchschnitt: 56.000 pro Stadion</div>
+          <div class="stat-hint">Tippen für Details →</div>
+        </div>
+
+        <div class="stat-card r" data-stat="spiele" style="cursor:pointer;">
+          <div class="stat-icon">📅</div>
+          <div class="stat-num">54<em> Spiele</em></div>
+          <div class="stat-label">Besuche insgesamt</div>
+          <div class="stat-detail">Hamburg 2× · Rest je 1×</div>
+          <div class="stat-hint">Tippen für Details →</div>
+        </div>
+
+        <div class="stat-card r" data-stat="ligen" style="cursor:pointer;">
+          <div class="stat-icon">⚽</div>
+          <div class="stat-num">2<em> Ligen</em></div>
+          <div class="stat-label">Verschiedene Spielklassen</div>
+          <div class="stat-detail">Bundesliga · 2. Liga</div>
+          <div class="stat-hint">Tippen für Details →</div>
+        </div>
+
+        <div class="stat-card r" data-stat="fortuna" style="cursor:pointer;">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-num" style="font-size:36px">Fortuna<em> F95</em></div>
+          <div class="stat-label">Herzensverein</div>
+          <div class="stat-detail">Merkur Spiel-Arena · Heimat</div>
+          <div class="stat-hint">Tippen für Details →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 12 — DANKE -->
+  <section class="slide thanks-slide" data-slide="12">
+    <div class="slide-bg" style="background:linear-gradient(rgba(0,0,0,0.56),rgba(0,0,0,0.56)),url('liebe.png') center/cover no-repeat;background-blend-mode:overlay;mix-blend-mode:normal;filter:brightness(0.86) contrast(0.88);"></div>
+    <div class="bokeh b1"></div><div class="bokeh b2"></div><div class="bokeh b3"></div>
+    <div class="thanks-vid-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.38);z-index:2"></div>
+    <div class="thanks-content">
+      <div class="thanks-eyebrow r"><span></span>Finn Moritz · Stadionreisen<span></span></div>
+      <h2 class="thanks-h2 r">Vielen<br><em>Dank</em></h2>
+      <p class="thanks-sub r">für eure Aufmerksamkeit</p>
+      <div class="qr-wrap r">
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://mo1895.github.io/Vorstellung/&color=000000&bgcolor=ffffff" alt="QR Instagram">
+        </div>
+        <div class="qr-label">📸 @_mo.1895_</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- STAT DETAIL POPUP -->
+<div id="stat-popup" style="position:fixed;inset:0;z-index:900;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .3s;">
+  <div id="stat-popup-box" style="position:relative;background:linear-gradient(145deg,#110808,#0c0505);border:1px solid rgba(230,51,41,.3);border-radius:24px;padding:44px 48px 40px;width:min(92vw,680px);max-height:85vh;overflow-y:auto;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 40px 100px rgba(0,0,0,.9),0 0 60px rgba(230,51,41,.1);transform:scale(.92) translateY(20px);transition:transform .35s cubic-bezier(.34,1.3,.64,1),opacity .3s;">
+
+    <!-- Top bar -->
+    <div style="content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:24px 24px 0 0;background:linear-gradient(90deg,transparent,var(--red),var(--red2),#ffb347,transparent);"></div>
+
+    <!-- Close -->
+    <button id="stat-popup-close" style="position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;transition:background .2s;">&times;</button>
+
+    <!-- Dynamic content -->
+    <div id="stat-popup-content"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn" id="btnPrev">&#8249;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="btnNext">&#8250;</button>
+  <span class="nav-count" id="counter">01/12</span>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lbox" id="lbox">
+  <div class="lbox-inner">
+    <span class="lbox-count" id="lCount"></span>
+    <button class="lbox-close" id="lClose">&times;</button>
+    <button class="lbox-arr" id="lPrev">&#8249;</button>
+    <button class="lbox-arr" id="lNext">&#8250;</button>
+
+    <!-- Split: Bild links, Infos rechts -->
+    <div class="lbox-split">
+      <div class="lbox-img-side">
+        <img id="lImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <video id="lVideo" style="width:100%;height:100%;object-fit:cover;display:none;" muted controls playsinline></video>
+        <img id="lPlaceholder" src="wappen.jpg" alt="Wappen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;opacity:0;transition:opacity .3s;filter:brightness(0.1);" />
+      </div>
+      <div class="lbox-info-side">
+        <div class="lbox-info-eyebrow"><span></span><span id="lLiga">—</span></div>
+        <h2 id="lTitle" class="lbox-info-title"></h2>
+        <div class="lbox-info-divider"></div>
+        <div class="lbox-info-rows">
+          <div class="lbox-info-row"><div class="lbox-info-icon">📅</div><div><div class="lbox-info-label">Datum</div><div class="lbox-info-val" id="lDatum">—</div></div></div>
+          <div class="lbox-info-row"><div class="lbox-info-icon">⚽</div><div><div class="lbox-info-label">Spiel</div><div class="lbox-info-val" id="lSpiel">—</div></div></div>
+          <div class="lbox-info-row"><div class="lbox-info-icon">👥</div><div><div class="lbox-info-label">Zuschauer</div><div class="lbox-info-val" id="lZuschauer">—</div></div></div>
+        </div>
+        <p id="lInfo" class="lbox-info-desc"></p>
+        <div class="lbox-info-badge" id="lBadge"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOTO HINT POPUP -->
+<div id="foto-hint" style="position:fixed;top:28px;left:50%;transform:translateX(-50%);z-index:999;background:rgba(12,8,8,.95);border:1px solid rgba(230,51,41,.3);border-radius:999px;padding:10px 22px;font-size:12px;font-weight:700;color:#fff;backdrop-filter:blur(16px);white-space:nowrap;opacity:0;transition:opacity .5s;pointer-events:none">
+  📸 Alle Fotos wurden von mir persönlich vor Ort aufgenommen
+</div>
+
+<!-- EASTER EGG -->
+<div id="egg" style="position:fixed;bottom:22px;right:22px;z-index:550;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.04);cursor:pointer;border:1px solid rgba(255,255,255,.06)"></div>
+<div id="egg-popup" style="position:fixed;bottom:70px;right:22px;z-index:551;background:rgba(12,8,8,.95);border:1px solid rgba(230,51,41,.3);border-radius:14px;padding:18px 22px;font-size:13px;font-weight:700;color:#fff;backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap">
+  ❤️🤍 Alte Liebe rostet nicht 🤍❤️<br>
+  <span style="font-size:11px;color:#b0a6a4;font-weight:500">— Finn Moritz, F95 seit immer</span>
+</div>
+
+<script>
+(function(){
+
+  /* ═══════════════════════════════════
+     FOTO POPUP (erscheint zuerst)
+  ═══════════════════════════════════ */
+  window.closeFotoPopup = function(){
+    var fo = document.getElementById('foto-popup-overlay');
+    fo.style.animation = 'qrFadeOut .5s cubic-bezier(.4,0,.2,1) forwards';
+    setTimeout(function(){
+      fo.style.display = 'none';
+      // QR Popup einblenden
+      var qo = document.getElementById('qr-popup-overlay');
+      qo.style.display = 'flex';
+      qo.style.animation = 'none';
+      void qo.offsetHeight; // reflow
+      qo.style.animation = 'qrFadeIn .6s cubic-bezier(.4,0,.2,1) forwards';
+      startQRTimer();
+    }, 500);
+  };
+
+  /* ═══════════════════════════════════
+     QR POPUP LOGIC
+  ═══════════════════════════════════ */
+  var qrOverlay  = document.getElementById('qr-popup-overlay');
+  var qrClose    = document.getElementById('qrClose');
+  var timerCircle= document.getElementById('timerCircle');
+  var timerNum   = document.getElementById('timerNum');
+  var TOTAL_SECS = 30;
+  var circumference = 2 * Math.PI * 22;
+  var qrInterval = null;
+
+  timerCircle.style.strokeDasharray  = circumference;
+  timerCircle.style.strokeDashoffset = 0;
+
+  function startQRTimer(){
+    var remaining = TOTAL_SECS;
+    timerNum.textContent = remaining;
+    timerCircle.style.strokeDashoffset = 0;
+    if(qrInterval) clearInterval(qrInterval);
+    qrInterval = setInterval(function(){
+      remaining--;
+      timerNum.textContent = remaining;
+      var offset = circumference * (1 - remaining / TOTAL_SECS);
+      timerCircle.style.strokeDashoffset = offset;
+      if(remaining <= 0){ closeQR(); }
+    }, 1000);
   }
 
-  function init() {
-    update();
-    setInterval(update, 60000);
+  function closeQR(){
+    if(qrInterval){ clearInterval(qrInterval); qrInterval = null; }
+    qrOverlay.style.animation = 'qrFadeOut .6s cubic-bezier(.4,0,.2,1) forwards';
+    setTimeout(function(){
+      qrOverlay.style.display = 'none';
+    }, 600);
   }
 
-  return { init };
-})();
+  qrClose.addEventListener('click', closeQR);
+  qrOverlay.addEventListener('click', function(e){
+    if(e.target === qrOverlay) closeQR();
+  });
 
-// ===============================
-// SLIDER MODULE
-// ===============================
-const Slider = (() => {
-  let current = 1;
-  let total = 12;
+  /* ═══════════════════════════════════
+     MAIN PRESENTATION LOGIC (original)
+  ═══════════════════════════════════ */
+  var cur=1,total=12;
+  var prog=document.getElementById('progress');
+  var dotsEl=document.getElementById('dots');
+  var ctrEl=document.getElementById('counter');
+  var thanksVideo=document.getElementById('thanksVideo');
 
-  const progress = $('progress');
-  const dotsEl = $('dots');
-  const counter = $('counter');
+  // Uhr
+  function tick(){
+    var n=new Date();
+    var h=n.getHours(),m=n.getMinutes();
+    document.getElementById('clock-el').textContent=(h<10?'0'+h:h)+':'+(m<10?'0'+m:m);
+  }
+  tick();setInterval(tick,10000);
 
-  function pad(n) {
-    return String(n).padStart(2, '0');
+  // Dots
+  for(var i=1;i<=total;i++){
+    (function(n){
+      var d=document.createElement('div');
+      d.className='dot'+(n===1?' on':'');
+      d.onclick=function(){go(n);};
+      dotsEl.appendChild(d);
+    })(i);
   }
 
-  function updateUI() {
-    $$('.dot').forEach((d, i) => d.classList.toggle('on', i + 1 === current));
-    counter.textContent = `${pad(current)}/${pad(total)}`;
-    progress.style.width = ((current - 1) / (total - 1)) * 100 + '%';
-  }
+  function pad(n){return n<10?'0'+n:String(n)}
 
-  function reveal(slide) {
-    slide.querySelectorAll('.r').forEach((el, i) => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-
-      requestAnimationFrame(() => {
-        el.style.transition = `all .4s ease ${i * 0.05}s`;
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-      });
+  function reveal(slide){
+    slide.querySelectorAll('.r').forEach(function(el,i){
+      el.style.transition='none';el.style.opacity='0';el.style.transform='translateY(24px)';
+      void el.offsetHeight;
+      el.style.transition='opacity .48s ease '+(i*.065)+'s,transform .48s ease '+(i*.065)+'s';
+      el.style.opacity='1';el.style.transform='translateY(0)';
     });
   }
 
-  function go(n) {
-    if (n === current) return;
+  function updateUI(){
+    dotsEl.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('on',i+1===cur);});
+    ctrEl.textContent=pad(cur)+'/'+pad(total);
+    prog.style.width=((cur-1)/(total-1)*100)+'%';
+  }
 
-    const old = document.querySelector('.slide.active');
-    const next = document.querySelector(`[data-slide="${n}"]`);
+  function handleVideo(n){
+    if(!thanksVideo) return;
+    if(n===12){
+      thanksVideo.currentTime=0;
+      thanksVideo.play().catch(function(){});
+    } else {
+      thanksVideo.pause();
+      thanksVideo.currentTime=0;
+    }
+  }
 
-    if (old) old.classList.remove('active');
-
-    current = n;
+  function go(n){
+    if(n===cur)return;
+    var dir=n>cur?1:-1;
+    var old=document.querySelector('.slide.active');
+    if(old){
+      old.classList.remove('active');
+      old.style.opacity='0';
+      old.style.transform='translateX('+(dir>0?-70:70)+'px) scale(.96)';
+      setTimeout(function(){old.style.opacity='';old.style.transform='';},700);
+    }
+    cur=n;
+    var next=document.querySelector('.slide[data-slide="'+n+'"]');
+    next.style.transition='none';next.style.opacity='0';
+    next.style.transform='translateX('+(dir>0?70:-70)+'px) scale(.96)';
+    void next.offsetHeight;
+    next.style.transition='';
     next.classList.add('active');
-
     reveal(next);
     updateUI();
+    handleVideo(n);
+    if(n===12)boom();
+    if(n===10)animateBars();
   }
 
-  function step(dir) {
-    let n = current + dir;
-    if (n < 1) n = total;
-    if (n > total) n = 1;
-    go(n);
-  }
+  function step(d){var n=cur+d;if(n<1)n=total;if(n>total)n=1;go(n);}
+  document.getElementById('btnPrev').onclick=function(){step(-1);};
+  document.getElementById('btnNext').onclick=function(){step(1);};
 
-  function createDots() {
-    for (let i = 1; i <= total; i++) {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === 1 ? ' on' : '');
-      d.onclick = () => go(i);
-      dotsEl.appendChild(d);
+  document.addEventListener('keydown',function(e){
+    var lb=document.getElementById('lbox');
+    if(lb.classList.contains('open')){
+      if(e.key==='ArrowRight')lStep(1);
+      else if(e.key==='ArrowLeft')lStep(-1);
+      else if(e.key==='Escape')lClose();
+      return;
     }
+    if(document.getElementById('konami').classList.contains('show'))return;
+    if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();step(1);}
+    else if(e.key==='ArrowLeft'){e.preventDefault();step(-1);}
+    checkKonami(e.key);
+  });
+
+  var tx=0,ty=0;
+  document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',function(e){
+    var lb=document.getElementById('lbox');
+    if(lb.classList.contains('open'))return;
+    var dx=tx-e.changedTouches[0].clientX;
+    var dy=ty-e.changedTouches[0].clientY;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){step(dx>0?1:-1);}
+  },{passive:true});
+
+  if('ontouchstart' in window){
+    var sh=document.getElementById('swipe-hint');
+    sh.style.display='flex';
+    setTimeout(function(){sh.style.display='none';},3500);
   }
 
-  function init() {
-    createDots();
-    reveal(document.querySelector('.slide.active'));
-    updateUI();
+  reveal(document.querySelector('.slide.active'));
+  updateUI();
 
-    $('btnNext').onclick = () => step(1);
-    $('btnPrev').onclick = () => step(-1);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') step(1);
-      if (e.key === 'ArrowLeft') step(-1);
-    });
+  // Partikel
+  var pEl=document.getElementById('particles');
+  for(var p=0;p<18;p++){
+    var fb=document.createElement('div');
+    fb.className='fb';fb.textContent='⚽';
+    fb.style.left=Math.random()*100+'%';
+    fb.style.animationDuration=(8+Math.random()*12)+'s';
+    fb.style.animationDelay=(-Math.random()*15)+'s';
+    fb.style.fontSize=(14+Math.random()*18)+'px';
+    pEl.appendChild(fb);
   }
 
-  return { init };
-})();
+  // Bars
+  var barsAnimated=false;
+  function animateBars(){
+    if(barsAnimated)return;barsAnimated=true;
+    setTimeout(function(){
+      document.querySelectorAll('.bar-fill').forEach(function(b){b.style.width=b.dataset.pct+'%';});
+    },400);
+  }
 
-// ===============================
-// LIGHTBOX MODULE
-// ===============================
-const Lightbox = (() => {
-  let index = 0;
-  let cards = [];
-  let isTransitioning = false;
-
-  const lbox = $('lbox');
-  const img = $('lImg');
-  const video = $('lVideo');
-  const placeholder = $('lPlaceholder');
-  const count = $('lCount');
-
-  function open(i) {
-    index = i;
-    const c = cards[i];
-
-    if (c.dataset.full?.endsWith('.mp4')) {
-      img.style.display = 'none';
-      video.style.display = 'block';
-      video.src = c.dataset.full;
-      video.play().catch(() => {});
+  // Lightbox
+  var lbox=document.getElementById('lbox');
+  var lImg=document.getElementById('lImg');
+  var lVideo=document.getElementById('lVideo');
+  var lCount=document.getElementById('lCount');
+  var cards=document.querySelectorAll('.ov-card');
+  var li=0;var lTx=0;
+  function lOpen(i){
+    li=i;
+    var c=cards[i];
+    if(c.dataset.full && c.dataset.full.toLowerCase().endsWith('.mp4')){
+      lImg.style.display='none';
+      lVideo.style.display='block';
+      lVideo.src=c.dataset.full;
+      lVideo.currentTime=0;
+      lVideo.play().catch(function(){});
     } else {
-      video.pause();
-      video.style.display = 'none';
-      img.style.display = 'block';
-      img.src = c.dataset.full;
+      lVideo.pause();
+      lVideo.style.display='none';
+      lVideo.src='';
+      lImg.style.display='block';
+      lImg.src=c.dataset.full || '';
     }
-
-    count.textContent = `${i + 1}/${cards.length}`;
+    document.getElementById('lTitle').textContent=c.dataset.title;
+    document.getElementById('lLiga').textContent=c.dataset.liga||'—';
+    document.getElementById('lDatum').textContent=c.dataset.datum||'—';
+    document.getElementById('lSpiel').textContent=c.dataset.spiel||'—';
+    document.getElementById('lZuschauer').textContent=c.dataset.zuschauer||'—';
+    document.getElementById('lInfo').textContent=c.dataset.info||'';
+    document.getElementById('lBadge').textContent='🏟 '+( c.dataset.liga||'—');
+    lCount.textContent=pad(i+1)+' / '+pad(cards.length);
     lbox.classList.add('open');
+    // fade in
+    setTimeout(function(){
+      lImg.style.opacity = '1';
+      lVideo.style.opacity = '1';
+    }, 50);
   }
-
-  function close() {
+  function lClose(){
     lbox.classList.remove('open');
-    video.pause();
+    lVideo.pause();
+    lVideo.currentTime=0;
+    lImg.style.opacity = '0';
+    lVideo.style.opacity = '0';
+    lPlaceholder.style.opacity = '0';
+    lPlaceholder.style.display = 'none';
   }
-
-  function step(dir) {
-    if (isTransitioning) return;
-    isTransitioning = true;
-
-    placeholder.style.display = 'block';
-    placeholder.style.opacity = '1';
-
-    setTimeout(() => {
-      index = (index + dir + cards.length) % cards.length;
-      open(index);
-
-      placeholder.style.opacity = '0';
-      setTimeout(() => {
-        placeholder.style.display = 'none';
-        isTransitioning = false;
+  function lStep(d){
+    // Zeige Placeholder während Übergang
+    lPlaceholder.style.display = 'block';
+    lPlaceholder.style.opacity = '1';
+    lImg.style.opacity = '0';
+    lVideo.style.opacity = '0';
+    setTimeout(function(){
+      lPlaceholder.style.opacity = '0';
+      setTimeout(function(){
+        lPlaceholder.style.display = 'none';
+        li = (li + d + cards.length) % cards.length;
+        lOpen(li);
       }, 300);
     }, 300);
   }
+  cards.forEach(function(c,i){c.onclick=function(){lOpen(i);};});
+  document.getElementById('lClose').onclick=lClose;
+  document.getElementById('lNext').onclick=function(){lStep(1);};
+  document.getElementById('lPrev').onclick=function(){lStep(-1);};
+  lbox.onclick=function(e){if(e.target===lbox)lClose();};
+  lbox.addEventListener('touchstart',function(e){lTx=e.touches[0].clientX;},{passive:true});
+  lbox.addEventListener('touchend',function(e){var d=lTx-e.changedTouches[0].clientX;if(Math.abs(d)>40)lStep(d>0?1:-1);},{passive:true});
 
-  function init() {
-    cards = [...$$('.ov-card')];
-
-    cards.forEach((c, i) => c.onclick = () => open(i));
-
-    $('lClose').onclick = close;
-    $('lNext').onclick = () => step(1);
-    $('lPrev').onclick = () => step(-1);
-
-    lbox.onclick = (e) => {
-      if (e.target === lbox) close();
-    };
+  // Konfetti
+  var cv=document.getElementById('confetti');
+  var ctx=cv.getContext('2d');
+  var running=false;
+  var pal=['#e63329','#ff4f43','#f39c12','#2ecc71','#3498db','#9b59b6','#fff','#ffb347','#ff6b9d'];
+  function boom(){
+    if(running)return;running=true;
+    cv.width=innerWidth;cv.height=innerHeight;cv.style.display='block';
+    var ps=[];
+    for(var i=0;i<220;i++)ps.push({x:Math.random()*cv.width,y:-30-Math.random()*140,w:5+Math.random()*10,h:8+Math.random()*14,c:pal[~~(Math.random()*pal.length)],vx:(Math.random()-.5)*3.5,vy:3+Math.random()*4.5,rot:Math.random()*360,rv:(Math.random()-.5)*8,a:1,shape:Math.random()>.5?'rect':'circle'});
+    var f=0;
+    (function draw(){
+      ctx.clearRect(0,0,cv.width,cv.height);f++;
+      var alive=[];
+      ps.forEach(function(p){
+        p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;
+        if(f>110)p.a=Math.max(0,p.a-.012);
+        ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+        ctx.globalAlpha=p.a;ctx.fillStyle=p.c;
+        if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.w/2,0,Math.PI*2);ctx.fill();}
+        else ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+        ctx.restore();
+        if(p.a>0)alive.push(p);
+      });
+      ps=alive;
+      if(!ps.length){cv.style.display='none';running=false;return;}
+      requestAnimationFrame(draw);
+    })();
   }
 
-  return { init };
-})();
-
-// ===============================
-// KONAMI MODULE
-// ===============================
-const Konami = (() => {
-  const sequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  let index = 0;
-
-  function trigger() {
-    alert('Konami Code aktiviert 🎉');
+  // Konami
+  var konamiSeq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  var konamiIdx=0;
+  var hint=document.getElementById('konami-hint');
+  function checkKonami(key){
+    if(key===konamiSeq[konamiIdx]){
+      konamiIdx++;
+      if(konamiIdx>=3){hint.style.opacity='1';clearTimeout(hint._t);hint._t=setTimeout(function(){hint.style.opacity='0';},1500);}
+      if(konamiIdx===konamiSeq.length){konamiIdx=0;triggerKonami();}
+    } else {konamiIdx=key===konamiSeq[0]?1:0;}
   }
+  function triggerKonami(){
+    var ko=document.getElementById('konami');ko.classList.add('show');
+    var kc=document.getElementById('konami-canvas');kc.width=innerWidth;kc.height=innerHeight;
+    var kctx=kc.getContext('2d');var kps=[];
+    for(var i=0;i<300;i++)kps.push({x:Math.random()*kc.width,y:-20-Math.random()*200,w:6+Math.random()*12,h:10+Math.random()*16,c:Math.random()>.5?'#e63329':'#ffffff',vx:(Math.random()-.5)*5,vy:4+Math.random()*5,rot:Math.random()*360,rv:(Math.random()-.5)*10,a:1,shape:Math.random()>.3?'rect':'circle'});
+    var kf=0;
+    (function kdraw(){
+      kctx.clearRect(0,0,kc.width,kc.height);kf++;
+      var alive=[];
+      kps.forEach(function(p){
+        p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;
+        if(kf>150)p.a=Math.max(0,p.a-.008);
+        kctx.save();kctx.translate(p.x,p.y);kctx.rotate(p.rot*Math.PI/180);
+        kctx.globalAlpha=p.a;kctx.fillStyle=p.c;
+        if(p.shape==='circle'){kctx.beginPath();kctx.arc(0,0,p.w/2,0,Math.PI*2);kctx.fill();}
+        else kctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+        kctx.restore();
+        if(p.a>0)alive.push(p);
+      });
+      kps=alive;
+      if(ko.classList.contains('show'))requestAnimationFrame(kdraw);
+    })();
+  }
+  document.getElementById('konami-close').onclick=function(){
+    document.getElementById('konami').classList.remove('show');
+    document.getElementById('konami-canvas').getContext('2d').clearRect(0,0,innerWidth,innerHeight);
+  };
 
-  function handle(key) {
-    if (key === sequence[index]) {
-      index++;
-      if (index === sequence.length) {
-        trigger();
-        index = 0;
-      }
-    } else {
-      index = 0;
+  // Foto Hint
+  setTimeout(function(){
+    var h=document.getElementById('foto-hint');
+    h.style.opacity='1';
+    setTimeout(function(){h.style.opacity='0';},5000);
+  }, 31500); // nach QR Popup
+
+  // Easter Egg
+  var egg=document.getElementById('egg');
+  var pop=document.getElementById('egg-popup');
+  var clicks=0,eggT;
+  egg.addEventListener('click',function(){
+    clicks++;
+    if(clicks>=5){
+      clicks=0;
+      pop.style.opacity='1';pop.style.pointerEvents='auto';
+      clearTimeout(eggT);
+      eggT=setTimeout(function(){pop.style.opacity='0';pop.style.pointerEvents='none';},3500);
     }
+  });
+
+  // ═══════════════════════════════════
+  // STAT POPUP
+  // ═══════════════════════════════════
+  var statPopup    = document.getElementById('stat-popup');
+  var statPopupBox = document.getElementById('stat-popup-box');
+  var statContent  = document.getElementById('stat-popup-content');
+
+  var statData = {
+    stadien: {
+      icon:'🏟', title:'7 besuchte Stadien',
+      html: function(){
+        var rows=[
+          {name:'Rudolf-Harbig-Stadion',    km:680, year:'2023'},
+          {name:'Olympiastadion Berlin',    km:580, year:'2024'},
+          {name:'Volksparkstadion Hamburg', km:480, year:'2024'},
+          {name:'Millerntor-Stadion',       km:480, year:'2024'},
+          {name:'Veltins-Arena',            km:60,  year:'2024'},
+          {name:'Borussia-Park',            km:45,  year:'2024'},
+          {name:'Merkur Spiel-Arena',       km:25,  year:'2025'},
+        ];
+        var max=680;
+        var out='<p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;">7 Stadien in 6 Städten — von nah bis weit. Hier alle Besuche im Überblick:</p>';
+        out+='<div style="display:flex;flex-direction:column;gap:10px;">';
+        rows.forEach(function(r){
+          var pct=Math.round(r.km/max*100);
+          out+='<div style="display:flex;align-items:center;gap:12px;">'
+             +'<div class="sp-bar-label">'+r.name+'</div>'
+             +'<div class="sp-bar-track"><div class="sp-bar-fill" data-w="'+pct+'"><span>'+r.km+' km</span></div></div>'
+             +'<div style="font-size:11px;color:rgba(255,255,255,.3);width:34px;flex-shrink:0;">'+r.year+'</div>'
+             +'</div>';
+        });
+        out+='</div>';
+        out+='<div style="margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:28px;">'
+           +'<div><div style="font-size:28px;font-weight:900;color:#fff;">6</div><div style="font-size:11px;color:var(--muted);">Städte</div></div>'
+           +'<div><div style="font-size:28px;font-weight:900;color:#fff;">2</div><div style="font-size:11px;color:var(--muted);">Ligen</div></div>'
+           +'<div><div style="font-size:28px;font-weight:900;color:#fff;">2023–25</div><div style="font-size:11px;color:var(--muted);">Zeitraum</div></div>'
+           +'</div>';
+        return out;
+      }
+    },
+    km: {
+      icon:'🚗', title:'2.140 km Gesamtstrecke',
+      html: function(){
+        var legs=[
+          {von:'Neuss',   nach:'Dresden',  km:680},
+          {von:'Neuss',   nach:'Berlin',   km:580},
+          {von:'Neuss',   nach:'Hamburg',  km:480},
+          {von:'Neuss',   nach:'Gelsenkirchen', km:60},
+          {von:'Neuss',   nach:'Mönchengladbach', km:45},
+          {von:'Neuss',   nach:'Düsseldorf', km:25},
+        ];
+        var max=680;
+        var out='<p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;">Alle Fahrten wurden von <strong style="color:#fff;">Neuss</strong> aus angetreten. Insgesamt <strong style="color:#fff;">2.140 km</strong> für den Fußball.</p>';
+        out+='<div style="display:flex;flex-direction:column;gap:10px;">';
+        legs.forEach(function(l){
+          var pct=Math.round(l.km/max*100);
+          out+='<div style="display:flex;align-items:center;gap:12px;">'
+             +'<div class="sp-bar-label">→ '+l.nach+'</div>'
+             +'<div class="sp-bar-track"><div class="sp-bar-fill" data-w="'+pct+'"><span>'+l.km+' km</span></div></div>'
+             +'</div>';
+        });
+        out+='</div>';
+        out+='<div style="margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);font-size:13px;color:var(--muted);line-height:1.7;">'
+           +'🏆 Weiteste Reise: <strong style="color:#fff;">Dresden (680 km)</strong><br>'
+           +'📍 Nächste Fahrt: <strong style="color:#fff;">Düsseldorf (25 km)</strong>'
+           +'</div>';
+        return out;
+      }
+    },
+    zuschauer: {
+      icon:'👥', title:'Zuschauer pro Stadion',
+      html: function(){
+        var data=[
+          {name:'Olympiastadion Berlin',    n:74475, max:true},
+          {name:'Veltins-Arena',            n:62271},
+          {name:'Volksparkstadion',         n:57000},
+          {name:'Merkur Spiel-Arena ❤️',   n:54600, home:true},
+          {name:'Borussia-Park',            n:54067},
+          {name:'Rudolf-Harbig-Stadion',    n:32065},
+          {name:'Millerntor-Stadion',       n:29546},
+        ];
+        var maxN=74475;
+        var out='<p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;">Gesamtkapazität aller 7 Stadien: <strong style="color:#fff;">448.024 Plätze.</strong> Durchschnitt: <strong style="color:#fff;">~56.000</strong> pro Stadion.</p>';
+        out+='<div style="display:flex;flex-direction:column;gap:10px;">';
+        data.forEach(function(d){
+          var pct=Math.round(d.n/maxN*100);
+          var barStyle=d.home?'background:linear-gradient(90deg,#c0392b,#e74c3c,#ff6b6b,#ffb347);':'';
+          out+='<div style="display:flex;align-items:center;gap:12px;">'
+             +'<div class="sp-bar-label">'+d.name+'</div>'
+             +'<div class="sp-bar-track"><div class="sp-bar-fill" style="'+barStyle+'" data-w="'+pct+'"><span>'+d.n.toLocaleString('de-DE')+'</span></div></div>'
+             +'</div>';
+        });
+        out+='</div>';
+        return out;
+      }
+    },
+    spiele: {
+      icon:'📅', title:'Alle 54 Spiele',
+      html: function(){
+        var games=[
+          {datum:'23. Aug 2023', spiel:'Dynamo Dresden vs. Fortuna Düsseldorf', liga:'2. Bundesliga', stad:'Dresden'},
+          {datum:'14. Feb 2024', spiel:'Hertha BSC vs. F95',                    liga:'2. Bundesliga', stad:'Berlin'},
+          {datum:'19. Mai 2024', spiel:'Hamburger SV vs. Fortuna Düsseldorf',   liga:'2. Bundesliga', stad:'Hamburg'},
+          {datum:'20. Mai 2024', spiel:'FC St. Pauli vs. 1. FC Kaiserslautern', liga:'Bundesliga',    stad:'Hamburg'},
+          {datum:'14. Sep 2024', spiel:'Borussia MG vs. VFB Stuttgart',         liga:'Bundesliga',    stad:'Mönchengladbach'},
+          {datum:'14. Dez 2024', spiel:'FC Schalke 04 vs. F95',                liga:'2. Bundesliga', stad:'Gelsenkirchen'},
+          {datum:'05. Dez 2025', spiel:'Fortuna Düsseldorf vs. Hamburger SV',   liga:'2. Bundesliga', stad:'Düsseldorf'},
+        ];
+        var out='<div style="display:flex;flex-direction:column;gap:10px;">';
+        games.forEach(function(g,i){
+          var isHome=g.stad==='Düsseldorf';
+          out+='<div style="display:flex;align-items:flex-start;gap:14px;padding:12px 14px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,'+(isHome?'.12':'.05')+');">'
+             +'<div style="font-size:22px;font-weight:900;color:rgba(230,51,41,.25);min-width:28px;text-align:center;line-height:1;">'+pad(i+1)+'</div>'
+             +'<div style="flex:1;">'
+             +'<div style="font-size:13px;font-weight:800;color:#fff;line-height:1.3;">'+g.spiel+'</div>'
+             +'<div style="display:flex;gap:10px;margin-top:5px;flex-wrap:wrap;">'
+             +'<span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.35);">📅 '+g.datum+'</span>'
+             +'<span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.35);">📍 '+g.stad+'</span>'
+             +'<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.2);color:var(--red2);">'+g.liga+'</span>'
+             +(isHome?'<span style="font-size:10px;font-weight:700;color:#ffb347;">❤️ Heimspiel</span>':'')
+             +'</div></div></div>';
+        });
+        out+='</div>';
+        return out;
+      }
+    },
+    ligen: {
+      icon:'⚽', title:'2 verschiedene Ligen',
+      html: function(){
+        var out='<p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;">Bundesliga und 2. Bundesliga — Fußball pur mit klarem Fokus.</p>';
+        var ligen=[
+          {name:'Bundesliga',    spiele:'2×', farbe:'#e63329', stadien:'St. Pauli, Gladbach'},
+          {name:'2. Bundesliga', spiele:'52×', farbe:'#ff8c42', stadien:'Berlin, Hamburg, Gelsenkirchen, Düsseldorf'},
+        ];
+        out+='<div style="display:flex;flex-direction:column;gap:14px;">';
+        ligen.forEach(function(l){
+          out+='<div style="padding:18px 20px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);">'
+             +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+             +'<div style="display:flex;align-items:center;gap:10px;">'
+             +'<div style="width:12px;height:12px;border-radius:50%;background:'+l.farbe+';"></div>'
+             +'<span style="font-size:16px;font-weight:900;color:#fff;">'+l.name+'</span></div>'
+             +'<span style="font-size:22px;font-weight:900;color:'+l.farbe+';">'+l.spiele+'</span>'
+             +'</div>'
+             +'<div style="font-size:12px;color:rgba(255,255,255,.35);">📍 '+l.stadien+'</div>'
+             +'</div>';
+        });
+        out+='</div>';
+        out+='<div style="margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:6px;flex-wrap:wrap;">'
+           +'<span style="padding:5px 12px;border-radius:999px;background:rgba(230,51,41,.1);border:1px solid rgba(230,51,41,.25);font-size:11px;font-weight:700;color:var(--red2);">54 Spiele gesamt</span>'
+           +'<span style="padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:11px;font-weight:700;color:rgba(255,255,255,.5);">2 Ligen</span>'
+           +'<span style="padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:11px;font-weight:700;color:rgba(255,255,255,.5);">2023 – 2025</span>'
+           +'</div>';
+        return out;
+      }
+    },
+    fortuna: {
+      icon:'❤️', title:'Fortuna Düsseldorf F95',
+      html: function(){
+        var out='<div style="display:flex;align-items:center;gap:16px;margin-bottom:22px;">'
+               +'<div style="width:64px;height:64px;border-radius:50%;background:rgba(230,51,41,.12);border:2px solid rgba(230,51,41,.35);display:flex;align-items:center;justify-content:center;font-size:28px;">❤️</div>'
+               +'<div><div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px;">Fortuna Düsseldorf</div>'
+               +'<div style="font-size:13px;color:var(--red2);font-weight:700;">Alte Liebe rostet nicht</div></div>'
+               +'</div>';
+        var facts=[
+          {icon:'📅', label:'Gegründet',       val:'5. Mai 1895'},
+          {icon:'🏟', label:'Heimstadion',      val:'Merkur Spiel-Arena (54.600 Plätze)'},
+          {icon:'🎨', label:'Vereinsfarben',    val:'Rot & Weiß'},
+          {icon:'🏆', label:'Größter Erfolg',   val:'2× Deutscher Meister (1933, 1936)'},
+          {icon:'📍', label:'Heimat',           val:'Düsseldorf, NRW'},
+          {icon:'💚', label:'Rivale',           val:'MSV Duisburg'},
+        ];
+        out+='<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">';
+        facts.forEach(function(f){
+          out+='<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.05);">'
+             +'<span style="font-size:16px;width:22px;text-align:center;">'+f.icon+'</span>'
+             +'<div><div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);">'+f.label+'</div>'
+             +'<div style="font-size:13px;font-weight:700;color:#fff;">'+f.val+'</div></div>'
+             +'</div>';
+        });
+        out+='</div>';
+        out+='<div style="padding:14px 16px;border-radius:10px;background:rgba(230,51,41,.08);border:1px solid rgba(230,51,41,.2);font-size:13px;color:var(--muted);line-height:1.7;">'
+           +'🤍 <em>„Die Fortuna ist mehr als ein Verein — sie ist Heimat."</em>'
+           +'</div>';
+        return out;
+      }
+    }
+  };
+
+  function openStatPopup(key){
+    var d=statData[key];
+    if(!d) return;
+    statContent.innerHTML=
+      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">'
+      +'<div style="font-size:36px;">'+d.icon+'</div>'
+      +'<h2 style="font-size:24px;font-weight:900;letter-spacing:-1px;color:#fff;line-height:1.1;">'+d.title+'</h2>'
+      +'</div>'
+      +d.html();
+    statPopup.style.opacity='1';
+    statPopup.style.pointerEvents='auto';
+    statPopupBox.style.transform='scale(1) translateY(0)';
+    // animate popup bars
+    setTimeout(function(){
+      statPopupBox.querySelectorAll('.sp-bar-fill').forEach(function(b){
+        b.style.width=(b.dataset.w||'0')+'%';
+      });
+    }, 150);
   }
 
-  function init() {
-    document.addEventListener('keydown', (e) => handle(e.key));
+  function closeStatPopup(){
+    statPopup.style.opacity='0';
+    statPopup.style.pointerEvents='none';
+    statPopupBox.style.transform='scale(.92) translateY(20px)';
   }
 
-  return { init };
-})();
+  document.querySelectorAll('.stat-card[data-stat]').forEach(function(card){
+    card.addEventListener('click', function(){ openStatPopup(this.dataset.stat); });
+  });
+  document.getElementById('stat-popup-close').addEventListener('click', closeStatPopup);
+  statPopup.addEventListener('click', function(e){ if(e.target===statPopup) closeStatPopup(); });
 
-// ===============================
-// INIT APP
-// ===============================
-(function initApp(){
-  Clock.init();
-  Slider.init();
-  Lightbox.init();
-  Konami.init();
 })();
+</script>
+</body>
+</html>
