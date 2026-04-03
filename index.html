@@ -1268,7 +1268,7 @@
         out+='<div style="display:flex;flex-direction:column;gap:10px;">';
         games.forEach(function(g,i){
           var isHome=g.stad==='Düsseldorf';
-          out+='<div style="display:flex;align-items:flex-start;gap:14px;padding:12px 14px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,'+(isHome?'.12':'.05')+');">
+          out+='<div style="display:flex;align-items:flex-start;gap:14px;padding:12px 14px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,'+(isHome?'.12':'.05')+')">'
              +'<div style="font-size:22px;font-weight:900;color:rgba(230,51,41,.25);min-width:28px;text-align:center;line-height:1;">'+pad(i+1)+'</div>'
              +'<div style="flex:1;">'
              +'<div style="font-size:13px;font-weight:800;color:#fff;line-height:1.3;">'+g.spiel+'</div>'
