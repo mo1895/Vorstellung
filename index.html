@@ -1256,15 +1256,16 @@
       icon:'📅', title:'Alle 54 Spiele',
       html: function(){
         var games=[
-          {datum:'23. Aug 2023', spiel:'Dynamo Dresden vs. Fortuna Düsseldorf', liga:'3. Liga',       stad:'Dresden'},
-          {datum:'14. Feb 2024', spiel:'Hertha BSC vs. FC Schalke 04',          liga:'2. Bundesliga', stad:'Berlin'},
+          {datum:'23. Aug 2023', spiel:'Dynamo Dresden vs. Fortuna Düsseldorf', liga:'2. Bundesliga', stad:'Dresden'},
+          {datum:'14. Feb 2024', spiel:'Hertha BSC vs. F95',                    liga:'2. Bundesliga', stad:'Berlin'},
           {datum:'19. Mai 2024', spiel:'Hamburger SV vs. Fortuna Düsseldorf',   liga:'2. Bundesliga', stad:'Hamburg'},
           {datum:'20. Mai 2024', spiel:'FC St. Pauli vs. 1. FC Kaiserslautern', liga:'Bundesliga',    stad:'Hamburg'},
-          {datum:'14. Sep 2024', spiel:'Borussia MG vs. Bayer 04 Leverkusen',   liga:'Bundesliga',    stad:'Mönchengladbach'},
-          {datum:'14. Dez 2024', spiel:'FC Schalke 04 vs. Hamburger SV',        liga:'2. Bundesliga', stad:'Gelsenkirchen'},
+          {datum:'14. Sep 2024', spiel:'Borussia MG vs. VFB Stuttgart',         liga:'Bundesliga',    stad:'Mönchengladbach'},
+          {datum:'14. Dez 2024', spiel:'FC Schalke 04 vs. F95',                liga:'2. Bundesliga', stad:'Gelsenkirchen'},
           {datum:'05. Dez 2025', spiel:'Fortuna Düsseldorf vs. Hamburger SV',   liga:'2. Bundesliga', stad:'Düsseldorf'},
         ];
-        var out='<p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">Insgesamt <strong style="color:#fff;">54 Spiele</strong> — davon <strong style="color:#fff;">48 Fortuna Düsseldorf Heimspiele</strong> und einige Auswärtsfahrten.</p>';
+        var out='<div style="margin-bottom:14px;"><img src="liebe.png" alt="Liebe" style="max-width:120px;border-radius:12px;display:block;margin-bottom:10px;"></div>';
+        out+='<p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">Insgesamt <strong style="color:#fff;">54 Spiele</strong> — davon <strong style="color:#fff;">48 Fortuna Düsseldorf Heimspiele</strong> und einige Auswärtsfahrten.</p>';
         out+='<div style="display:flex;flex-direction:column;gap:10px;">';
         games.forEach(function(g,i){
           var isHome=g.stad==='Düsseldorf';
