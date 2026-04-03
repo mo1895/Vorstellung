@@ -1168,13 +1168,13 @@
       icon:'🏟', title:'7 besuchte Stadien',
       html: function(){
         var rows=[
+          {name:'Rudolf-Harbig-Stadion',    km:680, year:'2023'},
           {name:'Olympiastadion Berlin',    km:580, year:'2024'},
           {name:'Volksparkstadion Hamburg', km:480, year:'2024'},
           {name:'Millerntor-Stadion',       km:480, year:'2024'},
-          {name:'Borussia-Park',            km:45,  year:'2024'},
           {name:'Veltins-Arena',            km:60,  year:'2024'},
+          {name:'Borussia-Park',            km:45,  year:'2024'},
           {name:'Merkur Spiel-Arena',       km:25,  year:'2025'},
-          {name:'Rudolf-Harbig-Stadion',    km:680, year:'2023'},
         ];
         var max=680;
         var out='<p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;">7 Stadien in 6 Städten — von nah bis weit. Hier alle Besuche im Überblick:</p>';
@@ -1242,10 +1242,10 @@
         out+='<div style="display:flex;flex-direction:column;gap:10px;">';
         data.forEach(function(d){
           var pct=Math.round(d.n/maxN*100);
-          var fillClass=d.home?'sp-bar-fill" style="background:linear-gradient(90deg,#c0392b,#e74c3c,#ff6b6b,#ffb347);':'sp-bar-fill"';
+          var fillClass=d.home?'sp-bar-fill" style="background:linear-gradient(90deg,#c0392b,#e74c3c,#ff6b6b,#ffb347)':'sp-bar-fill';
           out+='<div style="display:flex;align-items:center;gap:12px;">'
              +'<div class="sp-bar-label">'+d.name+'</div>'
-             +'<div class="sp-bar-track"><div class="'+fillClass+' data-w="'+pct+'"><span>'+d.n.toLocaleString('de-DE')+'</span></div></div>'
+             +'<div class="sp-bar-track"><div class="'+fillClass+'" data-w="'+pct+'"><span>'+d.n.toLocaleString('de-DE')+'</span></div></div>'
              +'</div>';
         });
         out+='</div>';
