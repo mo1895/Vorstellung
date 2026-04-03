@@ -1315,10 +1315,14 @@
     fortuna: {
       icon:'❤️', title:'Fortuna Düsseldorf F95',
       html: function(){
-        var out='<div style="display:flex;align-items:center;gap:16px;margin-bottom:22px;">'
-               +'<div style="width:64px;height:64px;border-radius:50%;background:rgba(230,51,41,.12);border:2px solid rgba(230,51,41,.35);display:flex;align-items:center;justify-content:center;font-size:28px;">❤️</div>'
-               +'<div><div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px;">Fortuna Düsseldorf</div>'
-               +'<div style="font-size:13px;color:var(--red2);font-weight:700;">Alte Liebe rostet nicht</div></div>'
+        var out='<div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:22px;">'
+               +'<img src="liebe.png" alt="Liebe" style="width:120px;height:auto;border-radius:14px;border:2px solid rgba(255,255,255,.2);box-shadow:0 4px 18px rgba(0,0,0,.35);">'
+               +'<div style="display:flex;align-items:center;gap:10px;">'
+               +'<div style="font-size:44px;line-height:1;">❤️</div>'
+               +'<div style="font-size:24px;font-weight:900;color:#fff;letter-spacing:-1px;">Fortuna Düsseldorf</div>'
+               +'<div style="font-size:44px;line-height:1;">❤️</div>'
+               +'</div>'
+               +'<div style="font-size:16px;font-weight:600;color:var(--red2);">Alte Liebe rostet nicht</div>'
                +'</div>';
         var facts=[
           {icon:'📅', label:'Gegründet',       val:'5. Mai 1895'},
