@@ -682,23 +682,27 @@
   </section>
 
   <!-- SLIDE 11 — STATS -->
-  <section class="slide" data-slide="11">
-    <div class="slide-bg"></div><div class="accent-line"></div>
-    <div class="content">
-      <div class="stats-grid">
-        <div class="stats-head r">
-          <h2>Meine Stats</h2>
-          <span style="font-size:14px;color:var(--muted)">2023 – 2025</span>
-        </div>
-        <div class="stat-card r"><div class="stat-icon">🏟</div><div class="stat-num">7<em> Stadien</em></div><div class="stat-label">Insgesamt besucht</div><div class="stat-detail">in 6 verschiedenen Städten</div></div>
-        <div class="stat-card r"><div class="stat-icon">🚗</div><div class="stat-num">2.135<em> km</em></div><div class="stat-label">Gesamtkilometer gereist</div><div class="stat-detail">Kaarst → Berlin → Hamburg → Dresden → Gelsenkirchen</div></div>
-        <div class="stat-card r"><div class="stat-icon">👥</div><div class="stat-num">310<em>k</em></div><div class="stat-label">Gesamtkapazität aller Stadien</div><div class="stat-detail">Durchschnitt: 56.000 pro Stadion</div></div>
-        <div class="stat-card r"><div class="stat-icon">📅</div><div class="stat-num">54<em> Spiele</em></div><div class="stat-label">Besuche insgesamt</div><div class="stat-detail">Hamburg 1× · Schalke 1× · Düsseldorf 48×</div></div>
-        <div class="stat-card r"><div class="stat-icon">⚽</div><div class="stat-num">2<em> Ligen</em></div><div class="stat-label">Verschiedene Spielklassen</div><div class="stat-detail">Bundesliga · 2. Liga</div></div>
-        <div class="stat-card r"><div class="stat-icon">❤️</div><div class="stat-num" style="font-size:36px">Fortuna<em> F95</em></div><div class="stat-label">Herzensverein</div><div class="stat-detail">Merkur Spiel-Arena · Heimat</div></div>
+ <!-- SLIDE 11 — INTERAKTIVE STATS -->
+<section class="slide" data-slide="11">
+  <div class="slide-bg"></div><div class="accent-line"></div>
+  <div class="content">
+    <div class="stats-grid">
+      <div class="stats-head r">
+        <h2>Meine Stats</h2>
+        <span style="font-size:14px;color:var(--muted)">2023 – 2025</span>
       </div>
-    </div>
-  </section>
+      
+      <!-- Stadien -->
+      <div class="stat-card r" onclick="showStatDetail('stadien')">
+        <div class="stat-icon">🏟</div>
+        <div class="stat-num">7<em> Stadien</em></div>
+        <div class="stat-label">Insgesamt besucht</div>
+        <div class="stat-detail">in 6 verschiedenen Städten</div>
+      </div>
+      
+      <!-- Kilometer -->
+      <div class="stat-card r" onclick="showStatDetail('km')">
+        <div class="stat-icon">
 
   <!-- SLIDE 12 — DANKE -->
   <section class="slide thanks-slide" data-slide="12">
