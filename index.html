@@ -756,14 +756,9 @@
   </section>
 
   <!-- SLIDE 12 — DANKE -->
-  <section class="slide thanks-slide" data-slide="12">
+  <section class="slide thanks-slide" data-slide="12" style="background-image:url('liebe.png');background-size:cover;background-position:center;">
     <div class="bokeh b1"></div><div class="bokeh b2"></div><div class="bokeh b3"></div>
-    <div class="thanks-vid-frame">
-      <video id="thanksVideo" muted loop playsinline preload="auto">
-        <source src="hintergrund1.mp4" type="video/mp4">
-      </video>
-      <div class="thanks-vid-overlay"></div>
-    </div>
+    <div class="thanks-vid-frame" style="background:rgba(0,0,0,.35);">
     <div class="thanks-content">
       <div class="thanks-eyebrow r"><span></span>Finn Moritz · Stadionreisen<span></span></div>
       <h2 class="thanks-h2 r">Vielen<br><em>Dank</em></h2>
@@ -1264,8 +1259,7 @@
           {datum:'14. Dez 2024', spiel:'FC Schalke 04 vs. F95',                liga:'2. Bundesliga', stad:'Gelsenkirchen'},
           {datum:'05. Dez 2025', spiel:'Fortuna Düsseldorf vs. Hamburger SV',   liga:'2. Bundesliga', stad:'Düsseldorf'},
         ];
-        var out='<div style="margin-bottom:14px;"><img src="liebe.png" alt="Liebe" style="max-width:120px;border-radius:12px;display:block;margin-bottom:10px;"></div>';
-        out+='<p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">Insgesamt <strong style="color:#fff;">54 Spiele</strong> — davon <strong style="color:#fff;">48 Fortuna Düsseldorf Heimspiele</strong> und einige Auswärtsfahrten.</p>';
+        var out='<p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">Insgesamt <strong style="color:#fff;">54 Spiele</strong> — davon <strong style="color:#fff;">48 Fortuna Düsseldorf Heimspiele</strong> und einige Auswärtsfahrten.</p>';
         out+='<div style="display:flex;flex-direction:column;gap:10px;">';
         games.forEach(function(g,i){
           var isHome=g.stad==='Düsseldorf';
@@ -1316,7 +1310,6 @@
       icon:'❤️', title:'Fortuna Düsseldorf F95',
       html: function(){
         var out='<div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:22px;">'
-               +'<img src="liebe.png" alt="Liebe" style="width:220px;height:auto;border-radius:14px;border:2px solid rgba(255,255,255,.2);box-shadow:0 4px 18px rgba(0,0,0,.35);">'
                +'<div style="display:flex;align-items:center;gap:10px;">'
                +'<div style="font-size:44px;line-height:1;">❤️</div>'
                +'<div style="font-size:24px;font-weight:900;color:#fff;letter-spacing:-1px;">Fortuna Düsseldorf</div>'
@@ -1330,7 +1323,7 @@
           {icon:'🎨', label:'Vereinsfarben',    val:'Rot & Weiß'},
           {icon:'🏆', label:'Größter Erfolg',   val:'2× Deutscher Meister (1933, 1936)'},
           {icon:'📍', label:'Heimat',           val:'Düsseldorf, NRW'},
-          {icon:'💥', label:'Rivale',           val:'1. FC Köln'},
+          {icon:'💚', label:'Rivale',           val:'MSV Duisburg'},
         ];
         out+='<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">';
         facts.forEach(function(f){
@@ -1342,6 +1335,7 @@
         });
         out+='</div>';
         out+='<div style="padding:14px 16px;border-radius:10px;background:rgba(230,51,41,.08);border:1px solid rgba(230,51,41,.2);font-size:13px;color:var(--muted);line-height:1.7;">'
+           +'<span style="font-size:18px;line-height:1;">💥</span> <strong>Rivale</strong> 1. FC Köln<br>'
            +'🤍 <em>„Die Fortuna ist mehr als ein Verein — sie ist Heimat."</em>'
            +'</div>';
         return out;
